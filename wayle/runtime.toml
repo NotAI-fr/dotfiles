@@ -1,0 +1,94 @@
+[general]
+font-sans = "Inter Nerd Font"
+font-mono = "Inter Nerd Font"
+
+[bar]
+scale = 0.8500000238418579
+bg = "bg-base"
+background-opacity = 77
+border-location = "bottom"
+border-width = 2
+border-color = "transparent"
+rounding = "sm"
+button-variant = "basic"
+button-icon-size = 1.100000023841858
+
+[[bar.layout]]
+monitor = "*"
+show = true
+left = [
+    "dashboard",
+    "hyprland-workspaces",
+    "weather",
+    "cpu",
+    "ram",
+]
+center = [
+    "media",
+    "cava",
+    "clock",
+]
+right = [
+    "hyprsunset",
+    "bluetooth",
+    "network",
+    "volume",
+    "systray",
+    "notifications",
+]
+
+[styling.palette]
+bg = "#121214"
+surface = "#1a1a1e"
+elevated = "#26262b"
+fg = "#e1e1e6"
+fg-muted = "#8b8b93"
+primary = "#ffffff"
+red = "#ffffff"
+yellow = "#ffffff"
+green = "#bcbcc4"
+blue = "#d2d2d9"
+
+[modules.battery]
+border-show = true
+
+[modules.cava]
+button-bg-color = "bg-surface"
+
+[modules.clock]
+format = "%b %d %H:%M"
+icon-show = false
+
+[modules.dashboard]
+dropdown-lock-command = "hyprlock"
+
+[modules.hyprland-workspaces]
+min-workspace-count = 5
+monitor-specific = false
+show-special = false
+container-bg-color = "bg-selected"
+border-color = "fg-default"
+
+[modules.media]
+icon-type = "spinning-disc"
+icon-show = false
+icon-color = "fg-subtle"
+icon-bg-color = "bg-base"
+label-color = "fg-default"
+
+[modules.microphone]
+icon-active = "ld-volume-symbolic"
+border-show = true
+
+[modules.volume]
+scroll-up = "pactl set-sink-volume @DEFAULT_SINK@ +5%"
+scroll-down = "pactl set-sink-volume @DEFAULT_SINK@ -5%"
+
+[modules.weather]
+location = "Crewe"
+time-format = "24h"
+icon-show = false
+
+[wallpaper]
+engine-enabled = false
+cycling-same-image = true

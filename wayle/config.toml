@@ -1,0 +1,3 @@
+[bar]
+# Switches the internal engine to the bundled Google Material icons
+icon-source = "md"
