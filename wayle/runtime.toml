@@ -85,8 +85,10 @@ scroll-up = "pactl set-sink-volume @DEFAULT_SINK@ +5%"
 scroll-down = "pactl set-sink-volume @DEFAULT_SINK@ -5%"
 
 [modules.weather]
+provider = "visual-crossing"
 location = "Crewe"
 time-format = "24h"
+visual-crossing-key = "NDCAEUFUSF87VPYY7AZR367U6"
 icon-show = false
 
 [wallpaper]

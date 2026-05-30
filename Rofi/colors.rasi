@@ -1,0 +1,9 @@
+* {
+    bg-transparent: #1a1a1acc;
+    surface-variant: #2a2a2a88;
+    foreground: #e5e5e5;
+    fg-muted: #b5b5b566;
+    primary: #cfcfcf;
+    secondary: #9a9a9a;
+    error: #7a7a7a;
+}

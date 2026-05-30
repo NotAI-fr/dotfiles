@@ -11,8 +11,8 @@ hl.config({
         border_size = 2,
 
         col = {
-            active_border   = { colors = {"rgba(255, 255, 255, 1)"}},
-          inactive_border = "rgba(595959aa)",
+            active_border   = { colors = {"rgba(ccccccbb)", "rgba(888888bb)"}},
+          inactive_border = "rgba(333333aa)",
         },
 
         resize_on_border = true,
@@ -35,10 +35,10 @@ hl.config({
         },
 
         blur = {
-            enabled   = false,
-          size      = 3,
-          passes    = 2,
-          vibrancy  = 0.1696,
+          enabled   = true,  -- Change this to true!
+          size      = 4,     -- Slightly larger size
+          passes    = 3,     -- More passes = smoother, creamier blur
+          vibrancy  = 0.2,
         },
     },
 

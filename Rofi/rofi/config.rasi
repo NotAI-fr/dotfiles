@@ -1,0 +1,214 @@
+/**
+ *
+ * Monochrome Rofi Theme
+ *
+ **/
+
+/*****----- Configuration -----*****/
+configuration {
+    modi:                       "drun,filebrowser,window";
+    show-icons:                 true;
+    display-drun:               "";
+    display-run:                "";
+    display-filebrowser:        "";
+    display-window:             "";
+    drun-display-format:        "{name}";
+    window-format:              "{w} · {c} · {t}";
+}
+
+/*****----- Monochrome Colors -----*****/
+* {
+    background:                 #111111ee;
+    background-alt:             #1c1c1cdd;
+    foreground:                 #f0f0f0;
+    selected:                   #ffffff;
+    active:                     #b0b0b0;
+    urgent:                     #707070;
+
+    border-colour:              var(selected);
+    handle-colour:              var(selected);
+
+    background-colour:          var(background);
+    foreground-colour:          var(foreground);
+
+    alternate-background:       var(background-alt);
+
+    normal-background:          var(background);
+    normal-foreground:          var(foreground);
+
+    urgent-background:          var(urgent);
+    urgent-foreground:          var(background);
+
+    active-background:          var(active);
+    active-foreground:          var(background);
+
+    selected-normal-background: var(selected);
+    selected-normal-foreground: var(background);
+
+    selected-urgent-background: var(active);
+    selected-urgent-foreground: var(background);
+
+    selected-active-background: var(urgent);
+    selected-active-foreground: var(background);
+
+    alternate-normal-background: var(background);
+    alternate-normal-foreground: var(foreground);
+
+    alternate-urgent-background: var(urgent);
+    alternate-urgent-foreground: var(background);
+
+    alternate-active-background: var(active);
+    alternate-active-foreground: var(background);
+}
+
+/*****----- Main Window -----*****/
+window {
+    transparency:                "real";
+    location:                    center;
+    anchor:                      center;
+    fullscreen:                  false;
+    width:                       600px;
+
+    margin:                      0px;
+    padding:                     0px;
+    border:                      1px solid;
+    border-radius:               14px;
+    border-color:                @border-colour;
+
+    background-color:            @background-colour;
+}
+
+/*****----- Main Box -----*****/
+mainbox {
+    spacing:                     10px;
+    padding:                     30px;
+    background-color:            transparent;
+    children:                    [ "inputbar", "message", "listview" ];
+}
+
+/*****----- Inputbar -----*****/
+inputbar {
+    spacing:                     10px;
+    padding:                     12px;
+    border-radius:               12px;
+
+    background-color:            @alternate-background;
+    text-color:                  @foreground-colour;
+
+    children:                    [ "textbox-prompt-colon", "entry", "mode-switcher" ];
+}
+
+textbox-prompt-colon {
+    padding:                     5px 0px;
+    str:                         "";
+    background-color:            inherit;
+    text-color:                  inherit;
+}
+
+entry {
+    padding:                     5px 0px;
+    background-color:            inherit;
+    text-color:                  inherit;
+
+    placeholder:                 "Search...";
+    placeholder-color:           #888888;
+}
+
+/*****----- Listview -----*****/
+listview {
+    columns:                     1;
+    lines:                       8;
+    cycle:                       true;
+    dynamic:                     true;
+    scrollbar:                   true;
+
+    spacing:                     6px;
+    background-color:            transparent;
+    text-color:                  @foreground-colour;
+    border:                      0px;
+}
+
+scrollbar {
+    handle-width:                5px;
+    handle-color:                #bbbbbb;
+    border-radius:               10px;
+    background-color:            #222222;
+}
+
+/*****----- Elements -----*****/
+element {
+    spacing:                     10px;
+    padding:                     10px 14px;
+    border-radius:               12px;
+
+    background-color:            transparent;
+    text-color:                  @foreground-colour;
+}
+
+element normal.normal {
+    background-color:            transparent;
+    text-color:                  var(normal-foreground);
+}
+
+element selected.normal {
+    background-color:            #f0f0f0;
+    text-color:                  #111111;
+}
+
+element selected.active {
+    background-color:            #cccccc;
+    text-color:                  #111111;
+}
+
+element selected.urgent {
+    background-color:            #777777;
+    text-color:                  #111111;
+}
+
+element-icon {
+    size:                        20px;
+    background-color:            transparent;
+}
+
+element-text {
+    background-color:            transparent;
+    vertical-align:              0.5;
+}
+
+/*****----- Mode Switcher -----*****/
+mode-switcher {
+    spacing:                     8px;
+    background-color:            transparent;
+}
+
+button {
+    padding:                     6px 12px;
+    border-radius:               10px;
+
+    background-color:            #222222;
+    text-color:                  @foreground-colour;
+}
+
+button selected {
+    background-color:            #f0f0f0;
+    text-color:                  #111111;
+}
+
+/*****----- Message -----*****/
+textbox {
+    padding:                     10px 12px;
+    border-radius:               12px;
+
+    background-color:            @alternate-background;
+    text-color:                  @foreground-colour;
+}
+
+error-message {
+    padding:                     12px;
+    border:                      1px solid;
+    border-radius:               12px;
+
+    border-color:                #666666;
+    background-color:            #1c1c1c;
+    text-color:                  #f0f0f0;
+}
