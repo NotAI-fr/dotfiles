@@ -13,9 +13,8 @@ border-color = "transparent"
 rounding = "sm"
 button-variant = "basic"
 button-icon-size = 1.100000023841858
-button-label-weight = "medium"
 button-label-padding = 1.2999999523162842
-button-rounding = "lg"
+button-rounding = "md"
 button-gap = 1.2999999523162842
 
 [[bar.layout]]
@@ -27,6 +26,7 @@ left = [
     "weather",
     "cpu",
     "ram",
+    "storage",
 ]
 center = [
     "media",
@@ -40,6 +40,7 @@ right = [
     "volume",
     "systray",
     "notifications",
+    "power",
 ]
 
 [styling.palette]
@@ -49,8 +50,8 @@ elevated = "#26262b"
 fg = "#e1e1e6"
 fg-muted = "#8b8b93"
 primary = "#ffffff"
-red = "#ffffff"
-yellow = "#ffffff"
+red = "#62626a"
+yellow = "#a0a0a8"
 green = "#bcbcc4"
 blue = "#d2d2d9"
 
@@ -76,7 +77,6 @@ border-color = "fg-default"
 
 [modules.media]
 icon-type = "spinning-disc"
-icon-show = false
 icon-color = "fg-subtle"
 icon-bg-color = "bg-base"
 label-color = "fg-default"
@@ -84,6 +84,9 @@ label-color = "fg-default"
 [modules.microphone]
 icon-active = "ld-volume-symbolic"
 border-show = true
+
+[modules.power]
+left-click = "wlogout"
 
 [modules.volume]
 scroll-up = "pactl set-sink-volume @DEFAULT_SINK@ +5%"
@@ -97,5 +100,6 @@ visual-crossing-key = "NDCAEUFUSF87VPYY7AZR367U6"
 icon-show = false
 
 [wallpaper]
-engine-enabled = false
+cycling-enabled = true
+cycling-directory = "/home/nobloat/Pictures/Walls/Faves/a_street_lights_at_night_01.jpg"
 cycling-same-image = true
