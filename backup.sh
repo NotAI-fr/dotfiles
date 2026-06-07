@@ -15,6 +15,7 @@ cp -r "$HOME/.config/fastfetch/" "$REPO_DIR/fastfetch/"
 cp -r "$HOME/.config/kitty/" "$REPO_DIR/kitty/"
 cp -r "$HOME/.config/rmpc/" "$REPO_DIR/rmpc/"
 cp -r "$HOME/.config/wayle/" "$REPO_DIR/wayle/"
+cp -r "$HOME/.config/wlogout/" "$REPO_DIR/wlogout/"
 
 # You can add as many of these as you want later!
 # cp -r "$HOME/.config/kitty/" "$REPO_DIR/kitty/"

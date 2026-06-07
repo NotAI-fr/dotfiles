@@ -26,7 +26,6 @@ left = [
     "weather",
     "cpu",
     "ram",
-    "storage",
 ]
 center = [
     "media",
@@ -75,6 +74,12 @@ show-special = false
 container-bg-color = "bg-selected"
 border-color = "fg-default"
 
+[modules.hyprsunset]
+border-color = "fg-default"
+icon-color = "fg-default"
+icon-bg-color = "fg-default"
+label-color = "fg-default"
+
 [modules.media]
 icon-type = "spinning-disc"
 icon-color = "fg-subtle"
@@ -86,9 +91,14 @@ icon-active = "ld-volume-symbolic"
 border-show = true
 
 [modules.power]
+icon-color = "fg-default"
 left-click = "wlogout"
 
 [modules.volume]
+border-color = "fg-default"
+icon-color = "fg-default"
+icon-bg-color = "fg-default"
+label-color = "fg-default"
 scroll-up = "pactl set-sink-volume @DEFAULT_SINK@ +5%"
 scroll-down = "pactl set-sink-volume @DEFAULT_SINK@ -5%"
 
@@ -100,6 +110,8 @@ visual-crossing-key = "NDCAEUFUSF87VPYY7AZR367U6"
 icon-show = false
 
 [wallpaper]
+engine-enabled = false
 cycling-enabled = true
-cycling-directory = "/home/nobloat/Pictures/Walls/Faves/a_street_lights_at_night_01.jpg"
+cycling-directory = "/home/nobloat/Pictures/Walls/Faves"
+cycling-interval-mins = 1
 cycling-same-image = true
