@@ -43,7 +43,7 @@ right = [
 
 [styling.palette]
 bg = "#121214"
-surface = "#1a1a1e"
+surface = "#1a1a1ebf"
 elevated = "#26262b"
 fg = "#e1e1e6"
 fg-muted = "#8b8b93"
@@ -56,9 +56,6 @@ blue = "#d2d2d9"
 [modules.battery]
 border-show = true
 
-[modules.cava]
-button-bg-color = "bg-surface"
-
 [modules.clock]
 format = "%a %d %b - %I:%M %p"
 
@@ -69,7 +66,6 @@ dropdown-lock-command = "hyprlock"
 min-workspace-count = 5
 monitor-specific = false
 show-special = false
-container-bg-color = "bg-selected"
 border-color = "fg-default"
 
 [modules.hyprsunset]

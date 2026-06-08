@@ -1,0 +1,38 @@
+* {
+    background-color: #000000;
+    text-color:       #ffffff;
+    font:             "monospace 14";
+}
+
+window {
+    border:           4px;
+    border-color:     #ffffff;
+    padding:          40px;
+    width:            32%;
+    height:           60%;
+    location:         center;
+}
+
+inputbar {
+    children:         [ prompt, entry ];
+    border:           0px 0px 2px 0px;
+    border-color:     #ffffff;
+    padding:          0px 0px 10px 0px;
+    margin:           0px 0px 20px 0px;
+}
+
+prompt {
+    margin:           0px 10px 0px 0px;
+}
+
+element {
+    padding:          10px;
+    border:           1px;
+    border-color:     #222222;
+    margin:           0px 0px 5px 0px;
+}
+
+element selected {
+    background-color: #ffffff;
+    text-color:       #000000;
+}
