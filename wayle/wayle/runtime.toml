@@ -7,7 +7,6 @@ scale = 0.8500000238418579
 module-gap = 0.800000011920929
 bg = "transparent"
 background-opacity = 77
-border-location = "bottom"
 border-width = 2
 border-color = "transparent"
 rounding = "sm"
@@ -61,8 +60,7 @@ border-show = true
 button-bg-color = "bg-surface"
 
 [modules.clock]
-format = "%b %d %H:%M"
-icon-show = false
+format = "%a %d %b - %I:%M %p"
 
 [modules.dashboard]
 dropdown-lock-command = "hyprlock"
@@ -82,9 +80,11 @@ label-color = "fg-default"
 
 [modules.media]
 icon-type = "spinning-disc"
+format = "{{ artist }} - {{ title }}"
 icon-color = "fg-subtle"
 icon-bg-color = "bg-base"
 label-color = "fg-default"
+label-max-length = 24
 
 [modules.microphone]
 icon-active = "ld-volume-symbolic"

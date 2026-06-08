@@ -1,0 +1,61 @@
+window {
+    font-family: "JetBrains Mono Nerd Font";
+    font-size: 12pt;
+    color: #ffffff; /* Crisp white text/foreground */
+    background-color: rgba(
+        15,
+        15,
+        15,
+        0.95
+    ); /* Deep, dark charcoal background */
+}
+
+button {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 25%;
+    border-style: solid;
+    border-width: 3px;
+    background-color: rgba(255, 255, 255, 0.05); /* Subtle white tint */
+    border-color: #333333; /* Mid-tone gray border */
+    margin: 5px;
+    border-radius: 20px;
+    transition: all 0.1s ease-in-out;
+}
+
+/* Only triggers the high-contrast invert when actively hovering or clicking */
+button:hover,
+button:active {
+    background-color: #ffffff; /* Inverts to solid white */
+    border-color: #ffffff; /* Border matches the white fill */
+    color: #000000; /* Inverts text color to black */
+}
+
+/* Prevents the initial launch autofocus from highlighting the first button */
+button:focus {
+    outline-style: none;
+}
+
+#lock {
+    background-image: image(url("./icons/lock.svg"));
+}
+
+#logout {
+    background-image: image(url("./icons/logout.svg"));
+}
+
+#suspend {
+    background-image: image(url("./icons/suspend.svg"));
+}
+
+#hibernate {
+    background-image: image(url("./icons/hibernate.svg"));
+}
+
+#reboot {
+    background-image: image(url("./icons/reboot.svg"));
+}
+
+#shutdown {
+    background-image: image(url("./icons/shutdown.svg"));
+}
