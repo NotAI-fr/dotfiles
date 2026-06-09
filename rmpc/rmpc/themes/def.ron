@@ -4,7 +4,7 @@
 (
     draw_borders: false,
     show_song_table_header: true,
-   default_album_art_path: None,
+    default_album_art_path: None,
     header_background_color: None,
     modal_background_color: None,
     modal_backdrop: true,
@@ -19,23 +19,8 @@
         error: (fg: "default", bg: "default"),
         debug: (fg: "#9e9e9e", bg: "default"),
         trace: (fg: "magenta", bg: "default"),
+    ),
 
-    ),
-    cava: (
-        bar_width: 2,
-        bar_spacing: 1,
-        orientation: Bottom,
-        bar_color: Gradient({
-              0: "#9e9e9e",
-             14: "#9e9e9e",
-             28: "#9e9e9e",
-             42: "#9e9e9e",
-             56: "#9e9e9e",
-             70: "#9e9e9e",
-             84: "#9e9e9e",
-            100: "#9e9e9e",
-        }),
-    ),
     lyrics: (
         timestamp: true,
     ),
@@ -53,17 +38,17 @@
                     default: (kind: Text("No Song"), style: (modifiers: "Bold"))),
             ], align: Center, scroll_speed: 1
         )),
-      "volume": Split(
-    direction: Horizontal,
-    panes: [
-        (size: "100%", pane: Pane(Property(content: [
-            (kind: Property(Status(Volume)), style: (fg: "#9e9e9e"))
-        ], align: Right))),
-        (size: "1", pane: Pane(Property(content: [
-            (kind: Text("%"), style: (fg: "#9e9e9e"))
-        ]))),
-    ]
-),
+        "volume": Split(
+            direction: Horizontal,
+            panes: [
+                (size: "100%", pane: Pane(Property(content: [
+                    (kind: Property(Status(Volume)), style: (fg: "#9e9e9e"))
+                ], align: Right))),
+                (size: "1", pane: Pane(Property(content: [
+                    (kind: Text("%"), style: (fg: "#9e9e9e"))
+                ]))),
+            ]
+        ),
         "elapsed_and_bitrate": Pane(Property(
             content: [
                 (kind: Property(Status(Elapsed))),

@@ -10,6 +10,9 @@ default_floating_border pixel 2
 gaps inner 8
 gaps outer 4
 
+# Force network and bluetooth tools to open as floating pop-ups
+for_window [class="floating_tool"] floating enable, resize set 800 600, move position center
+
 # Stark Monochrome Color Palette
 set $black       #000000
 set $dark_gray   #222222
@@ -64,7 +67,7 @@ for_window [class="Blueman-manager"] floating enable, border pixel 2, resize set
 # Auto-run crucial lightweight background utilities on boot
 exec --no-startup-id polybar
 exec_always --no-startup-id autotiling
-exec --no-startup-id dunst
+exec_always --no-startup-id deadd-notification-center
 exec --no-startup-id feh --bg-solid '#111111'
 exec --no-startup-id picom -b
 exec --no-startup-id xrandr --output HDMI-2 --mode 1920x1080 --rate 75.00 --primary --output eDP-1 --off
