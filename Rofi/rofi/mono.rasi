@@ -1,13 +1,15 @@
 * {
-    background-color: #000000;
+    /* 0, 0, 0 is Black | 0.8 is the transparency (80% opacity) */
+    background-color: rgba(0, 0, 0, 0.8);
     text-color:       #ffffff;
     font:             "monospace 14";
+    border-radius:    0px;
 }
 
 window {
-    border:           4px;
+    border:           2px;
     border-color:     #ffffff;
-    padding:          40px;
+    padding:          20px;
     width:            32%;
     height:           60%;
     location:         center;
@@ -32,6 +34,7 @@ element {
     margin:           0px 0px 5px 0px;
 }
 
+/* Keeps the active highlight stark solid white for contrast */
 element selected {
     background-color: #ffffff;
     text-color:       #000000;
