@@ -23,7 +23,8 @@ cp -r "$HOME/.config/mpd/" "$REPO_DIR/mpd/"
 cp -r "$HOME/.zshrc" "$REPO_DIR/"
 cp -r "$HOME/.config/starship.toml" "$REPO_DIR/"
 cp -r "$HOME/.config/picom/" "$REPO_DIR/picom/"
-cp -r "/etc/ly/config.ini" "$REPO_DIR/ly/"
+sudo cp "/etc/ly/config.ini" "$REPO_DIR/ly/"
+sudo chown "$USER:$USER" "$REPO_DIR/ly/config.ini"
 
 
 # You can add as many of these as you want later!
