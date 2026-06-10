@@ -59,15 +59,18 @@ bindsym $mod+s exec flameshot gui
 bindsym $mod+space exec --no-startup-id rofi -show drun -theme /home/nobloat/.config/rofi/mono.rasi
 bindsym $mod+w exec --no-startup-id ~/.config/rofi/wallpaper-picker.sh
 bindsym $mod+x exec --no-startup-id ~/.config/rofi/power-menu.sh
+bindsym $mod+a exec --no-startup-id curd -rofi
 
 # Native X11 Dropdown rules (Forces sound control and blueman to floating blocks)
 for_window [class="Pavucontrol"] floating enable, border pixel 2, resize set 600 px 400 px
 for_window [class="Blueman-manager"] floating enable, border pixel 2, resize set 600 px 400 px
+for_window [instance="weather_tui"] floating enable, resize set 850 850, move position center
 
 # Auto-run crucial lightweight background utilities on boot
 exec --no-startup-id polybar
 exec_always --no-startup-id autotiling
-exec_always --no-startup-id deadd-notification-center
+exec --no-startup-id /usr/lib/xfce4/notifyd/xfce4-notifyd
 exec --no-startup-id feh --bg-solid '#111111'
 exec --no-startup-id picom -b
-exec --no-startup-id xrandr --output HDMI-2 --mode 1920x1080 --rate 75.00 --primary --output eDP-1 --off
+exec --no-startup-id ~/.config/polybar/scripts/weather-poll.sh
+exec --no-startup-id xrandr --output HDMI-2 --mode 1920x1080 --rate 60.00 --primary --output eDP-1 --off

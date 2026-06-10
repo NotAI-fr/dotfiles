@@ -18,6 +18,12 @@ cp -r "$HOME/.config/wayle/" "$REPO_DIR/wayle/"
 cp -r "$HOME/.config/wlogout/" "$REPO_DIR/wlogout/"
 cp -r "$HOME/.config/i3/" "$REPO_DIR/i3/"
 cp -r "$HOME/.config/polybar/" "$REPO_DIR/polybar/"
+cp -r "$HOME/.config/mpv/" "$REPO_DIR/mpv/"
+cp -r "$HOME/.config/mpd/" "$REPO_DIR/mpd/"
+cp -r "$HOME/.config/.zshrc" "$REPO_DIR/"
+cp -r "$HOME/.config/starship.toml" "$REPO_DIR/"
+cp -r "$HOME/.config/picom/ "$REPO_DIR/"picom/"
+
 
 # You can add as many of these as you want later!
 # cp -r "$HOME/.config/kitty/" "$REPO_DIR/kitty/"
