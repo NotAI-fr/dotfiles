@@ -1,0 +1,65 @@
+sw_volume: 100
+audio_device_state:1:My Pipewire Audio Output
+audio_device_state:1:my_fifo
+state: play
+current: 3
+time: 31.115000000000002
+random: 0
+repeat: 0
+single: 0
+consume: 0
+crossfade: 0
+mixrampdb: 0
+mixrampdelay: -1
+lastloadedplaylist: 
+playlist_begin
+0:Minecraft Essentials/Minecraft - C418.flac
+1:Minecraft Essentials/Subwoofer Lullaby - C418.flac
+2:Minecraft Essentials/Wet Hands - C418.flac
+3:Minecraft Essentials/Aria Math - C418.flac
+4:Minecraft Essentials/Stal - C418.flac
+5:Minecraft Essentials/Ballad of the Cats - C418.flac
+6:Minecraft Essentials/Dalarna - Peter Hont, Minecraft.flac
+7:Minecraft Essentials/Halland - Johan Johnson, Minecraft.flac
+8:Minecraft Essentials/The Arch-Illager - Peter Hont, Minecraft.flac
+9:Minecraft Essentials/Broken Heart of Ender - Peter Hont, Minecraft.flac
+10:Minecraft Essentials/Mojam - Peter Hont, Minecraft.flac
+11:Minecraft Essentials/Dalarna (Lo-Fi Remix) - ptr, Minecraft.flac
+12:Minecraft Essentials/Coral Rise (Lo-Fi Remix) - o k h o, Minecraft.flac
+13:Minecraft Essentials/Earth - Shauny Jang, Minecraft.flac
+14:Minecraft Essentials/Sprouting - Shauny Jang, Minecraft.flac
+15:Minecraft Essentials/A Time of Legends - Crispin Hands, Minecraft.flac
+16:Minecraft Essentials/The Well of Fate - Crispin Hands, Minecraft.flac
+17:Minecraft Essentials/The Well of Fate (Remix) - Hendric Buenck, Minecraft.flac
+18:Minecraft Essentials/New Worlds, New Adventures (Remix) - Hendric Buenck, Minecraft.flac
+19:Minecraft Essentials/Closing - Camilo Forero, Joseph S. Djafar, Minecraft.flac
+20:Minecraft Essentials/Minecart Ride - Camilo Forero, Joseph S. Djafar, Minecraft.flac
+21:Minecraft Essentials/Double Time (Tumble) - Gareth Coker, Minecraft.flac
+22:Minecraft Essentials/Agile Accelerando (Tumble) - Gareth Coker, Minecraft.flac
+23:Minecraft Essentials/Infinite Amethyst - Lena Raine, Minecraft.flac
+24:Minecraft Essentials/Comforting Memories - Kumi Tanioka, Minecraft.flac
+25:Minecraft Essentials/Left to Bloom - Lena Raine, Minecraft.flac
+26:Minecraft Essentials/otherside - Lena Raine, Minecraft.flac
+27:Minecraft Essentials/An Ordinary Day - Kumi Tanioka, Minecraft.flac
+28:Minecraft Essentials/Rubedo - Lena Raine, Minecraft.flac
+29:Minecraft Essentials/Pigstep (Stereo Mix) - Lena Raine, Minecraft.flac
+30:Minecraft Essentials/Featherfall (Hyper Potions Remix) - Minecraft, Hyper Potions.flac
+31:Minecraft Essentials/pokopoko (Synthion Remix) - Minecraft, Synthion.flac
+32:Minecraft Essentials/Endless (Anamanaguchi Remix) - Minecraft, Anamanaguchi.flac
+33:Minecraft Essentials/Relic (Monolism Remix) - Minecraft, Monolism.flac
+34:Minecraft Essentials/Crescent Dunes (Monolism Remix) - Minecraft, Monolism.flac
+35:Minecraft Essentials/Echo in the Wind (Monolism Remix) - Minecraft, Monolism.flac
+36:Minecraft Essentials/Aerie - Lena Raine, Minecraft.flac
+37:Minecraft Essentials/Firebugs - Lena Raine, Minecraft.flac
+38:Minecraft Essentials/Bromeliad - Aaron Cherof, Minecraft.flac
+39:Minecraft Essentials/Echo in the Wind - Aaron Cherof, Minecraft.flac
+40:Minecraft Essentials/Relic - Aaron Cherof, Minecraft.flac
+41:Minecraft Essentials/komorebi - Kumi Tanioka, Minecraft.flac
+42:Minecraft Essentials/Featherfall - Aaron Cherof, Minecraft.flac
+43:Minecraft Essentials/Watcher - Aaron Cherof, Minecraft.flac
+44:Minecraft Essentials/Eld Unknown - Lena Raine, Minecraft.flac
+45:Minecraft Essentials/Creator - Lena Raine, Minecraft.flac
+46:Minecraft Essentials/Deeper - Lena Raine, Minecraft.flac
+47:Minecraft Essentials/Endless - Lena Raine, Minecraft.flac
+48:Minecraft Essentials/Precipice - Aaron Cherof, Minecraft.flac
+playlist_end

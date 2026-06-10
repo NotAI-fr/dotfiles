@@ -20,7 +20,7 @@ cp -r "$HOME/.config/i3/" "$REPO_DIR/i3/"
 cp -r "$HOME/.config/polybar/" "$REPO_DIR/polybar/"
 cp -r "$HOME/.config/mpv/" "$REPO_DIR/mpv/"
 cp -r "$HOME/.config/mpd/" "$REPO_DIR/mpd/"
-cp -r "$HOME/.config/.zshrc" "$REPO_DIR/"
+cp -r "$HOME/.zshrc" "$REPO_DIR/"
 cp -r "$HOME/.config/starship.toml" "$REPO_DIR/"
 cp -r "$HOME/.config/picom/ "$REPO_DIR/"picom/"
 
