@@ -1,12 +1,6 @@
-/**
- *
- * Monochrome Rofi Theme
- *
- **/
-
 /*****----- Configuration -----*****/
 configuration {
-    modi:                       "drun,filebrowser,window";
+    modi:                       "drun";
     show-icons:                 true;
     display-drun:               "";
     display-run:                "";
@@ -18,12 +12,12 @@ configuration {
 
 /*****----- Monochrome Colors -----*****/
 * {
-    background:                 #111111ee;
-    background-alt:             #1c1c1cdd;
+    background:                 #191919;
+    background-alt:             #2a2a2a;
     foreground:                 #f0f0f0;
-    selected:                   #ffffff;
-    active:                     #b0b0b0;
-    urgent:                     #707070;
+    selected:                   #000000;
+    active:                     #ff0000;
+    urgent:                     #ff0000;
 
     border-colour:              var(selected);
     handle-colour:              var(selected);
@@ -212,3 +206,4 @@ error-message {
     background-color:            #1c1c1c;
     text-color:                  #f0f0f0;
 }
+

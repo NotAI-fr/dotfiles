@@ -4,14 +4,17 @@ font-mono = "Inter Nerd Font"
 
 [bar]
 scale = 0.8500000238418579
-bg = "bg-base"
+module-gap = 0.800000011920929
+bg = "transparent"
 background-opacity = 77
-border-location = "bottom"
 border-width = 2
 border-color = "transparent"
 rounding = "sm"
 button-variant = "basic"
 button-icon-size = 1.100000023841858
+button-label-padding = 1.2999999523162842
+button-rounding = "md"
+button-gap = 1.2999999523162842
 
 [[bar.layout]]
 monitor = "*"
@@ -35,29 +38,26 @@ right = [
     "volume",
     "systray",
     "notifications",
+    "power",
 ]
 
 [styling.palette]
 bg = "#121214"
-surface = "#1a1a1e"
+surface = "#1a1a1ebf"
 elevated = "#26262b"
 fg = "#e1e1e6"
 fg-muted = "#8b8b93"
 primary = "#ffffff"
-red = "#ffffff"
-yellow = "#ffffff"
+red = "#62626a"
+yellow = "#a0a0a8"
 green = "#bcbcc4"
 blue = "#d2d2d9"
 
 [modules.battery]
 border-show = true
 
-[modules.cava]
-button-bg-color = "bg-surface"
-
 [modules.clock]
-format = "%b %d %H:%M"
-icon-show = false
+format = "%a %d %b - %I:%M %p"
 
 [modules.dashboard]
 dropdown-lock-command = "hyprlock"
@@ -66,21 +66,35 @@ dropdown-lock-command = "hyprlock"
 min-workspace-count = 5
 monitor-specific = false
 show-special = false
-container-bg-color = "bg-selected"
 border-color = "fg-default"
+
+[modules.hyprsunset]
+border-color = "fg-default"
+icon-color = "fg-default"
+icon-bg-color = "fg-default"
+label-color = "fg-default"
 
 [modules.media]
 icon-type = "spinning-disc"
-icon-show = false
+format = "{{ artist }} - {{ title }}"
 icon-color = "fg-subtle"
 icon-bg-color = "bg-base"
 label-color = "fg-default"
+label-max-length = 24
 
 [modules.microphone]
 icon-active = "ld-volume-symbolic"
 border-show = true
 
+[modules.power]
+icon-color = "fg-default"
+left-click = "wlogout"
+
 [modules.volume]
+border-color = "fg-default"
+icon-color = "fg-default"
+icon-bg-color = "fg-default"
+label-color = "fg-default"
 scroll-up = "pactl set-sink-volume @DEFAULT_SINK@ +5%"
 scroll-down = "pactl set-sink-volume @DEFAULT_SINK@ -5%"
 
@@ -93,4 +107,7 @@ icon-show = false
 
 [wallpaper]
 engine-enabled = false
+cycling-enabled = true
+cycling-directory = "/home/nobloat/Pictures/Walls/Faves"
+cycling-interval-mins = 1
 cycling-same-image = true

@@ -2,13 +2,16 @@
 set $mod Mod4
 
 # Font for window titles (kept small and minimal)
-font pango:monospace 8
+font pango:monospace 12
 
 # Core window styling - sharp 2px borders, no titlebars
 default_border pixel 2
 default_floating_border pixel 2
 gaps inner 8
 gaps outer 4
+
+# Force network and bluetooth tools to open as floating pop-ups
+for_window [class="floating_tool"] floating enable, resize set 800 600, move position center
 
 # Stark Monochrome Color Palette
 set $black       #000000
@@ -44,26 +47,30 @@ bindsym $mod+Shift+4 move container to workspace number $ws4
 bindsym $mod+Shift+5 move container to workspace number $ws5
 
 # Core Application Keybinds
-bindsym $mod+Return exec kitty
-bindsym $mod+q kill
+bindsym $mod+q exec kitty
+bindsym $mod+c kill
 bindsym $mod+Shift+r restart
-bindsym $mod+f exec firefox
+bindsym $mod+f exec helium-browser
 bindsym $mod+l exec betterlockscreen -l
-bindsym $mod+S exec maim -s -u | xclip -selection clipboard -t image/png
+bindsym $mod+e exec nautilus
+bindsym $mod+s exec flameshot gui
 
 # Launch Rofi Menus (Apps, Wallpapers, and Power)
-bindsym $mod+d exec --no-startup-id rofi -show drun -theme /home/nobloat/.config/rofi/mono.rasi
+bindsym $mod+space exec --no-startup-id rofi -show drun -theme /home/nobloat/.config/rofi/mono.rasi
 bindsym $mod+w exec --no-startup-id ~/.config/rofi/wallpaper-picker.sh
 bindsym $mod+x exec --no-startup-id ~/.config/rofi/power-menu.sh
+bindsym $mod+a exec --no-startup-id curd -rofi
 
 # Native X11 Dropdown rules (Forces sound control and blueman to floating blocks)
 for_window [class="Pavucontrol"] floating enable, border pixel 2, resize set 600 px 400 px
 for_window [class="Blueman-manager"] floating enable, border pixel 2, resize set 600 px 400 px
+for_window [instance="weather_tui"] floating enable, resize set 850 850, move position center
 
 # Auto-run crucial lightweight background utilities on boot
 exec --no-startup-id polybar
 exec_always --no-startup-id autotiling
-exec --no-startup-id dunst
+exec --no-startup-id /usr/lib/xfce4/notifyd/xfce4-notifyd
 exec --no-startup-id feh --bg-solid '#111111'
-# Set external monitor as primary and kill the laptop display
-exec --no-startup-id xrandr --output HDMI-1 --auto --primary --output eDP-1 --off
+exec --no-startup-id picom -b
+exec --no-startup-id ~/.config/polybar/scripts/weather-poll.sh
+exec --no-startup-id xrandr --output HDMI-2 --mode 1920x1080 --rate 60.00 --primary --output eDP-1 --off

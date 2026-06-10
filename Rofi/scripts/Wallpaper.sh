@@ -1,6 +1,6 @@
 #!/bin/bash
 
-WALL_DIR="$HOME/Pictures/Walls/Faves"
+WALL_DIR="$HOME/Pictures/Walls/Mono"
 
 # Ensure awww daemon is running
 if ! pidof awww-daemon >/dev/null; then
