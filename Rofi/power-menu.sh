@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-chosen=$(printf "󰐥 Shutdown\n󰜉 Reboot\n󰤄 Suspend\n󰌾 Lock\n󰍃 Logout\n" | rofi -dmenu -theme ~/.config/rofi/mono.rasi -p "Power")
+chosen=$(printf "󰐥 Shutdown\n󰜉 Reboot\n󰤄 Suspend\n󰌾 Lock\n󰍃 Logout\n" | rofi -dmenu -p "Power")
 
 case "$chosen" in
     "󰐥 Shutdown")

@@ -1,9 +1,8 @@
 * {
-    bg-transparent: #1a1a1acc;
-    surface-variant: #2a2a2a88;
-    foreground: #e5e5e5;
-    fg-muted: #b5b5b566;
-    primary: #cfcfcf;
-    secondary: #9a9a9a;
-    error: #7a7a7a;
+    background:     #0D0D0DE6;  /* 90% Opacity - Soft midnight charcoal, not pitch black */
+    background-alt: #1A1A1A99;  /* 60% Opacity - Slightly lighter tint for structural contrast */
+    foreground:     #E5E5E5FF;  /* 100% Opacity - Muted off-white that's much easier on the eyes */
+    selected:       #FFFFFF33;  /* 20% Opacity - Clean, frosted-white accent for borders/selections */
+    active:         #FFFFFF1A;  /* 10% Opacity - Subtle ghost-white highlight */
+    urgent:         #FFFFFF66;  /* 40% Opacity - Brighter translucent white to grab attention */
 }

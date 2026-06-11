@@ -17,7 +17,7 @@ while true; do
     MENU_OPTIONS="[ Base Folder ]\n$CATEGORIES"
 
     # Stage 1: Select Category Folder (Uses clean text-list theme)
-    SELECTED_CAT=$(echo -e "$MENU_OPTIONS" | rofi -dmenu -theme ~/.config/rofi/mono.rasi -p "Select Category:")
+    SELECTED_CAT=$(echo -e "$MENU_OPTIONS" | rofi -dmenu -p "Select Category:")
 
     # If user presses Escape at the folder screen, close Rofi completely
     if [ -z "$SELECTED_CAT" ]; then

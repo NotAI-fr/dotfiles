@@ -56,7 +56,7 @@ bindsym $mod+e exec nautilus
 bindsym $mod+s exec flameshot gui
 
 # Launch Rofi Menus (Apps, Wallpapers, and Power)
-bindsym $mod+space exec --no-startup-id rofi -show drun -theme /home/nobloat/.config/rofi/mono.rasi
+bindsym $mod+space exec --no-startup-id rofi -show drun
 bindsym $mod+w exec --no-startup-id ~/.config/rofi/wallpaper-picker.sh
 bindsym $mod+x exec --no-startup-id ~/.config/rofi/power-menu.sh
 bindsym $mod+a exec --no-startup-id curd -rofi
