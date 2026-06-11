@@ -74,3 +74,6 @@ exec --no-startup-id feh --bg-solid '#111111'
 exec --no-startup-id picom -b
 exec --no-startup-id ~/.config/polybar/scripts/weather-poll.sh
 exec --no-startup-id xrandr --output HDMI-2 --mode 1920x1080 --rate 60.00 --primary --output eDP-1 --off
+# Set Qt5 and Qt6 platform themes
+exec --no-startup-id export QT_QPA_PLATFORMTHEME=qt5ct
+exec --no-startup-id export QT_QPA_PLATFORMTHEME=qt6ct
