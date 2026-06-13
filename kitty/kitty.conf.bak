@@ -10,17 +10,15 @@ font_size 12
 initial_window_width 140
 initial_window_height 35
 
-# Colors
-# foreground #c0c0c0
-# background #1e1e1e
-# selection_foreground #c0c0c0
-# selection_background #330000
-
-# Cursor
-# cursor #9c0800
+# Brutalist Monochrome Colors
+foreground #D3D3D3
+background #000000
+selection_background #555555
+selection_foreground #000000
+cursor #D3D3D3
 
 # Transparency
-background_opacity 0.75
+background_opacity 0.85
 
 # Scrollbar
 scrollbar_position none
@@ -34,12 +32,5 @@ padding 5 5 5 5
 # Enable true color
 enable_true_color yes
 
-
 # Extra inner padding inside splits
 window_padding_width 3
-
-
-# BEGIN_KITTY_THEME
-# Adapta Nokto Maia
-include current-theme.conf
-# END_KITTY_THEME

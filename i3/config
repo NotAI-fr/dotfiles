@@ -2,30 +2,28 @@
 set $mod Mod4
 
 # Font for window titles (kept small and minimal)
-font pango:monospace 12
+font FiraMono Nerd Font:12
 
-# Core window styling - sharp 2px borders, no titlebars
-default_border pixel 2
-default_floating_border pixel 2
+# Core window styling - chunky 3px borders for higher brutalist pop, no titlebars
+default_border pixel 3
+default_floating_border pixel 3
 gaps inner 8
 gaps outer 4
 
 # Force network and bluetooth tools to open as floating pop-ups
 for_window [class="floating_tool"] floating enable, resize set 800 600, move position center
 
-# Stark Monochrome Color Palette
-set $black       #000000
-set $dark_gray   #222222
-set $mid_gray    #555555
-set $light_gray  #aaaaaa
-set $white       #ffffff
+# Brutalist Monochrome Color Palette
+set $bg       #000000
+set $fg       #D3D3D3
+set $alt      #555555
 
 # Window coloring rules
-# class                 border      bground     text        indicator   child_border
-client.focused          $white      $black      $white      $white      $white
-client.focused_inactive $dark_gray  $black      $light_gray $dark_gray  $dark_gray
-client.unfocused        $dark_gray  $black      $mid_gray   $dark_gray  $dark_gray
-client.urgent           $white      $white      $black      $white      $white
+# class                 border  bground text    indicator child_border
+client.focused          $fg     $bg     $fg     $fg       $fg
+client.focused_inactive $alt    $bg     $fg     $alt      $alt
+client.unfocused        $alt    $bg     $alt    $alt      $alt
+client.urgent           $fg     $fg     $bg     $fg       $fg
 
 # Force 5 dedicated workspaces
 set $ws1 "1"
@@ -53,17 +51,17 @@ bindsym $mod+Shift+r restart
 bindsym $mod+f exec helium-browser
 bindsym $mod+l exec betterlockscreen -l
 bindsym $mod+e exec nautilus
-bindsym $mod+s exec flameshot gui
 
 # Launch Rofi Menus (Apps, Wallpapers, and Power)
 bindsym $mod+space exec --no-startup-id rofi -show drun
 bindsym $mod+w exec --no-startup-id ~/.config/rofi/wallpaper-picker.sh
 bindsym $mod+x exec --no-startup-id ~/.config/rofi/power-menu.sh
 bindsym $mod+a exec --no-startup-id curd -rofi
+bindsym $mod+s exec --no-startup-id "maim | xclip -selection clipboard -t image/png"
 
 # Native X11 Dropdown rules (Forces sound control and blueman to floating blocks)
-for_window [class="Pavucontrol"] floating enable, border pixel 2, resize set 600 px 400 px
-for_window [class="Blueman-manager"] floating enable, border pixel 2, resize set 600 px 400 px
+for_window [class="Pavucontrol"] floating enable, border pixel 3, resize set 600 px 400 px
+for_window [class="Blueman-manager"] floating enable, border pixel 3, resize set 600 px 400 px
 for_window [instance="weather_tui"] floating enable, resize set 850 850, move position center
 
 # Auto-run crucial lightweight background utilities on boot
@@ -72,8 +70,12 @@ exec_always --no-startup-id autotiling
 exec --no-startup-id /usr/lib/xfce4/notifyd/xfce4-notifyd
 exec --no-startup-id feh --bg-solid '#111111'
 exec --no-startup-id picom -b
-exec --no-startup-id ~/.config/polybar/scripts/weather-poll.sh
 exec --no-startup-id xrandr --output HDMI-2 --mode 1920x1080 --rate 60.00 --primary --output eDP-1 --off
-# Set Qt5 and Qt6 platform themes
-exec --no-startup-id export QT_QPA_PLATFORMTHEME=qt5ct
-exec --no-startup-id export QT_QPA_PLATFORMTHEME=qt6ct
+
+# Fix standard mouse pointer tracking on empty workspace roots
+exec_always --no-startup-id xsetroot -cursor_name left_ptr
+
+exec_always --no-startup-id xrdb -merge ~/.Xresources
+
+exec --no-startup-id nm-tray
+exec --no-startup-id xfce4-clipman
