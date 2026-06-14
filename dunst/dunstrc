@@ -1,0 +1,38 @@
+[global]
+
+width = 380
+height = (80, 180)
+
+origin = top-right
+offset = (20, 45)
+
+notification_limit = 5
+
+font = JetBrainsMono Nerd Font 11
+
+padding = 12
+horizontal_padding = 12
+text_icon_padding = 10
+
+corner_radius = 10
+frame_width = 2
+
+icon_position = left
+min_icon_size = 48
+max_icon_size = 96
+
+word_wrap = yes
+
+progress_bar = true
+progress_bar_height = 6
+progress_bar_corner_radius = 3
+progress_bar_frame_width = 0
+
+[urgency_low]
+timeout = 3
+
+[urgency_normal]
+timeout = 8
+
+[urgency_critical]
+timeout = 0

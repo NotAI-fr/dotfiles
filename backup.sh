@@ -22,6 +22,7 @@ rsync -av --delete "$HOME/.zshrc" "$REPO_DIR/"
 rsync -av --delete "$HOME/.config/starship.toml" "$REPO_DIR/"
 rsync -av --delete "$HOME/.config/picom/" "$REPO_DIR/picom/"
 rsync -av --delete "$HOME/.config/colorschemes/" "$REPO_DIR/colorschemes/"
+rsync -av --delete "$HOME/.config/dunst/" "$REPO_DIR/dunst/"
 
 echo "Syncing with GitHub..."
 cd "$REPO_DIR" || exit

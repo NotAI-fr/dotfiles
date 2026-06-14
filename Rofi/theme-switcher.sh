@@ -9,6 +9,7 @@ KITTY_DIR="$HOME/.config/kitty"
 ROFI_DIR="$HOME/.config/rofi"
 RMPC_DIR="$HOME/.config/rmpc"
 CAVA_DIR="$HOME/.config/cava/themes"
+DUNST_DIR="$HOME/.config/dunst"
 
 # 2. Query System Themes via Rofi Menu
 THEME=$(ls -1 "$THEME_DIR" | rofi -dmenu -p "Select Theme" -i)
@@ -25,6 +26,7 @@ cp "$THEME_DIR/$THEME/kitty/colors.conf" "$KITTY_DIR/colors.conf"
 cp "$THEME_DIR/$THEME/rofi/colors.rasi" "$ROFI_DIR/colors.rasi"
 cp "$THEME_DIR/$THEME/rmpc/colors.ron" "$RMPC_DIR/colors.ron"
 cp "$THEME_DIR/$THEME/cava/colors" "$CAVA_DIR/colors"
+cp "$THEME_DIR/$THEME/dunst/colors.conf" "$DUNST_DIR/dunstrc.d/colors.conf"
 
 # 4. Handle Categorized Wallpapers via Smart Wildcard Expansion
 feh --bg-fill "$WALL_BASE_DIR/$THEME"/default.*
@@ -49,6 +51,10 @@ cp "$HOME/.config/gtk-3.0/settings.ini" "$HOME/.config/gtk-4.0/settings.ini"
 # Refresh i3 keybinds and styles immediately
 i3-msg reload
 
+# restart dunst so new colors are loaded
+killall dunst
+dunst &
+
 # Cleanly cycle Polybar without dropping tasks
 killall -q polybar
 while pgrep -u $UID -x polybar >/dev/null; do sleep 0.5; done
@@ -58,4 +64,4 @@ polybar main &
 killall -SIGUSR1 kitty
 
 # Success Confirmation
-notify-send "System Engine" "Theme profile shifted to: $THEME"
+notify-send "Theme Switcher" "Theme profile changed to: $THEME"
