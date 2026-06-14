@@ -4,6 +4,9 @@ set $mod Mod4
 # Font for window titles (kept small and minimal)
 font FiraMono Nerd Font:12
 
+# 1. LINK THE ACTIVE THEME COLORS HERE (Must be BEFORE window styling)
+include colors.conf
+
 # Core window styling - chunky 3px borders for higher brutalist pop, no titlebars
 default_border pixel 3
 default_floating_border pixel 3
@@ -13,17 +16,7 @@ gaps outer 4
 # Force network and bluetooth tools to open as floating pop-ups
 for_window [class="floating_tool"] floating enable, resize set 800 600, move position center
 
-# Brutalist Monochrome Color Palette
-set $bg       #000000
-set $fg       #D3D3D3
-set $alt      #555555
 
-# Window coloring rules
-# class                 border  bground text    indicator child_border
-client.focused          $fg     $bg     $fg     $fg       $fg
-client.focused_inactive $alt    $bg     $fg     $alt      $alt
-client.unfocused        $alt    $bg     $alt    $alt      $alt
-client.urgent           $fg     $fg     $bg     $fg       $fg
 
 # Force 5 dedicated workspaces
 set $ws1 "1"
@@ -49,15 +42,17 @@ bindsym $mod+q exec kitty
 bindsym $mod+c kill
 bindsym $mod+Shift+r restart
 bindsym $mod+f exec helium-browser
-bindsym $mod+l exec betterlockscreen -l
-bindsym $mod+e exec nautilus
+bindsym $mod+l exec i3lock-fancy
+bindsym $mod+e exec nemo
 
 # Launch Rofi Menus (Apps, Wallpapers, and Power)
 bindsym $mod+space exec --no-startup-id rofi -show drun
 bindsym $mod+w exec --no-startup-id ~/.config/rofi/wallpaper-picker.sh
 bindsym $mod+x exec --no-startup-id ~/.config/rofi/power-menu.sh
 bindsym $mod+a exec --no-startup-id curd -rofi
-bindsym $mod+s exec --no-startup-id "maim | xclip -selection clipboard -t image/png"
+bindsym $mod+s exec --no-startup-id maim -s | xclip -selection clipboard -t image/png
+bindsym $mod+t exec --no-startup-id /home/nobloat/.config/rofi/theme-switcher.sh
+
 
 # Native X11 Dropdown rules (Forces sound control and blueman to floating blocks)
 for_window [class="Pavucontrol"] floating enable, border pixel 3, resize set 600 px 400 px
@@ -71,6 +66,7 @@ exec --no-startup-id /usr/lib/xfce4/notifyd/xfce4-notifyd
 exec --no-startup-id feh --bg-solid '#111111'
 exec --no-startup-id picom -b
 exec --no-startup-id xrandr --output HDMI-2 --mode 1920x1080 --rate 60.00 --primary --output eDP-1 --off
+exec --no-startup-id vesktop
 
 # Fix standard mouse pointer tracking on empty workspace roots
 exec_always --no-startup-id xsetroot -cursor_name left_ptr

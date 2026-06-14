@@ -1,0 +1,7 @@
+[color]
+# A deep, dark gray background tint to ease the harshness of pure black
+background_opacity = 0.70
+background_color = '#1a1a1a'
+
+# Crisp, brilliant white bars to pierce through the darkness
+foreground_color = '#ffffff'

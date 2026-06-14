@@ -7,7 +7,7 @@
     scrolloff: 2,
     max_fps: 60,
     wrap_navigation: true,
-    theme: "def",
+    theme: "colors",
     cache_dir: Some("/tmp/rmpc/cache"),
     lyrics_dir: "~/Music",
     status_update_interval_ms: 1000,

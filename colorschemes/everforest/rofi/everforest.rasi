@@ -1,0 +1,8 @@
+* {
+    background:     #262B22E6;  /* Deep mossy shadow (90% opacity) */
+    background-alt: #363D2F99;  /* Mid-tone olive wood (60% opacity) */
+    foreground:     #DCD7BAFF;  /* Warm sunlight cream text */
+    selected:       #8DAA5166;  /* Vibrant sunlit pine green highlight (40% opacity) */
+    active:         #A8B87B33;  /* Softer moss green for active states */
+    urgent:         #D17A7A66;  /* Soft pink/red from the garden flowers */
+}

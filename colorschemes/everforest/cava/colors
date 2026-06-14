@@ -1,0 +1,7 @@
+[color]
+# A deep, warm, slightly transparent forest green tint for the background
+background_opacity = 0.75
+background_color = '#2d353b'
+
+# A solid, vibrant Everforest green for the bars
+foreground_color = '#a7c080'

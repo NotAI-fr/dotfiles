@@ -1,57 +1,61 @@
 #!/usr/bin/env bash
 
-# 1. Define Paths
-COLORS_DIR="$HOME/.config/colors"
-WALLPAPER_BASE_DIR="$HOME/Pictures/walls"
+# 1. Base Configuration Directories
+THEME_DIR="$HOME/.config/colorschemes"
+WALL_BASE_DIR="$HOME/Pictures/Walls"
+I3_DIR="$HOME/.config/i3"
+POLYBAR_DIR="$HOME/.config/polybar"
+KITTY_DIR="$HOME/.config/kitty"
+ROFI_DIR="$HOME/.config/rofi"
+RMPC_DIR="$HOME/.config/rmpc"
+CAVA_DIR="$HOME/.config/cava/themes"
 
-# 2. Get the list of themes
-themes=$(ls "$COLORS_DIR/i3")
+# 2. Query System Themes via Rofi Menu
+THEME=$(ls -1 "$THEME_DIR" | rofi -dmenu -p "Select Theme" -i)
 
-# 3. Prompt Rofi to select a theme
-chosen=$(echo "$themes" | rofi -dmenu -p "Select Theme" -config ~/.config/rofi/config.rasi)
-
-# Exit if you press Escape or don't choose anything
-if [ -z "$chosen" ]; then
+# Graceful exit if escape or cancel is triggered
+if [[ -z "$THEME" ]]; then
     exit 0
 fi
-# 4. Map each theme to its specific categorized wallpaper
-# CHANGE THE CATEGORY FOLDERS AND IMAGE NAMES TO MATCH YOUR ACTUAL FILES
-case "$chosen" in
-    "monochrome")
-        WALLPAPER="$WALLPAPER_BASE_DIR/monochrome/black_and_white_clouds.jpg"
-    "everforest")
-        WALLPAPER="$WALLPAPER_BASE_DIR/everforest/woman_painting_ghibli.jpg"
-        ;;
-    "gruvbox")
-        WALLPAPER="$WALLPAPER_BASE_DIR/gruvbox/ghibli_gruvbox.jpg"
-        ;;
-    *)
-        WALLPAPER=""
-        ;;
-esac
 
-# 5. Force update the symlinks for all 4 applications
-ln -sf "$COLORS_DIR/i3/$chosen" "$HOME/.config/i3/current-theme"
-ln -sf "$COLORS_DIR/polybar/$chosen.ini" "$HOME/.config/polybar/current-theme.ini"
-ln -sf "$COLORS_DIR/kitty/$chosen.conf" "$HOME/.config/kitty/current-theme.conf"
-ln -sf "$COLORS_DIR/rofi/$chosen.rasi" "$HOME/.config/rofi/current-theme.rasi"
+# 3. Displace active pointer targets with selected theme assets
+cp "$THEME_DIR/$THEME/i3/colors.conf" "$I3_DIR/colors.conf"
+cp "$THEME_DIR/$THEME/polybar/colors.ini" "$POLYBAR_DIR/colors.ini"
+cp "$THEME_DIR/$THEME/kitty/colors.conf" "$KITTY_DIR/colors.conf"
+cp "$THEME_DIR/$THEME/rofi/colors.rasi" "$ROFI_DIR/colors.rasi"
+cp "$THEME_DIR/$THEME/rmpc/colors.ron" "$RMPC_DIR/colors.ron"
+cp "$THEME_DIR/$THEME/cava/colors" "$CAVA_DIR/colors"
 
-# 6. Apply the wallpaper via feh
-if [ -n "$WALLPAPER" ] && [ -f "$WALLPAPER" ]; then
-    feh --bg-fill "$WALLPAPER"
-else
-    # Fallback if the path above was wrong: find the first image in that directory
-    feh --bg-fill "$(find "$WALLPAPER_BASE_DIR" -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" \) | shuf -n 1)"
-fi
+# 4. Handle Categorized Wallpapers via Smart Wildcard Expansion
+feh --bg-fill "$WALL_BASE_DIR/$THEME"/default.*
 
-# 7. Reload the Applications
-i3-msg reload > /dev/null 2>&1
+# GTK THEME SYNC
+GTK_THEME=$(cat "$THEME_DIR/$THEME/gtk/theme.txt")
 
-# If Polybar isn't running, start it fresh; otherwise, restart it
-if ! polybar-msg cmd restart > /dev/null 2>&1; then
-    killall -q polybar
-    polybar main &
-fi
+mkdir -p "$HOME/.config/gtk-3.0" "$HOME/.config/gtk-4.0"
 
-# Hot-reload kitty instances
+cat > "$HOME/.config/gtk-3.0/settings.ini" <<EOF
+[Settings]
+gtk-theme-name=$GTK_THEME
+gtk-icon-theme-name=Papirus-Dark
+gtk-font-name = FiraMono Nerd Font 12
+gtk-application-prefer-dark-theme=1
+EOF
+
+cp "$HOME/.config/gtk-3.0/settings.ini" "$HOME/.config/gtk-4.0/settings.ini"
+
+
+# 5. Direct Hot-Reload Chain
+# Refresh i3 keybinds and styles immediately
+i3-msg reload
+
+# Cleanly cycle Polybar without dropping tasks
+killall -q polybar
+while pgrep -u $UID -x polybar >/dev/null; do sleep 0.5; done
+polybar main &
+
+# Send runtime signals directly to all running Kitty terminals
 killall -SIGUSR1 kitty
+
+# Success Confirmation
+notify-send "System Engine" "Theme profile shifted to: $THEME"

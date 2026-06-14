@@ -58,10 +58,5 @@ while true; do
     # 3. Apply changes immediately to the desktop background
     feh --bg-scale "$TARGET_DIR/$chosen"
 
-    # 4. SILENT AUTOMATION: Sync the lockscreen seamlessly with NO BLUR (--fx none)
-    # The "&" at the end forks the task to the background so your desktop doesn't stutter
-    betterlockscreen -u "$TARGET_DIR/$chosen" --fx none &
-
-    dunstify "Wallpaper & Lockscreen Syncing..." -t 2000
     break
 done
