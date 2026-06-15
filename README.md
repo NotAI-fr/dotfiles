@@ -8,7 +8,17 @@ My personal dotfiles and system configuration.
 https://github.com/user-attachments/assets/d86452e0-7f1d-4313-bf8e-2ff1d5dd88ef
 
 
-## 💻 Setup
+## Screenshots
+
+| Monochrome | Everforest | Gruvbox | Catppuccin Mocha |
+|--- |--- |--- |--- |
+| ![Monochrome](assets/themes/monochrome.png) | ![Everforest](assets/themes/everforest.png) | ![Gruvbox](assets/themes/gruvbox.png) | ![Catppuccin Mocha](assets/themes/catppuccin-mocha.png) |
+
+<br>
+
+👉 [**For More Screenshots, Go To The Assets Folder**](./assets)
+
+## Setup Core
 
 * **WM:** i3
 * **Terminal:** Kitty
@@ -17,17 +27,18 @@ https://github.com/user-attachments/assets/d86452e0-7f1d-4313-bf8e-2ff1d5dd88ef
 * **Wallpapers:** feh
 * **Notifications:** Dunst
 
-## 🎨 Features
+## Environment Features
 
-* **Themes:** Monochrome, Everforest, Catppuccin Mocha, and Gruvbox.
-* **Switchers:** Custom theme and wallpaper switching.
-* **Organization:** Wallpapers are sorted and categorized locally in `~/Pictures/walls`.
+* **Theme Switcher:** Seamless switching between Monochrome, Everforest, Gruvbox, and Catppuccin Mocha colorscapes.
+* **Wallpaper Switcher:** Handled via feh, pulling from categorized assets in `~/Pictures/walls`.
+* **Custom Tool Configurations:** Tailored themes for Rofi, custom Polybar modules, stylized Dunst alerts, and optimized Kitty terminal performance.
 
-## 📂 Structure
+## File Structure
 
 ```text
 dotfiles/
 ├── .config/
+│   ├── dunst/      
 │   ├── i3/         
 │   ├── kitty/      
 │   ├── polybar/    
