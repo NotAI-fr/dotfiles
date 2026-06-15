@@ -51,6 +51,12 @@ cp "$HOME/.config/gtk-3.0/settings.ini" "$HOME/.config/gtk-4.0/settings.ini"
 # Refresh i3 keybinds and styles immediately
 i3-msg reload
 
+# Gracefully kill the active clipboard instance
+killall xfce4-clipman
+
+# Restart it in the background so it reads the new GTK3 configuration
+xfce4-clipman &
+
 # restart dunst so new colors are loaded
 killall dunst
 dunst &
