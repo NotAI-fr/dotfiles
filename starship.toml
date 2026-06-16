@@ -210,8 +210,6 @@ format = '\[[$symbol$stack]($style)\]'
 [purescript]
 format = '\[[$symbol($version)]($style)\]'
 
-[python]
-format = '\[[${symbol}${pyenv_prefix}(${version})(\($virtualenv\))]($style)\]'
 
 [quarto]
 format = '\[[$symbol($version)]($style)\]'
@@ -281,3 +279,6 @@ format = '\[[$symbol($version)]($style)\]'
 
 [zig]
 format = '\[[$symbol($version)]($style)\]'
+
+[python]
+detect_extensions = [] # Stops it from triggering just because a .py file is in the folder

@@ -10,6 +10,7 @@ ROFI_DIR="$HOME/.config/rofi"
 RMPC_DIR="$HOME/.config/rmpc"
 CAVA_DIR="$HOME/.config/cava/themes"
 DUNST_DIR="$HOME/.config/dunst"
+FETCH_DIR="$HOME/.config/fetch"
 
 # 2. Query System Themes via Rofi Menu
 THEME=$(ls -1 "$THEME_DIR" | rofi -dmenu -p "Select Theme" -i)
@@ -27,6 +28,7 @@ cp "$THEME_DIR/$THEME/rofi/colors.rasi" "$ROFI_DIR/colors.rasi"
 cp "$THEME_DIR/$THEME/rmpc/colors.ron" "$RMPC_DIR/colors.ron"
 cp "$THEME_DIR/$THEME/cava/colors" "$CAVA_DIR/colors"
 cp "$THEME_DIR/$THEME/dunst/colors.conf" "$DUNST_DIR/dunstrc.d/colors.conf"
+cp "$THEME_DIR/$THEME/fetch/config" "$FETCH_DIR/config"
 
 # 4. Handle Categorized Wallpapers via Smart Wildcard Expansion
 feh --bg-fill "$WALL_BASE_DIR/$THEME"/default.*
