@@ -5,7 +5,9 @@ My personal dotfiles and system configuration.
 ## 📸 Showcase
 
 
-https://github.com/user-attachments/assets/d86452e0-7f1d-4313-bf8e-2ff1d5dd88ef
+
+https://github.com/user-attachments/assets/8ce555a0-0ac7-45eb-b75c-b3f582bb57f7
+
 
 
 ## 📸 Screenshots
@@ -34,6 +36,15 @@ https://github.com/user-attachments/assets/d86452e0-7f1d-4313-bf8e-2ff1d5dd88ef
 * **🖼️ Wallpaper Switcher:** Handled via feh, pulling from categorized assets in the `Walls` directory.
 * **⚙️ Custom Tool Configurations:** Tailored layouts for both X11 and Wayland environments, complete with custom notification schemes and status modules.
 
+* ## 🖼️ Wallpapers
+
+Wallpaper categories for each colorscheme
+
+* ![](https://img.shields.io/badge/-%20-1a1a1a?style=flat-square)![](https://img.shields.io/badge/-%20-444444?style=flat-square)![](https://img.shields.io/badge/-%20-ffffff?style=flat-square) [**Monochrome**](./Walls/monochrome)
+* ![](https://img.shields.io/badge/-%20-1e1e2e?style=flat-square)![](https://img.shields.io/badge/-%20-cba6f7?style=flat-square)![](https://img.shields.io/badge/-%20-89b4fa?style=flat-square) [**Catppuccin**](./Walls/catppuccin)
+* ![](https://img.shields.io/badge/-%20-282828?style=flat-square)![](https://img.shields.io/badge/-%20-fe8019?style=flat-square)![](https://img.shields.io/badge/-%20-fabd2f?style=flat-square) [**Gruvbox**](./Walls/gruvbox)
+* ![](https://img.shields.io/badge/-%20-2b3339?style=flat-square)![](https://img.shields.io/badge/-%20-a7c080?style=flat-square)![](https://img.shields.io/badge/-%20-dbbc7f?style=flat-square) [**Everforest**](./Walls/everforest)
+
 ## 📂 File Structure
 
 ```text
@@ -52,6 +63,10 @@ dotfiles/
 ├── Rofi/          # Primary Rofi launcher themes
 ├── rofi/          # Alternative/fallback launcher styles
 ├── Walls/         # Categorized wallpaper library
+│   ├── catppuccin/
+│   ├── everforest/
+│   ├── gruvbox/
+│   └── monochrome/
 ├── waybar/        # Wayland status bar layouts
 ├── assets/        # assets such as shocase screenshots
 └── wlogout/       # Wayland logout menu configuration
