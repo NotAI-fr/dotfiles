@@ -12,8 +12,8 @@
     modal_backdrop: false,
     preview_label_style: (fg: "#bac2de"),
     preview_metadata_group_style: (fg: "#bac2de", modifiers: "Bold"),
-    highlighted_item_style: (fg: "#89b4fa", modifiers: "Bold"),
-    current_item_style: (fg: "#1e1e2e", bg: "#89b4fa", modifiers: "Bold"),
+    highlighted_item_style: (fg: "#b4befe", modifiers: "Bold"),
+    current_item_style: (fg: "#1e1e2e", bg: "#b4befe", modifiers: "Bold"),
     borders_style: (fg: "#7f849c"),
     highlight_border_style: (fg: "#7f849c"),
     symbols: (
@@ -45,8 +45,8 @@
     progress_bar: (
         symbols: ["█", "█", "█", " ", "█"],
         track_style: None,
-        elapsed_style: (fg: "#89b4fa"),
-        thumb_style: (fg: "#89b4fa"),
+        elapsed_style: (fg: "#b4befe"),
+        thumb_style: (fg: "#b4befe"),
         use_track_when_empty: true,
     ),
     scrollbar: (
@@ -56,7 +56,7 @@
         thumb_style: (fg: "#7f849c"),
     ),
     tab_bar: (
-        active_style: (fg: "#1e1e2e", bg: "#89b4fa", modifiers: "Bold"),
+        active_style: (fg: "#1e1e2e", bg: "#b4befe", modifiers: "Bold"),
         inactive_style: (),
     ),
     lyrics: (
@@ -273,7 +273,7 @@
         "input_mode": Pane(Property(
             content: [
                 (kind: Transform(Replace(content: (kind: Property(Status(InputMode()))), replacements: [
-                    (match: "Normal", replace: (kind: Text(" NORMAL "), style: (fg: "#1e1e2e", bg: "#89b4fa"))),
+                    (match: "Normal", replace: (kind: Text(" NORMAL "), style: (fg: "#1e1e2e", bg: "#b4befe"))),
                     (match: "Insert", replace: (kind: Text(" INSERT "), style: (fg: "#1e1e2e", bg: "#a6e3a1"))),
                 ])))
             ], align: Center
