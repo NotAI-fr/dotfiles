@@ -28,14 +28,20 @@ rsync -av --delete "$HOME/.config/assets/" "$REPO_DIR/assets/"
 echo "Syncing with GitHub..."
 cd "$REPO_DIR" || exit
 
-# 2. Add and Commit
+# 1. Fetch remote changes first so local Git is aware of the remote README
+git fetch origin main
+
+# 2. Add local changes and commit them if there are any
 git add .
 if [[ -n $(git status -s) ]]; then
     git commit -m "Automated backup: $(date +'%Y-%m-%d %H:%M')"
 fi
 
-# 3. Pull (with merge) to resolve divergence, then push
-git pull --no-rebase origin main
+# 3. Pull remote changes and automatically accept the merge message without an editor
+# This brings down your web-edited README and merges it with your local config changes seamlessly.
+git pull --no-rebase --no-edit origin main
+
+# 4. Push everything back up safely
 git push origin main
 
 echo "Backup complete."
