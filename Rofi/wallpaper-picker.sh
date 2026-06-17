@@ -2,6 +2,7 @@
 
 # Base wallpaper directory
 WALLPAPER_BASE="$HOME/Pictures/Walls"
+CURRENT_THEME_FILE="$HOME/.config/.current_theme"
 
 # Integrity Check: Does the base folder exist?
 if [ ! -d "$WALLPAPER_BASE" ]; then
@@ -10,14 +11,34 @@ if [ ! -d "$WALLPAPER_BASE" ]; then
     exit 1
 fi
 
+# Set a flag to track the first time the loop runs
+INITIAL_RUN=true
+
 # Begin the structural navigation loop
 while true; do
     # 1. Gather all subdirectories inside the Base folder
     CATEGORIES=$(find "$WALLPAPER_BASE" -mindepth 1 -maxdepth 1 -type d -printf "%f\n" | sort)
     MENU_OPTIONS="[ Base Folder ]\n$CATEGORIES"
 
-    # Stage 1: Select Category Folder (Uses clean text-list theme)
-    SELECTED_CAT=$(echo -e "$MENU_OPTIONS" | rofi -dmenu -p "Select Category:")
+    # Stage 1: Select Category Folder
+    # Check if this is the first run AND if we have a saved theme state
+    if [ "$INITIAL_RUN" = true ] && [ -f "$CURRENT_THEME_FILE" ]; then
+        ACTIVE_THEME=$(cat "$CURRENT_THEME_FILE")
+
+        # Verify a wallpaper folder actually matches the theme name
+        if echo "$CATEGORIES" | grep -q "^${ACTIVE_THEME}$"; then
+            SELECTED_CAT="$ACTIVE_THEME"
+        else
+            # Fallback to menu if folder is missing
+            SELECTED_CAT=$(echo -e "$MENU_OPTIONS" | rofi -dmenu -p "Select Category:")
+        fi
+
+        # Turn off the flag so "Go Back" works normally afterwards
+        INITIAL_RUN=false
+    else
+        # Normal behavior for subsequent loops
+        SELECTED_CAT=$(echo -e "$MENU_OPTIONS" | rofi -dmenu -p "Select Category:")
+    fi
 
     # If user presses Escape at the folder screen, close Rofi completely
     if [ -z "$SELECTED_CAT" ]; then

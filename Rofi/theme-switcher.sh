@@ -20,6 +20,9 @@ if [[ -z "$THEME" ]]; then
     exit 0
 fi
 
+# SAVE THE THEME STATE FOR THE WALLPAPER PICKER
+echo "$THEME" > "$HOME/.config/.current_theme"
+
 # 3. Displace active pointer targets with selected theme assets
 cp "$THEME_DIR/$THEME/i3/colors.conf" "$I3_DIR/colors.conf"
 cp "$THEME_DIR/$THEME/polybar/colors.ini" "$POLYBAR_DIR/colors.ini"
