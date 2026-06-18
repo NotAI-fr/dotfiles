@@ -36,6 +36,16 @@ https://github.com/user-attachments/assets/8ce555a0-0ac7-45eb-b75c-b3f582bb57f7
 * **🖼️ Wallpaper Switcher:** Handled via feh, pulling from categorized assets in the `Walls` directory.
 * **⚙️ Custom Tool Configurations:** Tailored layouts for both X11 and Wayland environments, complete with custom notification schemes and status modules.
 
+* ## 🚀 Installation & Deployment
+
+This configuration includes a deployment script to easily bootstrap dependencies (including AUR packages) and clone configurations onto any fresh Arch Linux system. All standard and AUR packages are enabled by default in `packages.txt`.
+
+```bash
+git clone [https://github.com/NotAI-fr/dotfiles.git](https://github.com/NotAI-fr/dotfiles.git)
+cd dotfiles
+chmod +x install.sh
+./install.sh
+
 * ## 🖼️ Wallpapers
 
 Wallpaper categories for each colorscheme
@@ -69,4 +79,6 @@ dotfiles/
 │   └── monochrome/
 ├── waybar/        # Wayland status bar layouts
 ├── assets/        # assets such as shocase screenshots
-└── wlogout/       # Wayland logout menu configuration
+├── wlogout/       # Wayland logout menu configuration
+├── packages.txt   # Core and optional opt-in dependency list
+└── install.sh     # Automated package sync and configuration copy script
