@@ -1,0 +1,89 @@
+# --- Core Desktop Environment ---
+i3-wm
+polybar
+rofi
+kitty
+picom
+feh
+dunst
+ly
+lxappearance
+nwg-look
+
+# --- System Utilities & Shell ---
+git
+github-cli
+jq
+nano
+kate
+nemo
+nemo-fileroller
+networkmanager
+nm-tray
+playerctl
+pamixer
+rsync
+wget
+xclip
+xdg-utils
+xdg-desktop-portal
+zsh
+zsh-autosuggestions
+zsh-syntax-highlighting
+zoxide
+starship
+
+# --- System Monitoring & Eye Candy ---
+fastfetch
+fetch-git
+btop
+cmatrix
+gpick
+cava
+rmpc
+mpc
+mpd
+mpd-mpris
+
+# --- GTK & Cursor Themes ---
+catppuccin-gtk-theme-mocha
+everforest-gtk-theme-git
+gruvbox-gtk-theme-git
+bibata-cursor-theme-bin
+papirus-folders
+papirus-icon-theme-git
+
+# --- Fonts ---
+ttf-jetbrains-mono-nerd
+otf-firamono-nerd
+ttf-apple-emoji
+woff2-font-awesome
+
+# --- Applications & Daily Tools ---
+gwenview
+gnome-calculator-gtk3
+beaver-notes-bin
+helium-browser-bin
+komikku
+localsend-bin
+onlyoffice-bin
+vesktop-git
+fragments
+wthrr
+
+# --- Gaming & Graphics ---
+flatpak
+lutris
+bottles
+mangohud
+goverlays
+vkd3d
+
+# --- Rice Scripts Support ---
+autotiling-git
+i3lock-fancy-git
+clocktemp
+curd
+maim
+redshift
+overskride-bin

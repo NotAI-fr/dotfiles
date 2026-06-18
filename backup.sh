@@ -24,6 +24,8 @@ rsync -av --delete "$HOME/.config/picom/" "$REPO_DIR/picom/"
 rsync -av --delete "$HOME/.config/colorschemes/" "$REPO_DIR/colorschemes/"
 rsync -av --delete "$HOME/.config/dunst/" "$REPO_DIR/dunst/"
 rsync -av --delete "$HOME/.config/assets/" "$REPO_DIR/assets/"
+rsync -av --delete "$HOME/.config/install.sh" "$REPO_DIR/"
+rsync -av --delete "$HOME/.config/packages.txt" "$REPO_DIR/"
 
 echo "Syncing with GitHub..."
 cd "$REPO_DIR" || exit
