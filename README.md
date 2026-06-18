@@ -45,6 +45,7 @@ git clone [https://github.com/NotAI-fr/dotfiles.git](https://github.com/NotAI-fr
 cd dotfiles
 chmod +x install.sh
 ./install.sh
+```
 
 * ## 🖼️ Wallpapers
 
