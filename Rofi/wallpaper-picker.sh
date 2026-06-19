@@ -18,10 +18,33 @@ INITIAL_RUN=true
 while true; do
     # 1. Gather all subdirectories inside the Base folder
     CATEGORIES=$(find "$WALLPAPER_BASE" -mindepth 1 -maxdepth 1 -type d -printf "%f\n" | sort)
-    MENU_OPTIONS="[ Base Folder ]\n$CATEGORIES"
+
+    # Generate stylized options. Base Folder now only shows the icon and the clean label.
+    MENU_OPTIONS="<span foreground='#7fbbb3'>󰋜</span>  Base Folder"
+    while read -r cat; do
+        if [ -z "$cat" ]; then continue; fi
+        case "$cat" in
+            "monochrome")
+                MENU_OPTIONS+="\n<span foreground='#ffffff'>█</span><span foreground='#444444'>█</span><span foreground='#1a1a1a'>█</span>  Monochrome  monochrome"
+                ;;
+            "everforest")
+                MENU_OPTIONS+="\n<span foreground='#a7c080'>█</span><span foreground='#dbbc7f'>█</span><span foreground='#2b3339'>█</span>  Everforest  everforest"
+                ;;
+            "gruvbox")
+                MENU_OPTIONS+="\n<span foreground='#fe8019'>█</span><span foreground='#fabd2f'>█</span><span foreground='#282828'>█</span>  Gruvbox     gruvbox"
+                ;;
+            "catppuccin")
+                MENU_OPTIONS+="\n<span foreground='#cba6f7'>█</span><span foreground='#89b4fa'>█</span><span foreground='#585b70'>█</span>  Catppuccin  catppuccin"
+                ;;
+            *)
+                # Fallback for any other custom folders added later
+                DISPLAY_NAME=$(echo "$cat" | awk '{print toupper(substr($0,1,1))substr($0,2)}')
+                MENU_OPTIONS+="\n<span foreground='#727169'>█</span><span foreground='#555555'>█</span><span foreground='#333333'>█</span>  $DISPLAY_NAME  $cat"
+                ;;
+        esac
+    done <<< "$CATEGORIES"
 
     # Stage 1: Select Category Folder
-    # Check if this is the first run AND if we have a saved theme state
     if [ "$INITIAL_RUN" = true ] && [ -f "$CURRENT_THEME_FILE" ]; then
         ACTIVE_THEME=$(cat "$CURRENT_THEME_FILE")
 
@@ -29,27 +52,38 @@ while true; do
         if echo "$CATEGORIES" | grep -q "^${ACTIVE_THEME}$"; then
             SELECTED_CAT="$ACTIVE_THEME"
         else
-            # Fallback to menu if folder is missing
-            SELECTED_CAT=$(echo -e "$MENU_OPTIONS" | rofi -dmenu -p "Select Category:")
+            SELECTION=$(echo -e "$MENU_OPTIONS" | rofi -dmenu -markup-rows -p "󰏘 Categories" -i -theme-str 'entry { placeholder: "Choose a category 󰏘"; }')
+            [ -z "$SELECTION" ] && break
+
+            # Smart check: if the picked line contains "Base Folder", route to base
+            if [[ "$SELECTION" == *"Base Folder"* ]]; then
+                SELECTED_CAT="base"
+            else
+                SELECTED_CAT=$(echo "$SELECTION" | awk '{print $NF}')
+            fi
         fi
 
         # Turn off the flag so "Go Back" works normally afterwards
         INITIAL_RUN=false
     else
         # Normal behavior for subsequent loops
-        SELECTED_CAT=$(echo -e "$MENU_OPTIONS" | rofi -dmenu -p "Select Category:")
-    fi
+        SELECTION=$(echo -e "$MENU_OPTIONS" | rofi -dmenu -markup-rows -p "󰏘 Categories" -i -theme-str 'entry { placeholder: "Choose a category 󰏘"; }')
+        [ -z "$SELECTION" ] && break
 
-    # If user presses Escape at the folder screen, close Rofi completely
-    if [ -z "$SELECTED_CAT" ]; then
-        break
+        if [[ "$SELECTION" == *"Base Folder"* ]]; then
+            SELECTED_CAT="base"
+        else
+            SELECTED_CAT=$(echo "$SELECTION" | awk '{print $NF}')
+        fi
     fi
 
     # Set up our target directory path based on selection
-    if [ "$SELECTED_CAT" = "[ Base Folder ]" ]; then
+    if [ "$SELECTED_CAT" = "base" ]; then
         TARGET_DIR="$WALLPAPER_BASE"
+        DISPLAY_PROMPT="Base Folder"
     else
         TARGET_DIR="$WALLPAPER_BASE/$SELECTED_CAT"
+        DISPLAY_PROMPT=$(echo "$SELECTED_CAT" | awk '{print toupper(substr($0,1,1))substr($0,2)}')
     fi
 
     # 2. Prepend a clean "[ Go Back ]" string block to the front of our image matrix
@@ -64,12 +98,12 @@ while true; do
 
     # If the folder has no images, warn the user and kick them back to Stage 1
     if [ "$rofi_input" = "[ Go Back ]\n" ]; then
-        dunstify "No images found inside: $SELECTED_CAT"
+        dunstify "No images found inside: $DISPLAY_PROMPT"
         continue
     fi
 
-    # Stage 2: Select Wallpaper (Grid view)
-    chosen=$(echo -e "$rofi_input" | rofi -dmenu -theme ~/.config/rofi/grid.rasi -p "Category: $SELECTED_CAT")
+    # Stage 2: Select Wallpaper (Grid view) using clean display prompt
+    chosen=$(echo -e "$rofi_input" | rofi -dmenu -theme ~/.config/rofi/grid.rasi -p "󰸉 $DISPLAY_PROMPT")
 
     # BACK LOGIC: If user hits Escape OR clicks "[ Go Back ]", drop back to the main categories list
     if [ -z "$chosen" ] || [ "$chosen" = "[ Go Back ]" ]; then

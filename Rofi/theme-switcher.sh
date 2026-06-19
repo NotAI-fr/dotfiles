@@ -12,13 +12,26 @@ CAVA_DIR="$HOME/.config/cava/themes"
 DUNST_DIR="$HOME/.config/dunst"
 FETCH_DIR="$HOME/.config/fetch"
 
-# 2. Query System Themes via Rofi Menu
-THEME=$(ls -1 "$THEME_DIR" | rofi -dmenu -p "Select Theme" -i)
+# 2. Query System Themes via Rofi Menu (With Uniform Color Strips)
+# Using solid blocks (█) wrapped in Pango foreground colors to build color swatches.
+# The last word of each line must exactly match your folder name in ~/.config/colorschemes.
+OPTIONS=""
+OPTIONS+="<span foreground='#ffffff'>█</span><span foreground='#444444'>█</span><span foreground='#1a1a1a'>█</span>  Monochrome  monochrome\n"
+OPTIONS+="<span foreground='#a7c080'>█</span><span foreground='#dbbc7f'>█</span><span foreground='#2b3339'>█</span>  Everforest  everforest\n"
+OPTIONS+="<span foreground='#fe8019'>█</span><span foreground='#fabd2f'>█</span><span foreground='#282828'>█</span>  Gruvbox     gruvbox\n"
+OPTIONS+="<span foreground='#cba6f7'>█</span><span foreground='#89b4fa'>█</span><span foreground='#585b70'>█</span>  Catppuccin  catppuccin"
+
+# Prompt user with the standardized vertical menu.
+# We set the entry placeholder property to display the Nerd Font icon and custom text inside the input field.
+SELECTION=$(echo -e "$OPTIONS" | rofi -dmenu -markup-rows -p "󰏘 Pick a Theme" -i -theme-str 'entry { placeholder: "Choose a theme 󰏘"; }')
 
 # Graceful exit if escape or cancel is triggered
-if [[ -z "$THEME" ]]; then
+if [[ -z "$SELECTION" ]]; then
     exit 0
 fi
+
+# Extract only the final word of the selection to get the raw folder name
+THEME=$(echo "$SELECTION" | awk '{print $NF}')
 
 # SAVE THE THEME STATE FOR THE WALLPAPER PICKER
 echo "$THEME" > "$HOME/.config/.current_theme"

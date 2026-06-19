@@ -1,21 +1,33 @@
 #!/usr/bin/env bash
 
-chosen=$(printf "󰐥 Shutdown\n󰜉 Reboot\n󰤄 Suspend\n󰌾 Lock\n󰍃 Logout\n" | rofi -dmenu -p "Power")
+# Pass only the pure Nerd Font icons separated by newlines
+ICON_LIST="󰐥\n󰜉\n󰤄\n󰌾\n󰍃"
 
+# Launch rofi with a true 5-column grid layout row and forced text centering
+chosen=$(echo -e "$ICON_LIST" | rofi -dmenu -i -p "Power" \
+  -theme-str '
+    window { width: 520px; border-radius: 12px; padding: 10px; }
+    inputbar { enabled: false; }
+    listview { columns: 5; lines: 1; fixed-columns: true; spacing: 12px; cycle: true; }
+    element { padding: 18px 0px; border-radius: 8px; children: [ "element-text" ]; }
+    element-text { font: "JetBrains Mono Nerd Font 28"; margin: 0px; padding: 0px; horizontal-align: 0.5; vertical-align: 0.5; }
+  ')
+
+# Execute actions based on the pure icon returned
 case "$chosen" in
-    "󰐥 Shutdown")
+    "󰐥")
         poweroff
         ;;
-    "󰜉 Reboot")
+    "󰜉")
         reboot
         ;;
-    "󰤄 Suspend")
+    "󰤄")
         systemctl suspend
         ;;
-    "󰌾 Lock")
-        betterlockscreen -l
+    "󰌾")
+        i3lock-fancy
         ;;
-    "󰍃 Logout")
+    "󰍃")
         i3-msg exit
         ;;
 esac
