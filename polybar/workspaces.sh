@@ -6,10 +6,10 @@ print_workspaces() {
 
     for i in 1 2 3 4 5; do
         if [ "$i" = "$focused" ]; then
-            # Active: white + white underline
-            out="${out}%{A1:i3-msg workspace $i:}%{u#FFFFFF}%{+u}%{F#FFFFFF}$i%{-u}%{F-}%{A} "
+            # Active: Inherits main bar foreground and underline color
+            out="${out}%{A1:i3-msg workspace $i:}%{+u}$i%{-u}%{A} "
         else
-            # Inactive: dark neutral gray (no color tint)
+            # Inactive: Light neutral gray (stays as requested)
             out="${out}%{A1:i3-msg workspace $i:}%{F#D3D3D3}$i%{F-}%{A} "
         fi
     done

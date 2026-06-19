@@ -36,3 +36,4 @@ eval "$(zoxide init zsh)"
 
 alias s='paru -S'
 alias r='paru -R'
+alias backup='~/dotfiles/backup.sh'
