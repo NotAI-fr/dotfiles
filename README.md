@@ -1,4 +1,4 @@
-#dotfiles
+# dotfiles
 
 My personal dotfiles and custom ricing environment for Arch Linux, featuring a hybrid X11 (i3) and Wayland (Hyprland) workspace setup.
 
