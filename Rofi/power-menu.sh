@@ -25,7 +25,7 @@ case "$chosen" in
         systemctl suspend
         ;;
     "󰌾")
-        i3lock-fancy
+        betterlockscreen -l blur
         ;;
     "󰍃")
         i3-msg exit
