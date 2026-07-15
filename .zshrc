@@ -22,6 +22,12 @@ compinit
 # Allow tab completion to be case-insensitive
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
+# Show a completion menu when multiple matches exist
+zstyle ':completion:*' menu yes
+
+# fzf-tab configuration
+source /usr/share/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh
+
 # ==========================
 # 3. Plugins
 # ==========================
@@ -36,4 +42,5 @@ eval "$(zoxide init zsh)"
 
 alias s='paru -S'
 alias r='paru -R'
+alias syu='sudo pacman -Syu'
 alias backup='~/dotfiles/backup.sh'
