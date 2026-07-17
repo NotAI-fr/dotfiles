@@ -41,7 +41,8 @@ window {
     location:                    center;
     anchor:                      center;
     fullscreen:                  false;
-    width:                       800px; /* Widened to fit 3 columns comfortably */
+    width:                       700px;
+    height:                      600px;
     x-offset:                    0px;
     y-offset:                    0px;
 

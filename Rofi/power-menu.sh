@@ -1,33 +1,77 @@
 #!/usr/bin/env bash
 
-# Pass only the pure Nerd Font icons separated by newlines
-ICON_LIST="󰐥\n󰜉\n󰤄\n󰌾\n󰍃"
+# Check whether picom is running to choose the gamemode icon.
+if pgrep -x "picom" >/dev/null; then
+    GAMEMODE_ICON="󰾆"
+else
+    GAMEMODE_ICON="󰓅"
+fi
 
-# Launch rofi with a true 5-column grid layout row and forced text centering
-chosen=$(echo -e "$ICON_LIST" | rofi -dmenu -i -p "Power" \
-  -theme-str '
-    window { width: 520px; border-radius: 12px; padding: 10px; }
-    inputbar { enabled: false; }
-    listview { columns: 5; lines: 1; fixed-columns: true; spacing: 12px; cycle: true; }
-    element { padding: 18px 0px; border-radius: 8px; children: [ "element-text" ]; }
-    element-text { font: "JetBrains Mono Nerd Font 28"; margin: 0px; padding: 0px; horizontal-align: 0.5; vertical-align: 0.5; }
-  ')
+# The thin space after the gamemode glyph compensates for its slightly
+# right-heavy visual bounds in Rofi without changing the other icons.
+GAMEMODE_DISPLAY="${GAMEMODE_ICON}"$'\u2009'
 
-# Execute actions based on the pure icon returned
+# Ask Rofi to return the selected row index rather than the displayed text.
+# This lets the display-only spacing above remain separate from the action.
+chosen=$(
+    printf '%s\n' \
+        "󰐥" \
+        "󰜉" \
+        "󰤄" \
+        "󰌾" \
+        "󰍃" \
+        "$GAMEMODE_DISPLAY" |
+    rofi -dmenu -i -no-custom -format i -p "Power" \
+        -theme-str '
+window {
+    width: 630px;
+    border-radius: 12px;
+    padding: 10px;
+}
+
+inputbar {
+    enabled: false;
+}
+
+listview {
+    columns: 6;
+    lines: 1;
+    spacing: 12px;
+    cycle: true;
+    scrollbar: false;
+    fixed-columns: true;
+}
+
+element {
+    orientation: vertical;
+    children: [ "element-text" ];
+    padding: 18px;
+    border-radius: 8px;
+}
+
+element-text {
+    font: "JetBrainsMono Nerd Font 28";
+    expand: true;
+    horizontal-align: 0.5;
+    vertical-align: 0.5;
+    margin: 0px;
+    padding: 0px;
+}
+'
+)
+
+# -format i returns a zero-based row index.
 case "$chosen" in
-    "󰐥")
-        poweroff
-        ;;
-    "󰜉")
-        reboot
-        ;;
-    "󰤄")
-        systemctl suspend
-        ;;
-    "󰌾")
-        betterlockscreen -l blur
-        ;;
-    "󰍃")
-        i3-msg exit
+    0) poweroff ;;
+    1) reboot ;;
+    2) systemctl suspend ;;
+    3) betterlockscreen -l blur ;;
+    4) i3-msg exit ;;
+    5)
+        if pgrep -x "picom" >/dev/null; then
+            killall picom
+        else
+            picom -b
+        fi
         ;;
 esac

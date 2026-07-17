@@ -41,6 +41,7 @@ eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 
 alias s='paru -S'
+alias fetch='fastfetch'
 alias r='paru -R'
 alias syu='sudo pacman -Syu'
 alias backup='~/dotfiles/backup.sh'
