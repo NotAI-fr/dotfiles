@@ -1,0 +1,37 @@
+# PlayStation credentials, private presence data, and local environment
+polybar/scripts/psn/npsso
+polybar/scripts/psn/cache/
+polybar/scripts/psn/venv/
+
+# MPD runtime state
+mpd/database
+mpd/log
+mpd/pid
+mpd/state
+mpd/sticker.sql
+mpd/playlists/
+
+# Local machine overrides
+/i3/local.env
+/polybar/local.env
+
+# Python and virtual environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Generated state and temporary files
+.current_theme
+.active_layout
+*.tmp
+*.lock
+*.log
+
+# Editor and OS files
+*.bak
+*~
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

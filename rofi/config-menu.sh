@@ -142,6 +142,9 @@ section_add_first_existing "󰐕" "Main" \
 section_add_path "󰕰" "Modules" \
     "$HOME/.config/polybar/modules.ini"
 
+section_add_path "󰒓" "Local Settings" \
+    "$HOME/.config/polybar/local.env"
+
 section_add_path "󰉋" "Layouts Folder" \
     "$HOME/.config/polybar/layouts"
 
@@ -162,6 +165,12 @@ section_add_first_existing "󰌌" "Keybinds" \
     "$HOME/.config/i3/keybinds" \
     "$HOME/.config/i3/config.d/keybinds.conf" \
     "$HOME/.config/i3/config.d/keybinds"
+
+section_add_path "󰏗" "Applications" \
+    "$HOME/.config/i3/modules/00-apps.conf"
+
+section_add_path "󰍹" "Machine Settings" \
+    "$HOME/.config/i3/local.env"
 
 section_add_first_existing "󰐥" "Startup" \
     "$HOME/.config/i3/modules/startup.conf" \

@@ -1,0 +1,13 @@
+# Optional AUR packages used by personal defaults or optional modules.
+# The installer handles these one at a time so a missing optional package does
+# not prevent the rest of the setup from being deployed.
+
+betterlockscreen
+autotiling-git
+nm-tray
+wthrr
+ox-bin
+helium-browser-bin
+vesktop-bin
+bibata-cursor-theme-bin
+curd

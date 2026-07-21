@@ -1,70 +1,70 @@
-# =====================================================================
-# 🟩 CORE ENVIRONMENT (Required for the desktop to function)
-# =====================================================================
+# Official Arch repository packages used by the documented i3/X11 setup.
+# The repaired install.sh reads this file automatically with --packages.
+
+# Desktop core
 i3-wm
-hyprland
 polybar
-waybar
 rofi
+rofi-calc
 kitty
 picom
 feh
 dunst
 fastfetch
+nemo
+
+# Media and audio
 mpd
 rmpc
 mpv
-git
-jq
-xclip
-xdg-utils
-xdg-desktop-portal
+cava
+ffmpeg
+playerctl
+pipewire-pulse
+wireplumber
+pavucontrol
 
-# =====================================================================
-# 🟨 SYSTEM UTILITIES & SHELL
-# =====================================================================
+# Rofi scripts and X11 utilities
+curl
+jq
+bc
+imagemagick
+maim
+slop
+xclip
+xorg-xrandr
+xorg-xsetroot
+xorg-xrdb
+xorg-xdpyinfo
+libnotify
+redshift
+
+# Networking, Bluetooth, and tray utilities
+networkmanager
+bluez
+bluez-utils
+blueman
+xfce4-clipman-plugin
+
+# Shell and scripting
+git
+rsync
+python
+python-pip
+python-dbus
+python-gobject
 zsh
 zsh-autosuggestions
 zsh-syntax-highlighting
+fzf
 zoxide
 starship
 btop
-cmatrix
-gpick
-cava
 
-# =====================================================================
-# 🟦 FONTS & THEMES (Includes AUR packages)
-# =====================================================================
+# Fonts and desktop integration
 ttf-jetbrains-mono-nerd
 otf-firamono-nerd
-ttf-apple-emoji
-woff2-font-awesome
-catppuccin-gtk-theme-mocha
-everforest-gtk-theme-git
-gruvbox-gtk-theme-git
-bibata-cursor-theme-bin
-papirus-folders
-papirus-icon-theme-git
-lxappearance
-nwg-look
-
-# =====================================================================
-# 🟥 APPLICATIONS & GAMING (Includes AUR packages)
-# =====================================================================
-gwenview
-gnome-calculator-gtk3
-beaver-notes-bin
-helium-browser-bin
-komikku
-localsend-bin
-onlyoffice-bin
-vesktop-git
-fragments
-wthrr
-flatpak
-lutris
-bottles
-mangohud
-goverlay
-vkd3d
+noto-fonts-emoji
+papirus-icon-theme
+xdg-utils
+xdg-desktop-portal-gtk

@@ -1,118 +1,234 @@
-# dotfiles
+# i3 Dotfiles
 
-My personal dotfiles and custom ricing environment for Arch Linux, featuring a hybrid X11 (i3) and Wayland (Hyprland) workspace setup.
+![Arch Linux](https://img.shields.io/badge/Arch_Linux-1793D1?logo=archlinux&logoColor=fff)
+![i3](https://img.shields.io/badge/WM-i3-52C0FF)
+![X11](https://img.shields.io/badge/Session-X11-FFB300)
+![Polybar](https://img.shields.io/badge/Bar-Polybar-8AADF4)
+![Rofi](https://img.shields.io/badge/Launcher-Rofi-CBA6F7)
 
-## 🎬 Showcase
+A personal Arch Linux **i3/X11 rice** built around synchronized colour profiles, switchable Polybar layouts, and Rofi-powered desktop tools.
 
-https://github.com/user-attachments/assets/8ce555a0-0ac7-45eb-b75c-b3f582bb57f7
+> Hyprland and other Wayland folders are retained only as archived backups. The supported and documented setup in this repository is i3/X11.
 
-## 📸 Screenshots
+## Showcase
+
+<!-- Replace this comment with the new GitHub-hosted MP4 URL after recording it. -->
+
+The current screenshots below are being replaced using [`SHOWCASE-CAPTURE-GUIDE.md`](SHOWCASE-CAPTURE-GUIDE.md).
 
 | Monochrome | Everforest | Gruvbox | Catppuccin Mocha |
-|--- |--- |--- |--- |
+|---|---|---|---|
 | ![Monochrome](assets/themes/monochrome.png) | ![Everforest](assets/themes/everforest.png) | ![Gruvbox](assets/themes/gruvbox.png) | ![Catppuccin Mocha](assets/themes/catppuccin-mocha.png) |
 
-<br>
+**Lavender Light** is also included; its new screenshot should be saved as `assets/themes/lavender-light.png`.
 
-👉 [**For More Screenshots, Go To The Assets Folder**](./assets)
+## At a glance
 
-## 🛠️ Setup Core
+| Component | Choice |
+|---|---|
+| Window manager | i3 |
+| Bar | Polybar |
+| Launcher and menus | Rofi |
+| Terminal | Kitty |
+| Shell | Zsh + Starship |
+| Compositor | Picom |
+| Notifications | Dunst |
+| File manager | Nemo |
+| Lock screen | Betterlockscreen |
+| Music | MPD + rmpc |
+| Video | MPV + ModernZ |
+| Editor used by the config menu | Ox |
 
-* **WM / Compositors:** i3 & Hyprland
-* **Terminals & Shell:** Kitty & Starship Prompt
-* **Status Bars & Panels:** Polybar & Wayle (SCSS Engine)
-* **Launchers & Menus:** Rofi / Rofi Core
-* **Notifications:** Dunst
-* **Audio & Visuals:** MPD, rmpc (TUI client), MPV, & Cava Visualizer
-* **Compositing & Effects:** Picom (X11)
-* **System Info:** Fastfetch
+## Highlights
 
-## ✨ Environment Features
+### Synchronized theme profiles
 
-* **🎨 Theme Palette Synchronization:** Global theme assets divided into Monochrome, Everforest, Gruvbox, and Catppuccin Mocha colorscapes across apps (including Cava, Fastfetch, and GTK environments).
-* **🖼️ Wallpaper Switcher:** Handled via feh, pulling from specialized subdirectories matching your active system palette.
-* **💎 Custom Player UI:** Enhanced MPV playback interface utilizing the custom asset-driven ModernZ UI layout wrapper.
+The Rofi switcher coordinates i3 borders, Polybar, Kitty, Rofi, rmpc, Cava, Dunst, GTK theme/icon settings, wallpaper, and Betterlockscreen.
 
-## 📜 Custom Automation Scripts
+Included profiles:
 
-This configuration houses an array of utility scripts mapped to quick environment keys:
+- Monochrome
+- Everforest
+- Gruvbox
+- Catppuccin Mocha
+- Lavender Light
 
-### 🌐 System Launcher (Rofi Engine)
-* `wallpaper-picker.sh` — Interactive graphical background selector.
-* `power-menu.sh` — Session shutdown, reboot, and suspension grid selector.
-* `rofi-bluetooth.sh` — Quick device pairing and controller manager.
-* `rofi-record.sh` — Live screen recording toggle engine.
-* `rofi-web-search.sh` — Native desktop terminal browser lookups.
-* `scratchpad.sh` & `theme-switcher.sh` — Window stacking utilities and canvas controls.
+### Three Polybar layouts
 
-### 📊 Status Modules & Bars
-* `player-mpris.py` — Dynamic media metadata fetcher tracking system audio states on the bar.
-* `weather-tui.sh` / `weather.sh` — Local climate tracking feeds feeding both Polybar and Hyprland modules.
-* `polybar-scratchpad.sh` & `workspaces.sh` — Layout and workspace context calculation loops.
+- **Default:** full system, media, notification, note, and hardware modules.
+- **Floating Islands:** rounded colour-backed modules on a transparent canvas.
+- **Minimal:** compact workspaces, weather, media, PSN presence, audio, temperature, date, and power.
 
-### ⚙️ Hardware & System Hooks
-* `brightness-up.sh` / `brightness-down.sh` — Direct backlight controller integration for i3 keybinds.
-* `media.sh` — Audio backend management framework under Wayland.
+Use `Super + T` to open the combined theme/layout switcher.
 
-## 🚀 Installation & Deployment
+### Rofi desktop toolkit
 
-This configuration includes a deployment script to easily bootstrap dependencies (including AUR packages) and clone configurations onto any fresh Arch Linux system. All standard and AUR packages are enabled by default in `packages.txt`.
+| Shortcut | Tool |
+|---|---|
+| `Super + Space` | Application launcher |
+| `Super + T` | Theme and Polybar-layout switcher |
+| `Super + W` | Thumbnail wallpaper picker |
+| `Super + P` | Power/Picom game-mode menu |
+| `Super + B` | Bluetooth manager |
+| `Super + N` | Categorized notes scratchpad |
+| `Super + Shift + P` | Region/fullscreen screen recorder |
+| `Super + Shift + C` | Sectioned config menu opening files in Ox |
+| `Super + X` | Rofi calculator |
+| `Super + S` | Region screenshot to file and clipboard |
 
-### 1. Deployment (From Repo to PC)
-To pull your snapshot out of the repository and overwrite your active system configurations with these files, run the installer:
-```bash
-git clone [https://github.com/NotAI-fr/dotfiles.git](https://github.com/NotAI-fr/dotfiles.git)
-cd dotfiles
-chmod +x install.sh
-./install.sh
-```
-*(Don't worry—if you have existing configurations, the script automatically bundles them into a dated backup folder inside your home directory before laying down the repository snapshot).*
+The wallpaper picker includes per-theme categories, favourites, random selection, thumbnail caching, current-wallpaper tracking, folder opening, and asynchronous Betterlockscreen updates.
 
-### 2. Snapshot Backups (From PC to GitHub)
-Whenever you make changes locally on your system and want to save a pristine snapshot out to this repository, execute your sync tools:
-```bash
-./backup.sh
-# or 
-./sync.sh
-```
+### Polybar integrations
 
-## 🖼️ Wallpapers
+- Clickable i3 workspaces
+- Weather temperature and `wthrr` terminal forecast
+- MPRIS media metadata and playback controls
+- Audio output and microphone controls
+- CPU, RAM, temperature, battery, date, tray, and night-light modules
+- Dunst pause/history controls
+- Scratchpad category counts
+- Bluetooth and power launchers
+- Optional PlayStation friend presence with conservative caching
 
-Wallpaper categories for each colorscheme:
+> The PlayStation module uses a private NPSSO credential. Its token, cache, and virtual environment are ignored by Git.
 
-* ![](https://img.shields.io/badge/-%20-1a1a1a?style=flat-square)![](https://img.shields.io/badge/-%20-444444?style=flat-square)![](https://img.shields.io/badge/-%20-ffffff?style=flat-square) [**Monochrome**](./Walls/monochrome)
-* ![](https://img.shields.io/badge/-%20-1e1e2e?style=flat-square)![](https://img.shields.io/badge/-%20-cba6f7?style=flat-square)![](https://img.shields.io/badge/-%20-89b4fa?style=flat-square) [**Catppuccin**](./Walls/catppuccin)
-* ![](https://img.shields.io/badge/-%20-282828?style=flat-square)![](https://img.shields.io/badge/-%20-fe8019?style=flat-square)![](https://img.shields.io/badge/-%20-fabd2f?style=flat-square) [**Gruvbox**](./Walls/gruvbox)
-* ![](https://img.shields.io/badge/-%20-2b3339?style=flat-square)![](https://img.shields.io/badge/-%20-a7c080?style=flat-square)![](https://img.shields.io/badge/-%20-dbbc7f?style=flat-square) [**Everforest**](./Walls/everforest)
+### i3 workflow
 
-## 📂 File Structure
+- Five workspaces
+- Autotiling
+- Gaps and three-pixel borders
+- Fullscreen, floating, and scratchpad controls
+- Floating rules for Pavucontrol, Blueman, and weather
+- Media keys through Playerctl and WirePlumber
+- External-monitor brightness OSD
+- Picom dual-Kawase blur and rounded corners
+
+### Terminal, music, and video
+
+- Zsh shared/deduplicated history, `fzf-tab`, autosuggestions, syntax highlighting, Starship, and Zoxide
+- Kitty opacity, Nerd Font, theme include, and normal `Ctrl+V` paste
+- rmpc queue, library, artists, albums, playlists, search, lyrics, album art, mouse support, and hot reload
+- MPV with the ModernZ on-screen controller
+
+## Selected i3 shortcuts
+
+| Shortcut | Action |
+|---|---|
+| `Super + Q` | Kitty |
+| `Super + E` | Nemo |
+| `Super + R` | Browser |
+| `Super + L` | Lock |
+| `Super + C` | Close focused window |
+| `Super + F` | Fullscreen |
+| `Super + Shift + F` | Floating toggle |
+| `Super + 1…5` | Switch workspace |
+| `Super + Shift + 1…5` | Move window to workspace |
+| `Super + -` | Show/cycle scratchpad |
+| `Super + Shift + -` | Send window to scratchpad |
+| `Super + Shift + A/D` | External-monitor brightness |
+| `Super + Shift + R` | Restart Polybar and reload i3 |
+
+Application commands are centralized in `i3/modules/00-apps.conf`.
+
+## Repository layout
 
 ```text
 dotfiles/
-├── colorschemes/    # Theme configurations for Cava, Dunst, Fetch, GTK, i3, Kitty, Polybar, rmpc, & Rofi
-├── dunst/           # Notification daemon custom rule matrices and system styles
-├── fastfetch/       # System asset blueprint data layout configurations
-├── hypr/            # Highly modularized Lua-based Hyprland compositor modules and environment rules
-├── i3/              # i3 window manager setups with direct brightness scripts
-├── kitty/           # Terminal profiles and primary configuration frameworks
-├── mpd/             # Local music database configurations, rulesets, and local socket endpoints
-├── mpv/             # Custom video playback rules running the ModernZ UI engine layout
-├── picom/           # X11 rendering and window composite configurations (shadows/blur effects)
-├── polybar/         # Multi-monitor status bar engines including script bindings and workspaces handlers
-├── rmpc/            # Modern terminal music client configuration sheets (.ron profiles)
-├── Rofi/            # Main launcher directory loaded with custom system scripts
-├── rofi/            # Alternate fallback launcher layout variants
-├── Walls/           # System background storage organized into specific color spaces
-│   ├── catppuccin/
-│   ├── everforest/
-│   ├── gruvbox/
-│   └── monochrome/
-├── wayle/           # Wayland SCSS-rendered status bar styling layers
-├── wlogout/         # Wayland graphical logout grid panel configurations and custom SVG vector icons
-├── config.ini       # Main environment override settings
-├── starship.toml    # Shell context interface and prompt configuration layout
-├── packages.txt     # Complete system dependency registry file (Core and AUR packages)
-├── backup.sh        # Core automated file capture script
-├── sync.sh          # Secondary configuration synchronization helper
-└── install.sh       # Automated package sync and configuration copy script
+├── i3/                 # WM config, app variables, startup, keybinds, monitor scripts
+├── polybar/            # Shared modules, three layouts, media/weather/PSN helpers
+├── rofi/               # Launcher themes and desktop utility scripts
+├── colorschemes/       # Five synchronized desktop profiles
+├── Walls/              # Wallpapers grouped by theme
+├── kitty/              # Terminal config and active theme include
+├── dunst/              # Notification styling
+├── picom/              # Blur and rounded-corner compositor settings
+├── rmpc/ and mpd/      # Music client and daemon
+├── mpv/                # MPV and ModernZ
+├── fastfetch/          # System-information layout
+├── assets/             # README media
+├── packages.txt        # Official Arch dependencies
+├── packages-aur.txt    # Optional AUR dependencies
+├── install.sh          # Safe config deployment; packages are opt-in
+├── backup.sh           # i3-focused backup and Git push
+└── sync.sh             # Fast-forward-only Git pull
 ```
+
+## Installation
+
+Review scripts before running them. Existing destinations are moved into a timestamped directory under `~/.dotfiles_backup/`.
+
+```bash
+git clone https://github.com/NotAI-fr/dotfiles.git
+cd dotfiles
+chmod +x install.sh
+
+# Preview config deployment
+./install.sh --dry-run
+
+# Deploy configs only
+./install.sh
+
+# Install dependencies and deploy
+./install.sh --packages
+```
+
+The installer uses the actual root-level repository layout and lowercase `rofi/` directory.
+
+After installation, edit:
+
+```text
+~/.config/i3/local.env
+~/.config/i3/modules/00-apps.conf
+~/.config/polybar/local.env
+```
+
+These files control the monitor/output settings, preferred applications, and weather location without requiring edits across several scripts.
+
+## Optional PlayStation module
+
+```bash
+cd ~/.config/polybar/scripts/psn
+python -m venv venv
+venv/bin/pip install psnawp
+cp npsso.example npsso
+chmod 600 npsso
+```
+
+Replace the placeholder token, then run:
+
+```bash
+./psn-friends test-auth
+./psn-friends refresh-friends
+```
+
+## Maintenance
+
+```bash
+./backup.sh  # Copy active i3 configs into this repo, commit, rebase, push
+./sync.sh    # Pull only when the working tree is clean and fast-forwardable
+```
+
+The backup script deliberately leaves archived Wayland folders untouched.
+
+## Privacy and history cleanup
+
+If an NPSSO code was ever committed, deleting the current file is not enough. Rotate the token and follow [`GIT-HISTORY-CLEANUP.md`](GIT-HISTORY-CLEANUP.md) before the next public push.
+
+## Customization map
+
+| Change | File |
+|---|---|
+| Preferred apps | `i3/modules/00-apps.conf` |
+| Monitor/output | `i3/local.env` |
+| i3 shortcuts | `i3/modules/keybinds.conf` |
+| Startup programs | `i3/modules/startup.conf` |
+| Weather location | `polybar/local.env` |
+| Polybar layout | `polybar/config.ini` or the Rofi layout switcher |
+| Shared Polybar modules | `polybar/modules.ini` |
+| Rofi appearance | `rofi/config.rasi`, `rofi/grid.rasi` |
+| Theme profiles | `colorschemes/<theme>/` |
+| Wallpaper picker | `rofi/wallpaper-picker.sh` |
+| Terminal | `kitty/kitty.conf` |
+| Blur/rounding | `picom/picom.conf` |
+| Notifications | `dunst/dunstrc` |
+| rmpc | `rmpc/config.ron` |
