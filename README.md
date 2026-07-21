@@ -1,7 +1,7 @@
 # i3 Dotfiles
 
 <p align="center">
-  <img src="assets/showcase/hero.png" alt="i3 desktop showcase" width="100%">
+  <img src="assets/showcase/hero-v2.png" alt="i3 desktop showcase" width="100%">
 </p>
 
 <p align="center">
@@ -33,11 +33,11 @@ One Rofi menu switches the wallpaper and colours across i3, Polybar, Rofi, Kitty
 
 | Monochrome | Everforest | Gruvbox |
 |---|---|---|
-| ![Monochrome](assets/themes/monochrome.png) | ![Everforest](assets/themes/everforest.png) | ![Gruvbox](assets/themes/gruvbox.png) |
+| ![Monochrome](assets/themes/monochrome-v2.png) | ![Everforest](assets/themes/everforest-v2.png) | ![Gruvbox](assets/themes/gruvbox-v2.png) |
 
 | Catppuccin Mocha | Lavender Light |
 |---|---|
-| ![Catppuccin Mocha](assets/themes/catppuccin-mocha.png) | ![Lavender Light](assets/themes/lavender-light.png) |
+| ![Catppuccin Mocha](assets/themes/catppuccin-mocha-v2.png) | ![Lavender Light](assets/themes/lavender-light-v2.png) |
 
 ### Theme switching includes
 
@@ -57,7 +57,7 @@ Three layouts can be switched instantly through Rofi.
 
 | Default | Floating Islands | Minimal |
 |---|---|---|
-| ![Default](assets/showcase/layouts/default.png) | ![Floating Islands](assets/showcase/layouts/floating-islands.png) | ![Minimal](assets/showcase/layouts/minimal.png) |
+| ![Default](assets/showcase/layouts/default-v2.png) | ![Floating Islands](assets/showcase/layouts/floating-islands-v2.png) | ![Minimal](assets/showcase/layouts/minimal-v2.png) |
 
 - **Default** — the full setup with system information, tray, media, notifications, notes, and hardware controls.
 - **Floating Islands** — rounded modules floating on a transparent bar canvas.
