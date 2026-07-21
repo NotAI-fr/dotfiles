@@ -1,7 +1,4 @@
 [color]
-# A deep, space-like dark blue/gray tint for the background
 background_opacity = 0.75
-background_color = '#1e1e2e'
-
-# A solid, vibrant pastel pink/flamingo to match the glowing jellyfish
-foreground_color = '#f5e0dc'
+background_color = '#1E1E2E'
+foreground_color = '#F5C2E7'

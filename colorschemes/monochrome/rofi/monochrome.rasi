@@ -1,14 +1,8 @@
 * {
     background:     #1E1E1EBF;
-    /* 75% Opacity - Neutral charcoal grey to match Polybar */
     background-alt: #2D2D2D99;
-    /* 60% Opacity - Slightly lighter grey for contrast */
-    foreground:     #FFFFFF;
-    /* 100% Opacity - Matches Polybar's light grey text */
+    foreground:     #FFFFFFFF;
     selected:       #FFFFFF26;
-    /* 15% Opacity - Subtle frosted selection highlight */
     active:         #FFFFFF12;
-    /* 7% Opacity - Ghost white highlight */
     urgent:         #FF555566;
-    /* 40% Opacity - Translucent red for warnings (matches battery/temp) */
 }

@@ -1,7 +1,4 @@
 [color]
-# A warm, dark brown/gray background tint
 background_opacity = 0.80
 background_color = '#282828'
-
-# A solid, iconic Gruvbox retro yellow/gold for the bars
-foreground_color = '#fabd2f'
+foreground_color = '#FABD2F'
