@@ -1,78 +1,79 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/bin/bash
 
-# The repository is always the folder containing this script.
-REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_DIR="$HOME/dotfiles"
 
-echo "Syncing active i3/X11 configs into: $REPO_DIR"
+echo "Syncing configs to repo using rsync..."
 
-sync_dir() {
-    local source=$1
-    local destination=$2
+# This keeps the original backup script's rsync/fetch/commit/merge/push flow.
+# Only these functional updates were made:
+#   1. Rofi is stored under lowercase rofi/
+#   2. Ox backs up ~/.oxrc and ~/.config/ox/
+#   3. Known repo-only helper/example files are protected from --delete
+#   4. Private/generated PSN files are excluded from the repo copy
 
-    if [[ ! -d "$source" ]]; then
-        echo "Skipping missing directory: $source"
-        return
-    fi
+# Note: The trailing slash on directory sources is important for rsync.
+rsync -av --delete "$HOME/.config/hypr/" "$REPO_DIR/hypr/"
+rsync -av --delete "$HOME/Pictures/Walls/" "$REPO_DIR/Walls/"
 
-    mkdir -p "$destination"
+# Lowercase Rofi repository directory.
+rsync -av --delete "$HOME/.config/rofi/" "$REPO_DIR/rofi/"
 
-    rsync -a --delete \
-        --exclude 'npsso' \
-        --exclude 'cache/' \
-        --exclude 'venv/' \
-        --exclude 'database' \
-        --exclude 'log' \
-        --exclude 'pid' \
-        --exclude 'state' \
-        --exclude 'sticker.sql' \
-        "$source/" "$destination/"
-}
+rsync -av --delete "$HOME/.p10k.zsh" "$REPO_DIR/"
+rsync -av --delete "$HOME/.config/fastfetch/" "$REPO_DIR/fastfetch/"
+rsync -av --delete "$HOME/.config/kitty/" "$REPO_DIR/kitty/"
+rsync -av --delete "$HOME/.config/rmpc/" "$REPO_DIR/rmpc/"
+rsync -av --delete "$HOME/.config/wayle/" "$REPO_DIR/wayle/"
+rsync -av --delete "$HOME/.config/wlogout/" "$REPO_DIR/wlogout/"
 
-sync_file() {
-    local source=$1
-    local destination=$2
+# Keep repo-only example/helper files that do not live under ~/.config/i3.
+rsync -av --delete \
+    --exclude 'local.env.example' \
+    --exclude 'modules/00-apps.conf' \
+    --exclude 'scripts/setup-monitor.sh' \
+    "$HOME/.config/i3/" "$REPO_DIR/i3/"
 
-    if [[ ! -f "$source" ]]; then
-        echo "Skipping missing file: $source"
-        return
-    fi
+# Keep repo-only documentation/examples and do not copy PSN secrets/runtime data.
+rsync -av --delete \
+    --exclude 'local.env.example' \
+    --exclude 'scripts/psn/README.md' \
+    --exclude 'scripts/psn/npsso.example' \
+    --exclude 'scripts/psn/npsso' \
+    --exclude 'scripts/psn/cache/' \
+    --exclude 'scripts/psn/venv/' \
+    --exclude 'scripts/weather-temperature.sh' \
+    "$HOME/.config/polybar/" "$REPO_DIR/polybar/"
 
-    cp -a "$source" "$destination"
-}
+rsync -av --delete "$HOME/.config/mpv/" "$REPO_DIR/mpv/"
+rsync -av --delete "$HOME/.config/mpd/" "$REPO_DIR/mpd/"
+rsync -av --delete "$HOME/.zshrc" "$REPO_DIR/"
+rsync -av --delete "$HOME/.config/starship.toml" "$REPO_DIR/"
+rsync -av --delete "$HOME/.config/picom/" "$REPO_DIR/picom/"
+rsync -av --delete "$HOME/.config/colorschemes/" "$REPO_DIR/colorschemes/"
+rsync -av --delete "$HOME/.config/dunst/" "$REPO_DIR/dunst/"
+rsync -av --delete "$HOME/.config/assets/" "$REPO_DIR/assets/"
+rsync -av --delete "$HOME/.config/install.sh" "$REPO_DIR/"
+rsync -av --delete "$HOME/.config/packages.txt" "$REPO_DIR/"
 
-# Desktop and application configs
-sync_dir "$HOME/Pictures/Walls"       "$REPO_DIR/Walls"
-sync_dir "$HOME/.config/rofi"         "$REPO_DIR/rofi"
-sync_dir "$HOME/.config/fastfetch"    "$REPO_DIR/fastfetch"
-sync_dir "$HOME/.config/kitty"        "$REPO_DIR/kitty"
-sync_dir "$HOME/.config/rmpc"         "$REPO_DIR/rmpc"
-sync_dir "$HOME/.config/i3"           "$REPO_DIR/i3"
-sync_dir "$HOME/.config/polybar"      "$REPO_DIR/polybar"
-sync_dir "$HOME/.config/mpv"          "$REPO_DIR/mpv"
-sync_dir "$HOME/.config/mpd"          "$REPO_DIR/mpd"
-sync_dir "$HOME/.config/picom"        "$REPO_DIR/picom"
-sync_dir "$HOME/.config/colorschemes" "$REPO_DIR/colorschemes"
-sync_dir "$HOME/.config/dunst"        "$REPO_DIR/dunst"
+# Ox editor configuration.
+rsync -av --delete "$HOME/.oxrc" "$REPO_DIR/"
+rsync -av --delete "$HOME/.config/ox/" "$REPO_DIR/ox/"
 
-# Ox editor
-sync_file "$HOME/.oxrc"               "$REPO_DIR/.oxrc"
-sync_dir  "$HOME/.config/ox"          "$REPO_DIR/ox"
+echo "Syncing with GitHub..."
+cd "$REPO_DIR" || exit
 
-# Shell and prompt
-sync_file "$HOME/.zshrc"              "$REPO_DIR/.zshrc"
-sync_file "$HOME/.config/starship.toml" "$REPO_DIR/starship.toml"
+# 1. Fetch remote changes first so local Git is aware of remote README edits.
+git fetch origin main
 
-cd "$REPO_DIR"
-git add -A
-
-if git diff --cached --quiet; then
-    echo "No configuration changes to commit."
-else
-    git commit -m "Automated i3 backup: $(date +'%Y-%m-%d %H:%M')"
+# 2. Add local changes and commit them if there are any.
+git add .
+if [[ -n $(git status -s) ]]; then
+    git commit -m "Automated backup: $(date +'%Y-%m-%d %H:%M')"
 fi
 
-git pull --rebase origin main
+# 3. Use the original merge-based pull, not a rebase.
+git pull --no-rebase --no-edit origin main
+
+# 4. Push everything back up.
 git push origin main
 
-echo "Backup complete. Archived Wayland folders were left untouched."
+echo "Backup complete."
