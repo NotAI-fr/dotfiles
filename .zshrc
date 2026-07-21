@@ -34,6 +34,9 @@ source /usr/share/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh
 # Source the plugins we installed via pacman
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
+# IMPORTANT: Syntax highlighting MUST be the very last thing sourced in the file
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 
@@ -41,8 +44,4 @@ alias s='paru -S'
 alias fetch='fastfetch'
 alias r='paru -R'
 alias syu='sudo pacman -Syu'
-export DOTFILES_REPO="${DOTFILES_REPO:-$HOME/dotfiles}"
-backup() { "$DOTFILES_REPO/backup.sh" "$@"; }
-
-# Syntax highlighting must be sourced after every other plugin and shell setup.
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+alias backup='~/dotfiles/backup.sh'

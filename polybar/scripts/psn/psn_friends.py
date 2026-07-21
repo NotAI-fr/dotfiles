@@ -71,7 +71,7 @@ def load_npsso() -> str:
         token = TOKEN_FILE.read_text(encoding="utf-8").strip()
     except OSError as exc:
         raise RuntimeError(
-            f"Missing {TOKEN_FILE}. Follow polybar/scripts/psn/README.md or place your NPSSO code there."
+            f"Missing {TOKEN_FILE}. Run the included install.sh or place your NPSSO code there."
         ) from exc
 
     if not token:
@@ -101,7 +101,7 @@ def create_client() -> tuple[Any, Any]:
     try:
         from psnawp_api import PSNAWP
     except ImportError as exc:
-        raise RuntimeError("PSNAWP is not installed. Follow polybar/scripts/psn/README.md.") from exc
+        raise RuntimeError("PSNAWP is not installed. Run the included install.sh.") from exc
 
     psnawp = PSNAWP(load_npsso())
     client = psnawp.me()

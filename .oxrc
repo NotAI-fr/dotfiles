@@ -1,0 +1,630 @@
+-- Ox 0.7.7 configuration
+-- VS Code-style shortcuts, terminal-controlled colours, and no duplicate action aliases.
+
+-- ================================================================
+-- Key bindings
+-- ================================================================
+
+event_mapping = {
+    -- Cursor movement
+    ["up"] = function()
+        editor:move_up()
+    end,
+    ["down"] = function()
+        editor:move_down()
+    end,
+    ["left"] = function()
+        editor:move_left()
+    end,
+    ["right"] = function()
+        editor:move_right()
+    end,
+    ["ctrl_up"] = function()
+        editor:move_top()
+    end,
+    ["ctrl_down"] = function()
+        editor:move_bottom()
+    end,
+    ["ctrl_left"] = function()
+        editor:move_previous_word()
+    end,
+    ["ctrl_right"] = function()
+        editor:move_next_word()
+    end,
+    ["home"] = function()
+        editor:move_home()
+    end,
+    ["end"] = function()
+        editor:move_end()
+    end,
+    ["pageup"] = function()
+        editor:move_page_up()
+    end,
+    ["pagedown"] = function()
+        editor:move_page_down()
+    end,
+    ["ctrl_g"] = function()
+        local line = editor:prompt("Go to line")
+        if line ~= nil and line ~= "" then
+            editor:move_to(0, tonumber(line))
+        end
+    end,
+
+    -- Selection
+    ["shift_up"] = function()
+        editor:select_up()
+    end,
+    ["shift_down"] = function()
+        editor:select_down()
+    end,
+    ["shift_left"] = function()
+        editor:select_left()
+    end,
+    ["shift_right"] = function()
+        editor:select_right()
+    end,
+    ["esc"] = function()
+        editor:cancel_selection()
+    end,
+    ["shift_home"] = function()
+        local n_moves = editor.cursor.x
+        for _ = 1, n_moves do
+            editor:select_left()
+        end
+    end,
+    ["shift_end"] = function()
+        local n_moves = #editor:get_line() - editor.cursor.x
+        for _ = 1, n_moves do
+            editor:select_right()
+        end
+    end,
+    ["ctrl_shift_left"] = function()
+        local no_select = editor.cursor.x == editor.selection.x
+            and editor.cursor.y == editor.selection.y
+
+        if no_select then
+            local old_cursor = editor.cursor
+            editor:move_previous_word()
+            local new_cursor = editor.cursor
+            editor:move_to(old_cursor.x, old_cursor.y)
+            editor:select_to(new_cursor.x, new_cursor.y)
+        else
+            local old_selection = editor.selection
+            editor:move_previous_word()
+            local new_cursor = editor.cursor
+            editor:move_to(old_selection.x, old_selection.y)
+            editor:select_to(new_cursor.x, new_cursor.y)
+        end
+    end,
+    ["ctrl_shift_right"] = function()
+        local no_select = editor.cursor.x == editor.selection.x
+            and editor.cursor.y == editor.selection.y
+
+        if no_select then
+            local old_cursor = editor.cursor
+            editor:move_next_word()
+            local new_cursor = editor.cursor
+            editor:move_to(old_cursor.x, old_cursor.y)
+            editor:select_to(new_cursor.x, new_cursor.y)
+        else
+            local old_selection = editor.selection
+            editor:move_next_word()
+            local new_cursor = editor.cursor
+            editor:move_to(old_selection.x, old_selection.y)
+            editor:select_to(new_cursor.x, new_cursor.y)
+        end
+    end,
+    ["shift_pageup"] = function()
+        local no_select = editor.cursor.x == editor.selection.x
+            and editor.cursor.y == editor.selection.y
+
+        if no_select then
+            local old_cursor = editor.cursor
+            editor:move_page_up()
+            local new_cursor = editor.cursor
+            editor:move_to(old_cursor.x, old_cursor.y)
+            editor:select_to(new_cursor.x, new_cursor.y)
+        else
+            local old_selection = editor.selection
+            editor:move_page_up()
+            local new_cursor = editor.cursor
+            editor:move_to(old_selection.x, old_selection.y)
+            editor:select_to(new_cursor.x, new_cursor.y)
+        end
+    end,
+    ["shift_pagedown"] = function()
+        local no_select = editor.cursor.x == editor.selection.x
+            and editor.cursor.y == editor.selection.y
+
+        if no_select then
+            local old_cursor = editor.cursor
+            editor:move_page_down()
+            local new_cursor = editor.cursor
+            editor:move_to(old_cursor.x, old_cursor.y)
+            editor:select_to(new_cursor.x, new_cursor.y)
+        else
+            local old_selection = editor.selection
+            editor:move_page_down()
+            local new_cursor = editor.cursor
+            editor:move_to(old_selection.x, old_selection.y)
+            editor:select_to(new_cursor.x, new_cursor.y)
+        end
+    end,
+
+    -- Search and replace
+    ["ctrl_f"] = function()
+        editor:search()
+    end,
+    ["ctrl_r"] = function()
+        editor:replace()
+    end,
+
+    -- Files and tabs
+    ["ctrl_n"] = function()
+        editor:new()
+    end,
+    ["ctrl_o"] = function()
+        editor:open()
+    end,
+    ["ctrl_s"] = function()
+        editor:save()
+    end,
+    ["ctrl_shift_s"] = function()
+        editor:save_as()
+    end,
+    ["ctrl_w"] = function()
+        -- Close the current document/tab.
+        editor:quit()
+    end,
+    ["ctrl_q"] = function()
+        -- Quit Ox when this is the final open document.
+        editor:quit()
+    end,
+    ["ctrl_pageup"] = function()
+        editor:previous_tab()
+    end,
+    ["ctrl_pagedown"] = function()
+        editor:next_tab()
+    end,
+
+    -- Clipboard
+    ["ctrl_a"] = function()
+        editor:select_all()
+    end,
+    ["ctrl_x"] = function()
+        editor:cut()
+    end,
+    ["ctrl_c"] = function()
+        editor:copy()
+    end,
+
+    -- Undo and redo
+    ["ctrl_z"] = function()
+        editor:undo()
+    end,
+    ["ctrl_y"] = function()
+        editor:redo()
+    end,
+
+    -- Editing
+    ["ctrl_backspace"] = function()
+        -- This is the only shortcut assigned to remove the previous word.
+        editor:remove_word()
+    end,
+    ["ctrl_shift_k"] = function()
+        -- VS Code-style delete line.
+        local cursor = editor.cursor
+        local selection = editor.selection
+        local no_selection = selection.x == cursor.x and selection.y == cursor.y
+
+        if no_selection then
+            editor:remove_line()
+        elseif cursor.y > selection.y then
+            editor:move_to(cursor.x, selection.y)
+            for _ = selection.y, cursor.y do
+                editor:remove_line()
+            end
+        else
+            editor:move_to(cursor.x, cursor.y)
+            for _ = cursor.y, selection.y do
+                editor:remove_line()
+            end
+        end
+    end,
+    ["alt_up"] = function()
+        local cursor = editor.cursor
+        local selection = editor.selection
+        local single_line = selection.x == cursor.x and selection.y == cursor.y
+
+        editor:commit()
+
+        if single_line then
+            editor:move_line_up()
+            autoindent:fix_indent()
+        else
+            if cursor.y > selection.y then
+                for line = selection.y, cursor.y do
+                    editor:move_to(cursor.x, line)
+                    editor:move_line_up()
+                end
+            else
+                for line = cursor.y, selection.y do
+                    editor:move_to(cursor.x, line)
+                    editor:move_line_up()
+                end
+            end
+
+            editor:move_to(cursor.x, cursor.y - 1)
+            editor:select_to(selection.x, selection.y - 1)
+        end
+    end,
+    ["alt_down"] = function()
+        local cursor = editor.cursor
+        local selection = editor.selection
+        local single_line = selection.x == cursor.x and selection.y == cursor.y
+
+        editor:commit()
+
+        if single_line then
+            editor:move_line_down()
+            autoindent:fix_indent()
+        else
+            if cursor.y > selection.y then
+                for line = cursor.y, selection.y, -1 do
+                    editor:move_to(cursor.x, line)
+                    editor:move_line_down()
+                end
+            else
+                for line = selection.y, cursor.y, -1 do
+                    editor:move_to(cursor.x, line)
+                    editor:move_line_down()
+                end
+            end
+
+            editor:move_to(cursor.x, cursor.y + 1)
+            editor:select_to(selection.x, selection.y + 1)
+        end
+    end,
+
+    -- Editor interface
+    ["f1"] = function()
+        help_message.enabled = not help_message.enabled
+    end,
+    ["ctrl_k"] = function()
+        editor:open_command_line()
+    end,
+    ["ctrl_b"] = function()
+        editor:toggle_file_tree()
+    end,
+
+    -- Run the current file/project
+    ["ctrl_f5"] = function()
+        editor:run_file()
+    end,
+
+    -- Stop macro recording
+    ["ctrl_esc"] = function()
+        editor:macro_record_stop()
+        editor:display_info("Macro recorded")
+    end,
+
+    -- Move between splits
+    ["ctrl_alt_left"] = function()
+        editor:focus_split_left()
+    end,
+    ["ctrl_alt_right"] = function()
+        editor:focus_split_right()
+    end,
+    ["ctrl_alt_down"] = function()
+        editor:focus_split_down()
+    end,
+    ["ctrl_alt_up"] = function()
+        editor:focus_split_up()
+    end,
+}
+
+-- ================================================================
+-- Commands opened with Ctrl+K
+-- ================================================================
+
+commands = {
+    ["help"] = function(_)
+        help_message.enabled = not help_message.enabled
+    end,
+    ["readonly"] = function(arguments)
+        local value = arguments[1]
+        if value == "true" then
+            editor:set_read_only(true)
+        elseif value == "false" then
+            editor:set_read_only(false)
+        else
+            editor:display_error("Use: readonly true  or  readonly false")
+        end
+    end,
+    ["filetype"] = function(arguments)
+        editor:set_file_type(table.concat(arguments, " "))
+    end,
+    ["reload"] = function(_)
+        editor:reload_config()
+        editor:display_info("Configuration file reloaded")
+    end,
+    ["split"] = function(arguments)
+        local direction = arguments[1]
+        local target = arguments[2]
+        local result = false
+
+        if direction == "left" then
+            if target == "terminal" or target == "term" then
+                result = editor:open_terminal_left(table.concat(arguments, " ", 3))
+            else
+                result = editor:open_split_left(target)
+            end
+        elseif direction == "right" then
+            if target == "terminal" or target == "term" then
+                result = editor:open_terminal_right(table.concat(arguments, " ", 3))
+            else
+                result = editor:open_split_right(target)
+            end
+        elseif direction == "up" then
+            if target == "terminal" or target == "term" then
+                result = editor:open_terminal_up(table.concat(arguments, " ", 3))
+            else
+                result = editor:open_split_up(target)
+            end
+        elseif direction == "down" then
+            if target == "terminal" or target == "term" then
+                result = editor:open_terminal_down(table.concat(arguments, " ", 3))
+            else
+                result = editor:open_split_down(target)
+            end
+        elseif direction == "grow" then
+            result = true
+            editor:grow_split(tonumber(arguments[3]) or 0.15, arguments[2])
+        elseif direction == "shrink" then
+            result = true
+            editor:shrink_split(tonumber(arguments[3]) or 0.15, arguments[2])
+        elseif direction == "focus" then
+            result = true
+            if arguments[2] == "up" then
+                editor:focus_split_up()
+            elseif arguments[2] == "down" then
+                editor:focus_split_down()
+            elseif arguments[2] == "left" then
+                editor:focus_split_left()
+            elseif arguments[2] == "right" then
+                editor:focus_split_right()
+            else
+                editor:display_error("Unknown split focus direction")
+            end
+        else
+            result = true
+            editor:display_error("Unknown split command")
+        end
+
+        if not result then
+            editor:display_error("Failed to open the requested file or terminal")
+        end
+    end,
+    ["macro"] = function(arguments)
+        if arguments[1] == "record" then
+            editor:macro_record_start()
+            editor:display_info("Recording macro; press Ctrl+Esc to stop")
+        elseif arguments[1] == "play" then
+            editor:macro_play(tonumber(arguments[2]) or 1)
+        else
+            editor:display_error("Use: macro record  or  macro play [count]")
+        end
+    end,
+}
+
+-- ================================================================
+-- Editor behaviour
+-- ================================================================
+
+document.tab_width = 4
+document.indentation = "spaces"
+document.undo_period = 3
+document.wrap_cursor = true
+
+line_numbers.enabled = true
+line_numbers.padding_left = 1
+line_numbers.padding_right = 2
+
+terminal.mouse_enabled = true
+terminal.scroll_amount = 3
+terminal.shell = "zsh"
+
+file_tree.width = 34
+file_tree.move_focus_to_file = true
+file_tree.icons = true
+file_tree.language_icons = true
+
+-- ================================================================
+-- Terminal-controlled colour palette
+-- ================================================================
+-- Named colours use your terminal's ANSI palette. Transparent backgrounds
+-- inherit Kitty's background and any transparency supplied by Picom.
+
+black = "black"
+darkgrey = "darkgrey"
+red = "red"
+darkred = "darkred"
+green = "green"
+darkgreen = "darkgreen"
+yellow = "yellow"
+darkyellow = "darkyellow"
+blue = "blue"
+darkblue = "darkblue"
+magenta = "magenta"
+darkmagenta = "darkmagenta"
+cyan = "cyan"
+darkcyan = "darkcyan"
+white = "white"
+grey = "grey"
+transparent = "transparent"
+
+colors.editor_bg = transparent
+colors.editor_fg = white
+colors.line_number_fg = grey
+colors.line_number_bg = transparent
+
+colors.status_bg = darkblue
+colors.status_fg = white
+
+colors.highlight = cyan
+
+colors.tab_inactive_bg = transparent
+colors.tab_inactive_fg = white
+colors.tab_active_bg = darkblue
+colors.tab_active_fg = white
+
+colors.split_bg = transparent
+colors.split_fg = darkblue
+
+colors.info_bg = transparent
+colors.info_fg = cyan
+colors.warning_bg = transparent
+colors.warning_fg = yellow
+colors.error_bg = transparent
+colors.error_fg = red
+
+colors.selection_bg = darkgrey
+colors.selection_fg = cyan
+
+colors.file_tree_bg = transparent
+colors.file_tree_fg = white
+colors.file_tree_selection_bg = darkgrey
+colors.file_tree_selection_fg = cyan
+
+colors.file_tree_red = red
+colors.file_tree_orange = darkyellow
+colors.file_tree_yellow = yellow
+colors.file_tree_green = green
+colors.file_tree_lightblue = blue
+colors.file_tree_darkblue = darkblue
+colors.file_tree_purple = darkmagenta
+colors.file_tree_pink = magenta
+colors.file_tree_brown = darkred
+colors.file_tree_grey = grey
+
+-- Syntax highlighting also follows the terminal's ANSI palette.
+syntax:set("string", green)
+syntax:set("comment", darkgrey)
+syntax:set("digit", red)
+syntax:set("keyword", darkmagenta)
+syntax:set("attribute", blue)
+syntax:set("character", darkblue)
+syntax:set("type", yellow)
+syntax:set("function", darkblue)
+syntax:set("header", blue)
+syntax:set("macro", red)
+syntax:set("namespace", darkblue)
+syntax:set("struct", magenta)
+syntax:set("operator", grey)
+syntax:set("boolean", green)
+syntax:set("table", darkmagenta)
+syntax:set("reference", magenta)
+syntax:set("tag", darkblue)
+syntax:set("heading", darkmagenta)
+syntax:set("link", magenta)
+syntax:set("key", magenta)
+syntax:set("quote", grey)
+syntax:set("bold", red)
+syntax:set("italic", darkyellow)
+syntax:set("block", blue)
+syntax:set("image", blue)
+syntax:set("list", green)
+syntax:set("insertion", green)
+syntax:set("deletion", red)
+
+-- ================================================================
+-- Tabs, status line, greeting, and help
+-- ================================================================
+
+tab_line.enabled = true
+tab_line.separators = false
+tab_line.format = "  {icon} {file_name}{modified} {git_status}  "
+
+status_line.parts = {
+    "  {file_name}{modified}  │  {icon} {file_type}  │",
+    "│    {git_branch}  │  Ln {cursor_y}/{line_count}  Col {cursor_x}  ",
+}
+status_line.alignment = "between"
+
+greeting_message.enabled = true
+greeting_message.format = [[
+Ox Editor v{version}
+Familiar shortcuts, simple terminal editing
+
+{highlight_start}
+Quick Start
+
+Ctrl + N:       New tab
+Ctrl + O:       Open file
+Ctrl + S:       Save
+Ctrl + Shift+S: Save as
+Ctrl + W:       Close tab
+Ctrl + Q:       Quit
+Ctrl + B:       Toggle file tree
+Ctrl + K:       Commands
+F1:             Shortcut help
+{highlight_end}
+]]
+
+help_message.enabled = false
+help_message.format = [[
+Ox Shortcut Cheat Sheet
+{highlight_start}
+Files and tabs
+Ctrl+N          New tab
+Ctrl+O          Open file
+Ctrl+S          Save
+Ctrl+Shift+S    Save as
+Ctrl+W          Close current tab
+Ctrl+Q          Quit
+Ctrl+PageUp     Previous tab
+Ctrl+PageDown   Next tab
+
+Editing
+Ctrl+Z          Undo
+Ctrl+Y          Redo
+Ctrl+Backspace  Delete previous word
+Ctrl+Shift+K    Delete current/selected lines
+Alt+Up          Move line/selection up
+Alt+Down        Move line/selection down
+Ctrl+A/X/C      Select all / cut / copy
+
+Search and interface
+Ctrl+F          Find
+Ctrl+R          Replace
+Ctrl+G          Go to line
+Ctrl+B          Toggle file tree
+Ctrl+K          Open commands
+Ctrl+F5         Run current file/project
+F1              Toggle this help
+
+Splits
+Ctrl+Alt+Arrows Move between splits
+
+Plug-ins
+Ctrl+Tab        Indent line/selection
+Shift+Tab       Dedent line/selection
+Alt+C           Comment/uncomment
+{highlight_end}
+]]
+
+-- ================================================================
+-- Plug-ins: keep these at the bottom
+-- Update Notification is intentionally disabled because its delayed startup
+-- message can replace the greeting shortly after Ox opens.
+-- ================================================================
+
+-- Configure Git before loading the plug-in.
+git = {
+    icons = true,
+}
+
+load_plugin("autoindent.lua")
+load_plugin("pairs.lua")
+load_plugin("quickcomment.lua")
+load_plugin("git.lua")
