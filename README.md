@@ -1,7 +1,11 @@
 # i3 Dotfiles
 
 <p align="center">
-  <img src="assets/showcase/hero-v2.png" alt="i3 desktop showcase" width="100%">
+  
+
+https://github.com/user-attachments/assets/54d04845-bf80-4628-b76a-9946fef436a8
+
+
 </p>
 
 <p align="center">
@@ -17,15 +21,6 @@
 </p>
 
 > The Wayland and Hyprland files in this repository are kept only as personal backups. This README and showcase focus entirely on the active i3 setup.
-
-## Video showcase
-
-<!--
-Upload the final MP4 through GitHub's README editor and place the generated
-GitHub attachment URL on the line below.
--->
-
-_New video coming soon._
 
 ## Themes
 
