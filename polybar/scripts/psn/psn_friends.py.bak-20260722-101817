@@ -11,7 +11,6 @@ import argparse
 import fcntl
 import json
 import os
-import re
 import shutil
 import subprocess
 import sys
@@ -31,16 +30,12 @@ FRIENDS_CACHE = CACHE_DIR / "friends.json"
 PRESENCE_CACHE = CACHE_DIR / "presence.json"
 LOCK_FILE = CACHE_DIR / "update.lock"
 ERROR_LOG = CACHE_DIR / "error.log"
-AUTH_CACHE = APP_DIR / "auth_tokens.json"
-REFRESH_STATE = CACHE_DIR / "refresh_state.json"
 
 DEFAULT_SETTINGS: dict[str, Any] = {
-    "presence_refresh_seconds": 300,
+    "presence_refresh_seconds": 120,
     "friends_refresh_days": 7,
     "batch_size": 100,
     "show_total_on_bar": False,
-    "failure_retry_seconds": 900,
-    "stuck_retry_seconds": 600,
 }
 
 
@@ -65,11 +60,6 @@ def write_json(path: Path, data: Any) -> None:
     temporary.replace(path)
 
 
-def write_private_json(path: Path, data: Any) -> None:
-    write_json(path, data)
-    path.chmod(0o600)
-
-
 def load_settings() -> dict[str, Any]:
     settings = DEFAULT_SETTINGS.copy()
     settings.update(read_json(SETTINGS_FILE, {}))
@@ -89,35 +79,11 @@ def load_npsso() -> str:
     return token
 
 
-def sanitize_log_message(message: str) -> str:
-    # Preserve the useful host/path while removing friend account IDs and
-    # other long query-string values from the local log.
-    message = re.sub(r"accountIds=[^&\\s)]+", "accountIds=<redacted>", message)
-    message = re.sub(
-        r"(https?://[^?\\s)]+)\\?[^\\s)]*",
-        r"\\1?<query-redacted>",
-        message,
-    )
-    return message
-
-
-def rotate_error_log() -> None:
-    try:
-        if ERROR_LOG.exists() and ERROR_LOG.stat().st_size > 256 * 1024:
-            previous = ERROR_LOG.with_suffix(".log.1")
-            previous.unlink(missing_ok=True)
-            ERROR_LOG.replace(previous)
-    except OSError:
-        pass
-
-
 def log_error(message: str) -> None:
     ensure_dirs()
-    rotate_error_log()
     timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
-    safe_message = sanitize_log_message(message)
     with ERROR_LOG.open("a", encoding="utf-8") as handle:
-        handle.write(f"[{timestamp}] {safe_message}\n")
+        handle.write(f"[{timestamp}] {message}\n")
 
 
 def cache_is_fresh(cache: dict[str, Any], max_age_seconds: int) -> bool:
@@ -131,60 +97,15 @@ def chunks(items: list[str], size: int) -> Iterable[list[str]]:
         yield items[index:index + size]
 
 
-def load_cached_auth_tokens() -> dict[str, Any]:
-    token_response = read_json(AUTH_CACHE, {})
-    required = {"access_token", "refresh_token"}
-    if not isinstance(token_response, dict) or not required.issubset(token_response):
-        return {}
-
-    refresh_expires = token_response.get("refresh_token_expires_at")
-    if isinstance(refresh_expires, (int, float)) and refresh_expires <= time.time() + 60:
-        return {}
-    return token_response
-
-
-def save_auth_tokens(psnawp: Any) -> None:
-    token_response = getattr(psnawp.authenticator, "token_response", None)
-    if isinstance(token_response, dict) and token_response.get("refresh_token"):
-        write_private_json(AUTH_CACHE, token_response)
-
-
-def clear_auth_tokens() -> None:
-    AUTH_CACHE.unlink(missing_ok=True)
-
-
-def create_client(use_cached_auth: bool = True) -> tuple[Any, Any]:
+def create_client() -> tuple[Any, Any]:
     try:
         from psnawp_api import PSNAWP
     except ImportError as exc:
         raise RuntimeError("PSNAWP is not installed. Run the included install.sh.") from exc
 
     psnawp = PSNAWP(load_npsso())
-    if use_cached_auth:
-        cached_tokens = load_cached_auth_tokens()
-        if cached_tokens:
-            psnawp.authenticator.token_response = cached_tokens
-
     client = psnawp.me()
     return psnawp, client
-
-
-def is_auth_error(exc: Exception) -> bool:
-    return type(exc).__name__ in {
-        "PSNAWPAuthenticationError",
-        "PSNAWPUnauthorizedError",
-    }
-
-
-def mark_refresh_state(status: str, error_type: str = "") -> None:
-    write_json(
-        REFRESH_STATE,
-        {
-            "last_attempt_at": time.time(),
-            "status": status,
-            "error_type": error_type,
-        },
-    )
 
 
 def rebuild_friends(client: Any, quiet: bool = False) -> list[dict[str, str]]:
@@ -305,26 +226,6 @@ def fetch_presences(
     return entries
 
 
-def perform_presence_update(
-    settings: dict[str, Any],
-    force_friends: bool,
-    use_cached_auth: bool,
-) -> dict[str, Any]:
-    psnawp, client = create_client(use_cached_auth=use_cached_auth)
-    friends = get_friends(client, settings, force=force_friends)
-    entries = fetch_presences(client, friends, settings)
-    save_auth_tokens(psnawp)
-
-    cache = {
-        "updated_at": time.time(),
-        "entries": entries,
-        "friend_count": len(friends),
-        "online_count": sum(1 for item in entries if item["online"]),
-    }
-    write_json(PRESENCE_CACHE, cache)
-    return cache
-
-
 def update_presence(force: bool = False, force_friends: bool = False) -> dict[str, Any]:
     ensure_dirs()
     settings = load_settings()
@@ -335,109 +236,47 @@ def update_presence(force: bool = False, force_friends: bool = False) -> dict[st
         return old_cache
 
     with LOCK_FILE.open("a+", encoding="utf-8") as lock:
-        try:
-            fcntl.flock(lock.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
-        except BlockingIOError:
-            return old_cache
+        fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
 
+        # Another process may have updated while this one waited.
         old_cache = read_json(PRESENCE_CACHE, {})
         if not force and cache_is_fresh(old_cache, max_age):
             return old_cache
 
-        mark_refresh_state("running")
         try:
-            try:
-                cache = perform_presence_update(
-                    settings,
-                    force_friends=force_friends,
-                    use_cached_auth=True,
-                )
-            except Exception as exc:
-                # A cached refresh token may have expired or been revoked.
-                # Clear it once and fall back to the stored NPSSO code.
-                if is_auth_error(exc) and AUTH_CACHE.exists():
-                    clear_auth_tokens()
-                    cache = perform_presence_update(
-                        settings,
-                        force_friends=force_friends,
-                        use_cached_auth=False,
-                    )
-                else:
-                    raise
-
-            mark_refresh_state("success")
+            _, client = create_client()
+            friends = get_friends(client, settings, force=force_friends)
+            entries = fetch_presences(client, friends, settings)
+            cache = {
+                "updated_at": time.time(),
+                "entries": entries,
+                "friend_count": len(friends),
+                "online_count": sum(1 for item in entries if item["online"]),
+            }
+            write_json(PRESENCE_CACHE, cache)
             return cache
-        except Exception as exc:
-            mark_refresh_state("failed", type(exc).__name__)
+        except Exception as exc:  # Keep Polybar alive using the last good cache.
             log_error(f"{type(exc).__name__}: {exc}")
             if old_cache.get("entries") is not None:
                 return old_cache
             raise
 
 
-def start_background_refresh() -> None:
-    """Start one time-limited refresh without blocking Polybar."""
-    launcher = APP_DIR / "psn-friends"
-    try:
-        subprocess.Popen(
-            [str(launcher), "refresh-worker"],
-            stdin=subprocess.DEVNULL,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-            start_new_session=True,
-            close_fds=True,
-        )
-    except OSError as exc:
-        log_error(f"background refresh: {type(exc).__name__}: {exc}")
-
-
-def cached_presence() -> dict[str, Any]:
-    return read_json(PRESENCE_CACHE, {})
-
-
-def schedule_refresh_if_stale(cache: dict[str, Any]) -> None:
-    settings = load_settings()
-    max_age = int(settings["presence_refresh_seconds"])
-    if cache_is_fresh(cache, max_age):
-        return
-
-    state = read_json(REFRESH_STATE, {})
-    last_attempt = state.get("last_attempt_at", 0)
-    age = time.time() - last_attempt if isinstance(last_attempt, (int, float)) else float("inf")
-    status = state.get("status")
-
-    if status == "failed" and age < int(settings["failure_retry_seconds"]):
-        return
-    if status == "running" and age < int(settings["stuck_retry_seconds"]):
-        return
-
-    start_background_refresh()
-
-
-def print_status(cache: dict[str, Any]) -> None:
-    settings = load_settings()
-    online_count = int(cache.get("online_count", 0))
-    friend_count = int(cache.get("friend_count", 0))
-    if settings.get("show_total_on_bar"):
-        print(f"{online_count}/{friend_count}", flush=True)
-    else:
-        print(online_count, flush=True)
-
-
 def command_status() -> int:
-    """Return cached output immediately; never make Polybar wait on the network."""
     try:
-        cache = cached_presence()
-        if cache.get("entries") is None:
-            print("!", flush=True)
+        cache = update_presence()
+        online_count = int(cache.get("online_count", 0))
+        friend_count = int(cache.get("friend_count", 0))
+        settings = load_settings()
+        if settings.get("show_total_on_bar"):
+            print(f"{online_count}/{friend_count}")
         else:
-            print_status(cache)
-        schedule_refresh_if_stale(cache)
+            print(online_count)
         return 0
     except Exception as exc:
         log_error(f"status: {type(exc).__name__}: {exc}")
-        print("!", flush=True)
-        return 0
+        print("!")
+        return 0  # Keep the module visible rather than making Polybar retain stale text.
 
 
 def menu_line(item: dict[str, Any]) -> str:
@@ -453,12 +292,11 @@ def menu_line(item: dict[str, Any]) -> str:
 
 def command_menu(show_all: bool) -> int:
     try:
-        cache = cached_presence()
-        schedule_refresh_if_stale(cache)
+        cache = update_presence()
     except Exception as exc:
         log_error(f"menu: {type(exc).__name__}: {exc}")
         subprocess.run(
-            ["notify-send", "PlayStation Friends", "Could not read the PSN status cache."],
+            ["notify-send", "PlayStation Friends", "Could not refresh PSN status. Check the error log."],
             check=False,
         )
         return 1
@@ -506,21 +344,10 @@ def command_refresh(force_friends: bool = False) -> int:
         return 1
 
 
-def command_refresh_worker() -> int:
-    """Quiet background refresh used by the Polybar status command."""
-    try:
-        update_presence(force=False)
-        return 0
-    except Exception as exc:
-        log_error(f"refresh-worker: {type(exc).__name__}: {exc}")
-        return 1
-
-
 def command_test_auth() -> int:
     try:
-        psnawp, client = create_client()
+        _, client = create_client()
         print(f"Authenticated as: {client.online_id}")
-        save_auth_tokens(psnawp)
         return 0
     except Exception as exc:
         log_error(f"test-auth: {type(exc).__name__}: {exc}")
@@ -545,7 +372,6 @@ def build_parser() -> argparse.ArgumentParser:
     )
 
     subparsers.add_parser("refresh-friends", help="Rebuild friends and presence caches")
-    subparsers.add_parser("refresh-worker", help=argparse.SUPPRESS)
     subparsers.add_parser("test-auth", help="Test the stored NPSSO authentication")
     return parser
 
@@ -563,8 +389,6 @@ def main() -> int:
         return command_refresh(force_friends=args.friends)
     if args.command == "refresh-friends":
         return command_refresh(force_friends=True)
-    if args.command == "refresh-worker":
-        return command_refresh_worker()
     if args.command == "test-auth":
         return command_test_auth()
 

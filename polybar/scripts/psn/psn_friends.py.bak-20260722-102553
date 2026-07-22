@@ -11,7 +11,6 @@ import argparse
 import fcntl
 import json
 import os
-import re
 import shutil
 import subprocess
 import sys
@@ -31,16 +30,12 @@ FRIENDS_CACHE = CACHE_DIR / "friends.json"
 PRESENCE_CACHE = CACHE_DIR / "presence.json"
 LOCK_FILE = CACHE_DIR / "update.lock"
 ERROR_LOG = CACHE_DIR / "error.log"
-AUTH_CACHE = APP_DIR / "auth_tokens.json"
-REFRESH_STATE = CACHE_DIR / "refresh_state.json"
 
 DEFAULT_SETTINGS: dict[str, Any] = {
-    "presence_refresh_seconds": 300,
+    "presence_refresh_seconds": 120,
     "friends_refresh_days": 7,
     "batch_size": 100,
     "show_total_on_bar": False,
-    "failure_retry_seconds": 900,
-    "stuck_retry_seconds": 600,
 }
 
 
@@ -65,11 +60,6 @@ def write_json(path: Path, data: Any) -> None:
     temporary.replace(path)
 
 
-def write_private_json(path: Path, data: Any) -> None:
-    write_json(path, data)
-    path.chmod(0o600)
-
-
 def load_settings() -> dict[str, Any]:
     settings = DEFAULT_SETTINGS.copy()
     settings.update(read_json(SETTINGS_FILE, {}))
@@ -89,35 +79,11 @@ def load_npsso() -> str:
     return token
 
 
-def sanitize_log_message(message: str) -> str:
-    # Preserve the useful host/path while removing friend account IDs and
-    # other long query-string values from the local log.
-    message = re.sub(r"accountIds=[^&\\s)]+", "accountIds=<redacted>", message)
-    message = re.sub(
-        r"(https?://[^?\\s)]+)\\?[^\\s)]*",
-        r"\\1?<query-redacted>",
-        message,
-    )
-    return message
-
-
-def rotate_error_log() -> None:
-    try:
-        if ERROR_LOG.exists() and ERROR_LOG.stat().st_size > 256 * 1024:
-            previous = ERROR_LOG.with_suffix(".log.1")
-            previous.unlink(missing_ok=True)
-            ERROR_LOG.replace(previous)
-    except OSError:
-        pass
-
-
 def log_error(message: str) -> None:
     ensure_dirs()
-    rotate_error_log()
     timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
-    safe_message = sanitize_log_message(message)
     with ERROR_LOG.open("a", encoding="utf-8") as handle:
-        handle.write(f"[{timestamp}] {safe_message}\n")
+        handle.write(f"[{timestamp}] {message}\n")
 
 
 def cache_is_fresh(cache: dict[str, Any], max_age_seconds: int) -> bool:
@@ -131,60 +97,15 @@ def chunks(items: list[str], size: int) -> Iterable[list[str]]:
         yield items[index:index + size]
 
 
-def load_cached_auth_tokens() -> dict[str, Any]:
-    token_response = read_json(AUTH_CACHE, {})
-    required = {"access_token", "refresh_token"}
-    if not isinstance(token_response, dict) or not required.issubset(token_response):
-        return {}
-
-    refresh_expires = token_response.get("refresh_token_expires_at")
-    if isinstance(refresh_expires, (int, float)) and refresh_expires <= time.time() + 60:
-        return {}
-    return token_response
-
-
-def save_auth_tokens(psnawp: Any) -> None:
-    token_response = getattr(psnawp.authenticator, "token_response", None)
-    if isinstance(token_response, dict) and token_response.get("refresh_token"):
-        write_private_json(AUTH_CACHE, token_response)
-
-
-def clear_auth_tokens() -> None:
-    AUTH_CACHE.unlink(missing_ok=True)
-
-
-def create_client(use_cached_auth: bool = True) -> tuple[Any, Any]:
+def create_client() -> tuple[Any, Any]:
     try:
         from psnawp_api import PSNAWP
     except ImportError as exc:
         raise RuntimeError("PSNAWP is not installed. Run the included install.sh.") from exc
 
     psnawp = PSNAWP(load_npsso())
-    if use_cached_auth:
-        cached_tokens = load_cached_auth_tokens()
-        if cached_tokens:
-            psnawp.authenticator.token_response = cached_tokens
-
     client = psnawp.me()
     return psnawp, client
-
-
-def is_auth_error(exc: Exception) -> bool:
-    return type(exc).__name__ in {
-        "PSNAWPAuthenticationError",
-        "PSNAWPUnauthorizedError",
-    }
-
-
-def mark_refresh_state(status: str, error_type: str = "") -> None:
-    write_json(
-        REFRESH_STATE,
-        {
-            "last_attempt_at": time.time(),
-            "status": status,
-            "error_type": error_type,
-        },
-    )
 
 
 def rebuild_friends(client: Any, quiet: bool = False) -> list[dict[str, str]]:
@@ -305,26 +226,6 @@ def fetch_presences(
     return entries
 
 
-def perform_presence_update(
-    settings: dict[str, Any],
-    force_friends: bool,
-    use_cached_auth: bool,
-) -> dict[str, Any]:
-    psnawp, client = create_client(use_cached_auth=use_cached_auth)
-    friends = get_friends(client, settings, force=force_friends)
-    entries = fetch_presences(client, friends, settings)
-    save_auth_tokens(psnawp)
-
-    cache = {
-        "updated_at": time.time(),
-        "entries": entries,
-        "friend_count": len(friends),
-        "online_count": sum(1 for item in entries if item["online"]),
-    }
-    write_json(PRESENCE_CACHE, cache)
-    return cache
-
-
 def update_presence(force: bool = False, force_friends: bool = False) -> dict[str, Any]:
     ensure_dirs()
     settings = load_settings()
@@ -338,37 +239,27 @@ def update_presence(force: bool = False, force_friends: bool = False) -> dict[st
         try:
             fcntl.flock(lock.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
         except BlockingIOError:
+            # Another refresh is already running. Never wait behind it.
             return old_cache
 
+        # Another process may have updated just before this lock was acquired.
         old_cache = read_json(PRESENCE_CACHE, {})
         if not force and cache_is_fresh(old_cache, max_age):
             return old_cache
 
-        mark_refresh_state("running")
         try:
-            try:
-                cache = perform_presence_update(
-                    settings,
-                    force_friends=force_friends,
-                    use_cached_auth=True,
-                )
-            except Exception as exc:
-                # A cached refresh token may have expired or been revoked.
-                # Clear it once and fall back to the stored NPSSO code.
-                if is_auth_error(exc) and AUTH_CACHE.exists():
-                    clear_auth_tokens()
-                    cache = perform_presence_update(
-                        settings,
-                        force_friends=force_friends,
-                        use_cached_auth=False,
-                    )
-                else:
-                    raise
-
-            mark_refresh_state("success")
+            _, client = create_client()
+            friends = get_friends(client, settings, force=force_friends)
+            entries = fetch_presences(client, friends, settings)
+            cache = {
+                "updated_at": time.time(),
+                "entries": entries,
+                "friend_count": len(friends),
+                "online_count": sum(1 for item in entries if item["online"]),
+            }
+            write_json(PRESENCE_CACHE, cache)
             return cache
-        except Exception as exc:
-            mark_refresh_state("failed", type(exc).__name__)
+        except Exception as exc:  # Keep Polybar alive using the last good cache.
             log_error(f"{type(exc).__name__}: {exc}")
             if old_cache.get("entries") is not None:
                 return old_cache
@@ -398,20 +289,8 @@ def cached_presence() -> dict[str, Any]:
 def schedule_refresh_if_stale(cache: dict[str, Any]) -> None:
     settings = load_settings()
     max_age = int(settings["presence_refresh_seconds"])
-    if cache_is_fresh(cache, max_age):
-        return
-
-    state = read_json(REFRESH_STATE, {})
-    last_attempt = state.get("last_attempt_at", 0)
-    age = time.time() - last_attempt if isinstance(last_attempt, (int, float)) else float("inf")
-    status = state.get("status")
-
-    if status == "failed" and age < int(settings["failure_retry_seconds"]):
-        return
-    if status == "running" and age < int(settings["stuck_retry_seconds"]):
-        return
-
-    start_background_refresh()
+    if not cache_is_fresh(cache, max_age):
+        start_background_refresh()
 
 
 def print_status(cache: dict[str, Any]) -> None:
@@ -518,9 +397,8 @@ def command_refresh_worker() -> int:
 
 def command_test_auth() -> int:
     try:
-        psnawp, client = create_client()
+        _, client = create_client()
         print(f"Authenticated as: {client.online_id}")
-        save_auth_tokens(psnawp)
         return 0
     except Exception as exc:
         log_error(f"test-auth: {type(exc).__name__}: {exc}")

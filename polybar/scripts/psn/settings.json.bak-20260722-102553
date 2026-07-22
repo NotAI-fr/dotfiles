@@ -1,5 +1,5 @@
 {
-  "presence_refresh_seconds": 300,
+  "presence_refresh_seconds": 120,
   "friends_refresh_days": 7,
   "batch_size": 100,
   "show_total_on_bar": false
