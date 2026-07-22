@@ -1,21 +1,18 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-# Define where your repo lives
 REPO_DIR="$HOME/dotfiles"
 
-echo "Syncing your local dotfiles with GitHub..."
+cd "$REPO_DIR"
 
-# 1. Move into the directory
-cd "$REPO_DIR" || exit
-
-# 2. Check if the directory is clean (no uncommitted changes)
-if [[ -n $(git status -s) ]]; then
-    echo "Warning: You have uncommitted changes in $REPO_DIR."
-    echo "Please commit or stash your changes before pulling."
+if [[ -n "$(git status --porcelain)" ]]; then
+    echo "The dotfiles repo has uncommitted changes."
+    echo "Commit or discard them before syncing from GitHub."
     exit 1
 fi
 
-# 3. Pull the latest from the cloud
-git pull
+echo "Downloading the latest repo changes from GitHub..."
+git pull --ff-only origin main
 
-echo "Local folder is now up-to-date with GitHub."
+echo "The local dotfiles repo is up to date."
+echo "This script does not copy anything into ~/.config."
