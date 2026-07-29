@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+NOTIFIER="$HOME/.config/polybar/playing-notify"
+
+declare -A LAST_TRACK
+
+while true; do
+    declare -A ACTIVE_PLAYERS=()
+
+    while IFS= read -r player; do
+        [[ -n "$player" ]] || continue
+
+        # Ignore playerctld's virtual player if it is running.
+        [[ "$player" == "playerctld" ]] && continue
+
+        status=$(playerctl --player="$player" status 2>/dev/null || true)
+        [[ "$status" == "Playing" ]] || continue
+
+        ACTIVE_PLAYERS["$player"]=1
+
+        track_id=$(
+            playerctl --player="$player" \
+                metadata mpris:trackid 2>/dev/null || true
+        )
+
+        title=$(
+            playerctl --player="$player" \
+                metadata xesam:title 2>/dev/null || true
+        )
+
+        [[ -n "$title" ]] || continue
+
+        current_track="$track_id|$title"
+
+        if [[ "${LAST_TRACK[$player]:-}" != "$current_track" ]]; then
+            sleep 0.3
+            "$NOTIFIER" "$player"
+            LAST_TRACK["$player"]="$current_track"
+        fi
+    done < <(playerctl --list-all 2>/dev/null)
+
+    # Forget players that are no longer playing.
+    for player in "${!LAST_TRACK[@]}"; do
+        if [[ -z "${ACTIVE_PLAYERS[$player]+yes}" ]]; then
+            unset 'LAST_TRACK[$player]'
+        fi
+    done
+
+    sleep 1
+done

@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+
+PLAYER="${1:-}"
+[[ -n "$PLAYER" ]] || exit 0
+
+CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/playing-notify"
+ID_FILE="$CACHE_DIR/notification.id"
+FALLBACK_ICON="audio-x-generic"
+
+mkdir -p "$CACHE_DIR"
+
+# Read everything from the exact player passed by the watcher.
+status=$(playerctl --player="$PLAYER" status 2>/dev/null || true)
+[[ "$status" == "Playing" ]] || exit 0
+
+title=$(playerctl --player="$PLAYER" metadata xesam:title 2>/dev/null || true)
+artist=$(playerctl --player="$PLAYER" metadata xesam:artist 2>/dev/null || true)
+art_url=$(playerctl --player="$PLAYER" metadata mpris:artUrl 2>/dev/null || true)
+
+[[ -n "$title" ]] || exit 0
+[[ -n "$artist" ]] || artist="Unknown artist"
+
+icon=""
+
+case "$art_url" in
+    file://*)
+        icon=$(python -c '
+import sys
+from urllib.parse import unquote
+print(unquote(sys.argv[1][7:]))
+' "$art_url")
+        ;;
+
+    http://*|https://*)
+        hash=$(printf '%s' "$art_url" | sha256sum | cut -c1-16)
+        cover="$CACHE_DIR/cover-$hash"
+
+        if [[ ! -s "$cover" ]]; then
+            temporary="$cover.tmp"
+
+            if curl -LfsS --max-time 8 "$art_url" -o "$temporary"; then
+                mv "$temporary" "$cover"
+            else
+                rm -f "$temporary"
+            fi
+        fi
+
+        [[ -s "$cover" ]] && icon="$cover"
+        ;;
+esac
+
+# Close the previous music notification completely.
+# This prevents Dunst from retaining its old cover image.
+if [[ -s "$ID_FILE" ]]; then
+    old_id=$(cat "$ID_FILE")
+    [[ "$old_id" =~ ^[0-9]+$ ]] &&
+        dunstify -C "$old_id" >/dev/null 2>&1 || true
+fi
+
+if [[ -n "$icon" && -f "$icon" ]]; then
+    new_id=$(
+        dunstify \
+            -p \
+            -a "Now Playing" \
+            -t 5000 \
+            -I "$icon" \
+            "$title" \
+            "$artist"
+    )
+else
+    new_id=$(
+        dunstify \
+            -p \
+            -a "Now Playing" \
+            -t 5000 \
+            -i "$FALLBACK_ICON" \
+            "$title" \
+            "$artist"
+    )
+fi
+
+[[ "$new_id" =~ ^[0-9]+$ ]] &&
+    printf '%s\n' "$new_id" > "$ID_FILE"

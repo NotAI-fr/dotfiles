@@ -140,12 +140,29 @@ read_color() {
 
 theme_swatches() {
     local category=$1
+    local polybar_dir="$COLORSCHEME_ROOT/$category/polybar"
     local ini=""
     local c1="#727169" c2="#555555" c3="#333333"
 
-    if [[ -d "$COLORSCHEME_ROOT/$category/polybar" ]]; then
-        ini=$(find "$COLORSCHEME_ROOT/$category/polybar" \
-            -maxdepth 1 -type f -name '*.ini' -print -quit 2>/dev/null || true)
+    # Each theme normally has:
+    #   colors.ini       -> only an include-file line
+    #   <theme>.ini      -> the actual [colors] palette
+    #
+    # Picking the first *.ini is unreliable and often selects colors.ini,
+    # causing every swatch to fall back to the same grey values.
+    if [[ -f "$polybar_dir/$category.ini" ]]; then
+        ini="$polybar_dir/$category.ini"
+    elif [[ -d $polybar_dir ]]; then
+        while IFS= read -r -d '' candidate; do
+            if grep -qE '^[[:space:]]*(bg|fi|fg|alt|border)[[:space:]]*=' \
+                    "$candidate" 2>/dev/null; then
+                ini=$candidate
+                break
+            fi
+        done < <(
+            find "$polybar_dir" -maxdepth 1 -type f -name '*.ini' \
+                -print0 2>/dev/null | sort -z
+        )
     fi
 
     if [[ -n $ini ]]; then

@@ -40,8 +40,11 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 
-alias s='paru -S'
-alias fetch='fastfetch'
+alias s='yay -S'
+alias f='fastfetch'
 alias r='paru -R'
+alias ss='yay -Ss'
+alias c='clear'
 alias syu='sudo pacman -Syu'
 alias backup='~/dotfiles/backup.sh'
+export PATH="$HOME/.local/bin:$PATH"

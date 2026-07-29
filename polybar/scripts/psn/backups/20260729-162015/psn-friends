@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+set -u
+
+APP_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}/polybar/scripts/psn"
+PYTHON="${APP_DIR}/venv/bin/python"
+SCRIPT="${APP_DIR}/psn_friends.py"
+COMMAND="${1:-status}"
+
+case "${COMMAND}" in
+    refresh-worker)
+        # Normal background presence refresh. It must never survive indefinitely.
+        exec timeout --foreground --signal=TERM --kill-after=5s 35s \
+            "${PYTHON}" -u "${SCRIPT}" "$@"
+        ;;
+    refresh)
+        exec timeout --foreground --signal=TERM --kill-after=5s 45s \
+            "${PYTHON}" -u "${SCRIPT}" "$@"
+        ;;
+    refresh-friends)
+        # A full friend-list rebuild can legitimately take several minutes.
+        exec timeout --foreground --signal=TERM --kill-after=10s 15m \
+            "${PYTHON}" -u "${SCRIPT}" "$@"
+        ;;
+    test-auth)
+        exec timeout --foreground --signal=TERM --kill-after=5s 45s \
+            "${PYTHON}" -u "${SCRIPT}" "$@"
+        ;;
+    *)
+        # status/menu only read cached files and should return immediately.
+        exec "${PYTHON}" -u "${SCRIPT}" "$@"
+        ;;
+esac

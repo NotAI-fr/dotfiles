@@ -3,6 +3,8 @@
 # 1. Base Configuration Directories
 THEME_DIR="$HOME/.config/colorschemes"
 WALL_BASE_DIR="$HOME/Pictures/Walls"
+WALL_STATE_FILE="${XDG_CACHE_HOME:-$HOME/.cache}/theme-switcher/current-wallpaper"
+LOCK_EFFECT="blur"
 I3_DIR="$HOME/.config/i3"
 POLYBAR_DIR="$HOME/.config/polybar"
 KITTY_DIR="$HOME/.config/kitty"
@@ -38,14 +40,55 @@ cp "$THEME_DIR/$THEME/cava/colors" "$CAVA_DIR/colors"
 cp "$THEME_DIR/$THEME/dunst/colors.conf" "$DUNST_DIR/dunstrc.d/colors.conf"
 
 # =====================================================================
-# 4. Handle Categorized Wallpapers & Auto-Cache Lock Screen
+# 4. Pick a Random Categorized Wallpaper & Auto-Cache Lock Screen
 # =====================================================================
-# Resolve the default.* wildcard to a specific file so betterlockscreen works.
-DEFAULT_WALL=$(find "$WALL_BASE_DIR/$THEME" -maxdepth 1 -type f -name 'default.*' | head -n 1)
+WALL_DIR="$WALL_BASE_DIR/$THEME"
+WALLPAPERS=()
+CANDIDATE_WALLPAPERS=()
+LAST_WALL=""
+LOCK_WALL=""
 
-if [[ -f "$DEFAULT_WALL" ]]; then
-    feh --bg-fill "$DEFAULT_WALL"
-    betterlockscreen -u "$DEFAULT_WALL" > /dev/null 2>&1 &
+if [[ -d "$WALL_DIR" ]]; then
+    mapfile -d '' WALLPAPERS < <(
+        find "$WALL_DIR" -maxdepth 1 -type f \
+            \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' \
+               -o -iname '*.webp' -o -iname '*.gif' -o -iname '*.bmp' \
+               -o -iname '*.tif' -o -iname '*.tiff' -o -iname '*.avif' \
+               -o -iname '*.jxl' \) \
+            -print0
+    )
+fi
+
+if (( ${#WALLPAPERS[@]} == 0 )); then
+    notify-send "Theme Switcher" "No wallpapers found in: $WALL_DIR"
+else
+    [[ -r "$WALL_STATE_FILE" ]] && IFS= read -r LAST_WALL < "$WALL_STATE_FILE"
+
+    # Avoid immediately choosing the same wallpaper again when alternatives
+    # exist, while keeping the choice random among all remaining images.
+    if (( ${#WALLPAPERS[@]} > 1 )); then
+        for WALLPAPER in "${WALLPAPERS[@]}"; do
+            [[ "$WALLPAPER" == "$LAST_WALL" ]] || \
+                CANDIDATE_WALLPAPERS+=("$WALLPAPER")
+        done
+    fi
+
+    if (( ${#CANDIDATE_WALLPAPERS[@]} == 0 )); then
+        CANDIDATE_WALLPAPERS=("${WALLPAPERS[@]}")
+    fi
+
+    RANDOM_WALL=${CANDIDATE_WALLPAPERS[
+        RANDOM % ${#CANDIDATE_WALLPAPERS[@]}
+    ]}
+
+    if feh --bg-fill "$RANDOM_WALL"; then
+        mkdir -p "$(dirname "$WALL_STATE_FILE")"
+        printf '%s\n' "$RANDOM_WALL" > "$WALL_STATE_FILE"
+        LOCK_WALL="$RANDOM_WALL"
+    else
+        notify-send "Theme Switcher" \
+            "Could not set wallpaper: $RANDOM_WALL"
+    fi
 fi
 
 # GTK sync: only change the installed GTK theme and icon theme.
@@ -127,5 +170,20 @@ done
 polybar main &
 
 killall -SIGUSR1 kitty
+
+# Updating Betterlockscreen uses ImageMagick and can take a while. Start it only
+# after the desktop components have reloaded, then let it finish in the
+# background so it never delays Polybar. Generate only the blur effect used by
+# the current i3 lock key instead of rendering every available effect.
+if [[ -n "$LOCK_WALL" ]]; then
+    (
+        if ! betterlockscreen -u "$LOCK_WALL" --fx "$LOCK_EFFECT" \
+            > /dev/null 2>&1
+        then
+            notify-send "Theme Switcher" \
+                "Wallpaper changed, but the lock-screen cache could not be updated."
+        fi
+    ) &
+fi
 
 notify-send "Theme Switcher" "Theme profile changed to: $THEME"
