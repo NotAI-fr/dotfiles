@@ -13,11 +13,6 @@ RMPC_DIR="$HOME/.config/rmpc"
 CAVA_DIR="$HOME/.config/cava/themes"
 DUNST_DIR="$HOME/.config/dunst"
 
-# Vicinae discovers custom TOML themes in its data directory.
-# Each selected desktop theme replaces this one stable theme ID.
-VICINAE_THEME_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/vicinae/themes"
-VICINAE_ACTIVE_THEME="$VICINAE_THEME_DIR/current-system.toml"
-
 # 2. Query System Themes via Rofi Menu (With Uniform Color Strips)
 OPTIONS=""
 OPTIONS+="<span foreground='#ffffff'>█</span><span foreground='#444444'>█</span><span foreground='#1a1a1a'>█</span>  Monochrome     monochrome\n"
@@ -43,21 +38,6 @@ cp "$THEME_DIR/$THEME/rofi/colors.rasi" "$ROFI_DIR/colors.rasi"
 cp "$THEME_DIR/$THEME/rmpc/colors.ron" "$RMPC_DIR/colors.ron"
 cp "$THEME_DIR/$THEME/cava/colors" "$CAVA_DIR/colors"
 cp "$THEME_DIR/$THEME/dunst/colors.conf" "$DUNST_DIR/dunstrc.d/colors.conf"
-
-# Vicinae theme.
-# A temporary file followed by mv makes the directory change easy for
-# Vicinae's theme watcher to notice. No server restart is normally needed.
-VICINAE_SOURCE="$THEME_DIR/$THEME/vicinae/theme.toml"
-
-if [[ -f "$VICINAE_SOURCE" ]]; then
-    mkdir -p "$VICINAE_THEME_DIR"
-    VICINAE_TMP=$(mktemp "$VICINAE_THEME_DIR/.current-system.XXXXXX")
-    cp "$VICINAE_SOURCE" "$VICINAE_TMP"
-    mv -f "$VICINAE_TMP" "$VICINAE_ACTIVE_THEME"
-else
-    notify-send "Theme Switcher" \
-        "Missing Vicinae theme: $VICINAE_SOURCE"
-fi
 
 # =====================================================================
 # 4. Pick a Random Categorized Wallpaper & Auto-Cache Lock Screen
