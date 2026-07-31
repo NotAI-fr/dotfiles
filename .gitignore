@@ -2,7 +2,7 @@
 polybar/scripts/psn/npsso
 polybar/scripts/psn/cache/
 polybar/scripts/psn/venv/
-
+/polybar/scripts/psn/auth_tokens.json
 # MPD runtime state
 mpd/database
 mpd/log
