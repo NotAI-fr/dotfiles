@@ -1,0 +1,80 @@
+[meta]
+version = 1
+name = "System — Catppuccin Mocha"
+description = "Matches the active desktop colorscheme."
+variant = "dark"
+inherits = "vicinae-dark"
+[colors.core]
+background = "#1E1E2E"
+secondary_background = "#181825"
+foreground = "#CDD6F4"
+border = "#45475A"
+accent = "#F5C2E7"
+accent_foreground = "#1E1E2E"
+[colors.main_window]
+border = "#45475A"
+[colors.main_window.footer]
+background = "#181825"
+[colors.settings_window]
+border = "#45475A"
+[colors.shortcut]
+border = "#F5C2E7"
+[colors.accents]
+red = "#F38BA8"
+orange = "#FAB387"
+yellow = "#F9E2AF"
+green = "#A6E3A1"
+cyan = "#94E2D5"
+blue = "#89B4FA"
+magenta = "#F5C2E7"
+purple = "#CBA6F7"
+[colors.text]
+default = "#CDD6F4"
+muted = "#A6ADC8"
+danger = "#F38BA8"
+success = "#A6E3A1"
+placeholder = "#A6ADC8"
+[colors.text.links]
+default = "#89B4FA"
+visited = "#CBA6F7"
+[colors.text.selection]
+background = "#45475A"
+foreground = "#CDD6F4"
+[colors.input]
+background = "#181825"
+border = "#45475A"
+border_focus = "#F5C2E7"
+border_error = "#F38BA8"
+[colors.button.primary]
+background = "#F5C2E7"
+foreground = "#1E1E2E"
+[colors.button.primary.hover]
+background = "#CBA6F7"
+foreground = "#1E1E2E"
+[colors.button.primary.focus]
+outline = "#F5C2E7"
+[colors.list.item.hover]
+background = "#313244"
+foreground = "#CDD6F4"
+secondary_foreground = "#A6ADC8"
+[colors.list.item.selection]
+background = "#45475A"
+foreground = "#CDD6F4"
+secondary_background = "#45475A"
+secondary_foreground = "#CDD6F4"
+[colors.grid.item]
+background = "#181825"
+[colors.grid.item.selection]
+outline = "#F5C2E7"
+[colors.grid.item.hover]
+outline = "#45475A"
+[colors.scrollbars]
+background = "#F5C2E7"
+secondary_background = "#45475A"
+[colors.tooltip]
+background = "#181825"
+foreground = "#CDD6F4"
+border = "#45475A"
+[colors.loading]
+bar = "#F5C2E7"
+spinner = "#F5C2E7"

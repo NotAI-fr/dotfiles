@@ -1,0 +1,80 @@
+[meta]
+version = 1
+name = "System — Everforest"
+description = "Matches the active desktop colorscheme."
+variant = "dark"
+inherits = "vicinae-dark"
+[colors.core]
+background = "#2D353B"
+secondary_background = "#343F44"
+foreground = "#D3C6AA"
+border = "#475258"
+accent = "#A7C080"
+accent_foreground = "#2D353B"
+[colors.main_window]
+border = "#475258"
+[colors.main_window.footer]
+background = "#343F44"
+[colors.settings_window]
+border = "#475258"
+[colors.shortcut]
+border = "#A7C080"
+[colors.accents]
+red = "#E67E80"
+orange = "#E69875"
+yellow = "#DBBC7F"
+green = "#A7C080"
+cyan = "#83C092"
+blue = "#7FBBB3"
+magenta = "#D699B6"
+purple = "#D699B6"
+[colors.text]
+default = "#D3C6AA"
+muted = "#859289"
+danger = "#E67E80"
+success = "#A7C080"
+placeholder = "#859289"
+[colors.text.links]
+default = "#7FBBB3"
+visited = "#D699B6"
+[colors.text.selection]
+background = "#A7C080"
+foreground = "#2D353B"
+[colors.input]
+background = "#343F44"
+border = "#475258"
+border_focus = "#A7C080"
+border_error = "#E67E80"
+[colors.button.primary]
+background = "#A7C080"
+foreground = "#2D353B"
+[colors.button.primary.hover]
+background = "#DBBC7F"
+foreground = "#2D353B"
+[colors.button.primary.focus]
+outline = "#A7C080"
+[colors.list.item.hover]
+background = "#3D484D"
+foreground = "#D3C6AA"
+secondary_foreground = "#859289"
+[colors.list.item.selection]
+background = "#A7C080"
+foreground = "#2D353B"
+secondary_background = "#A7C080"
+secondary_foreground = "#2D353B"
+[colors.grid.item]
+background = "#343F44"
+[colors.grid.item.selection]
+outline = "#A7C080"
+[colors.grid.item.hover]
+outline = "#475258"
+[colors.scrollbars]
+background = "#A7C080"
+secondary_background = "#475258"
+[colors.tooltip]
+background = "#343F44"
+foreground = "#D3C6AA"
+border = "#475258"
+[colors.loading]
+bar = "#A7C080"
+spinner = "#A7C080"
