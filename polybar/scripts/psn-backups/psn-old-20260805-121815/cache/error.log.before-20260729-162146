@@ -1,0 +1,358 @@
+[2026-07-22 10:42:50] ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+[2026-07-22 10:58:22] SSLError: HTTPSConnectionPool(host='m.np.playstation.com', port=443): Max retries exceeded with url: /api/userProfile/v2/internal/users//basicPresences?type=primary&accountIds=<redacted>&platforms=PS4%2CPS5%2CMOBILE_APP%2CPSPC&withOwnGameTitleInfo=true (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1082)')))
+[2026-07-22 15:06:25] ConnectionError: HTTPSConnectionPool(host='m.np.playstation.com', port=443): Max retries exceeded with url: /api/userProfile/v2/internal/users//basicPresences?type=primary&accountIds=<redacted>&platforms=PS4%2CPS5%2CMOBILE_APP%2CPSPC&withOwnGameTitleInfo=true (Caused by NameResolutionError("HTTPSConnection(host='m.np.playstation.com', port=443): Failed to resolve 'm.np.playstation.com' ([Errno -3] Temporary failure in name resolution)"))
+[2026-07-22 20:49:14] ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+[2026-07-24 12:15:09] PSNAWPForbiddenError: <HTML><HEAD>
+<TITLE>Access Denied</TITLE>
+</HEAD><BODY>
+<H1>Access Denied</H1>
+ 
+You don't have permission to access "http&#58;&#47;&#47;m&#46;np&#46;playstation&#46;com&#47;api&#47;userProfile&#47;v2&#47;internal&#47;users&#47;basicPresences&#63;" on this server.<P>
+Reference&#32;&#35;18&#46;df061502&#46;1784891709&#46;18d642aa
+<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;df061502&#46;1784891709&#46;18d642aa</P>
+</BODY>
+</HTML>
+
+[2026-07-24 12:30:13] PSNAWPForbiddenError: <HTML><HEAD>
+<TITLE>Access Denied</TITLE>
+</HEAD><BODY>
+<H1>Access Denied</H1>
+ 
+You don't have permission to access "http&#58;&#47;&#47;m&#46;np&#46;playstation&#46;com&#47;api&#47;userProfile&#47;v2&#47;internal&#47;users&#47;basicPresences&#63;" on this server.<P>
+Reference&#32;&#35;18&#46;f1a1202&#46;1784892613&#46;11868021
+<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;f1a1202&#46;1784892613&#46;11868021</P>
+</BODY>
+</HTML>
+
+[2026-07-24 12:45:23] PSNAWPForbiddenError: <HTML><HEAD>
+<TITLE>Access Denied</TITLE>
+</HEAD><BODY>
+<H1>Access Denied</H1>
+ 
+You don't have permission to access "http&#58;&#47;&#47;m&#46;np&#46;playstation&#46;com&#47;api&#47;userProfile&#47;v2&#47;internal&#47;users&#47;basicPresences&#63;" on this server.<P>
+Reference&#32;&#35;18&#46;101a1202&#46;1784893519&#46;a5084951
+<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;101a1202&#46;1784893519&#46;a5084951</P>
+</BODY>
+</HTML>
+
+[2026-07-24 13:00:53] PSNAWPForbiddenError: <HTML><HEAD>
+<TITLE>Access Denied</TITLE>
+</HEAD><BODY>
+<H1>Access Denied</H1>
+ 
+You don't have permission to access "http&#58;&#47;&#47;m&#46;np&#46;playstation&#46;com&#47;api&#47;userProfile&#47;v2&#47;internal&#47;users&#47;basicPresences&#63;" on this server.<P>
+Reference&#32;&#35;18&#46;1b1a1202&#46;1784894453&#46;7a55ff29
+<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;1b1a1202&#46;1784894453&#46;7a55ff29</P>
+</BODY>
+</HTML>
+
+[2026-07-24 13:16:25] PSNAWPForbiddenError: <HTML><HEAD>
+<TITLE>Access Denied</TITLE>
+</HEAD><BODY>
+<H1>Access Denied</H1>
+ 
+You don't have permission to access "http&#58;&#47;&#47;m&#46;np&#46;playstation&#46;com&#47;api&#47;userProfile&#47;v2&#47;internal&#47;users&#47;basicPresences&#63;" on this server.<P>
+Reference&#32;&#35;18&#46;101a1202&#46;1784895385&#46;a5721be0
+<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;101a1202&#46;1784895385&#46;a5721be0</P>
+</BODY>
+</HTML>
+
+[2026-07-24 13:31:59] PSNAWPForbiddenError: <HTML><HEAD>
+<TITLE>Access Denied</TITLE>
+</HEAD><BODY>
+<H1>Access Denied</H1>
+ 
+You don't have permission to access "http&#58;&#47;&#47;userprofile&#45;np&#46;tree2&#46;playstation&#46;net&#47;api&#47;userProfile&#47;v2&#47;internal&#47;users&#47;basicPresences&#63;" on this server.<P>
+Reference&#32;&#35;18&#46;101a1202&#46;1784896319&#46;a5a2531e
+<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;101a1202&#46;1784896319&#46;a5a2531e</P>
+</BODY>
+</HTML>
+
+[2026-07-24 13:47:03] PSNAWPForbiddenError: <HTML><HEAD>
+<TITLE>Access Denied</TITLE>
+</HEAD><BODY>
+<H1>Access Denied</H1>
+ 
+You don't have permission to access "http&#58;&#47;&#47;userprofile&#45;np&#46;tree2&#46;playstation&#46;net&#47;api&#47;userProfile&#47;v2&#47;internal&#47;users&#47;basicPresences&#63;" on this server.<P>
+Reference&#32;&#35;18&#46;101a1202&#46;1784897223&#46;a5c7d9f6
+<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;101a1202&#46;1784897223&#46;a5c7d9f6</P>
+</BODY>
+</HTML>
+
+[2026-07-24 14:02:36] PSNAWPForbiddenError: <HTML><HEAD>
+<TITLE>Access Denied</TITLE>
+</HEAD><BODY>
+<H1>Access Denied</H1>
+ 
+You don't have permission to access "http&#58;&#47;&#47;m&#46;np&#46;playstation&#46;com&#47;api&#47;userProfile&#47;v2&#47;internal&#47;users&#47;basicPresences&#63;" on this server.<P>
+Reference&#32;&#35;18&#46;101a1202&#46;1784898156&#46;a5f78b7f
+<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;101a1202&#46;1784898156&#46;a5f78b7f</P>
+</BODY>
+</HTML>
+
+[2026-07-24 14:18:10] PSNAWPForbiddenError: <HTML><HEAD>
+<TITLE>Access Denied</TITLE>
+</HEAD><BODY>
+<H1>Access Denied</H1>
+ 
+You don't have permission to access "http&#58;&#47;&#47;m&#46;np&#46;playstation&#46;com&#47;api&#47;userProfile&#47;v2&#47;internal&#47;users&#47;basicPresences&#63;" on this server.<P>
+Reference&#32;&#35;18&#46;101a1202&#46;1784899090&#46;a62b5ba1
+<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;101a1202&#46;1784899090&#46;a62b5ba1</P>
+</BODY>
+</HTML>
+
+[2026-07-24 14:33:14] PSNAWPForbiddenError: <HTML><HEAD>
+<TITLE>Access Denied</TITLE>
+</HEAD><BODY>
+<H1>Access Denied</H1>
+ 
+You don't have permission to access "http&#58;&#47;&#47;m&#46;np&#46;playstation&#46;com&#47;api&#47;userProfile&#47;v2&#47;internal&#47;users&#47;basicPresences&#63;" on this server.<P>
+Reference&#32;&#35;18&#46;1b1a1202&#46;1784899994&#46;7c2ec3be
+<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;1b1a1202&#46;1784899994&#46;7c2ec3be</P>
+</BODY>
+</HTML>
+
+[2026-07-24 14:48:23] PSNAWPForbiddenError: <HTML><HEAD>
+<TITLE>Access Denied</TITLE>
+</HEAD><BODY>
+<H1>Access Denied</H1>
+ 
+You don't have permission to access "http&#58;&#47;&#47;m&#46;np&#46;playstation&#46;com&#47;api&#47;userProfile&#47;v2&#47;internal&#47;users&#47;basicPresences&#63;" on this server.<P>
+Reference&#32;&#35;18&#46;6f57dd58&#46;1784900903&#46;2bf1f66d
+<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;6f57dd58&#46;1784900903&#46;2bf1f66d</P>
+</BODY>
+</HTML>
+
+[2026-07-24 15:03:28] PSNAWPForbiddenError: <HTML><HEAD>
+<TITLE>Access Denied</TITLE>
+</HEAD><BODY>
+<H1>Access Denied</H1>
+ 
+You don't have permission to access "http&#58;&#47;&#47;m&#46;np&#46;playstation&#46;com&#47;api&#47;userProfile&#47;v2&#47;internal&#47;users&#47;basicPresences&#63;" on this server.<P>
+Reference&#32;&#35;18&#46;6f57dd58&#46;1784901808&#46;2bf7532c
+<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;6f57dd58&#46;1784901808&#46;2bf7532c</P>
+</BODY>
+</HTML>
+
+[2026-07-24 15:18:35] PSNAWPForbiddenError: <HTML><HEAD>
+<TITLE>Access Denied</TITLE>
+</HEAD><BODY>
+<H1>Access Denied</H1>
+ 
+You don't have permission to access "http&#58;&#47;&#47;m&#46;np&#46;playstation&#46;com&#47;api&#47;userProfile&#47;v2&#47;internal&#47;users&#47;basicPresences&#63;" on this server.<P>
+Reference&#32;&#35;18&#46;101a1202&#46;1784902715&#46;a7031e3e
+<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;101a1202&#46;1784902715&#46;a7031e3e</P>
+</BODY>
+</HTML>
+
+[2026-07-24 15:33:57] PSNAWPForbiddenError: <HTML><HEAD>
+<TITLE>Access Denied</TITLE>
+</HEAD><BODY>
+<H1>Access Denied</H1>
+ 
+You don't have permission to access "http&#58;&#47;&#47;m&#46;np&#46;playstation&#46;com&#47;api&#47;userProfile&#47;v2&#47;internal&#47;users&#47;basicPresences&#63;" on this server.<P>
+Reference&#32;&#35;18&#46;54e41602&#46;1784903637&#46;207a4dab
+<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;54e41602&#46;1784903637&#46;207a4dab</P>
+</BODY>
+</HTML>
+
+[2026-07-24 15:49:13] PSNAWPForbiddenError: <HTML><HEAD>
+<TITLE>Access Denied</TITLE>
+</HEAD><BODY>
+<H1>Access Denied</H1>
+ 
+You don't have permission to access "http&#58;&#47;&#47;m&#46;np&#46;playstation&#46;com&#47;api&#47;userProfile&#47;v2&#47;internal&#47;users&#47;basicPresences&#63;" on this server.<P>
+Reference&#32;&#35;18&#46;9f711102&#46;1784904553&#46;351388a1
+<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;9f711102&#46;1784904553&#46;351388a1</P>
+</BODY>
+</HTML>
+
+[2026-07-24 16:04:17] PSNAWPForbiddenError: <HTML><HEAD>
+<TITLE>Access Denied</TITLE>
+</HEAD><BODY>
+<H1>Access Denied</H1>
+ 
+You don't have permission to access "http&#58;&#47;&#47;m&#46;np&#46;playstation&#46;com&#47;api&#47;userProfile&#47;v2&#47;internal&#47;users&#47;basicPresences&#63;" on this server.<P>
+Reference&#32;&#35;18&#46;7de41602&#46;1784905457&#46;286e4172
+<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;7de41602&#46;1784905457&#46;286e4172</P>
+</BODY>
+</HTML>
+
+[2026-07-24 16:19:50] PSNAWPForbiddenError: <HTML><HEAD>
+<TITLE>Access Denied</TITLE>
+</HEAD><BODY>
+<H1>Access Denied</H1>
+ 
+You don't have permission to access "http&#58;&#47;&#47;m&#46;np&#46;playstation&#46;com&#47;api&#47;userProfile&#47;v2&#47;internal&#47;users&#47;basicPresences&#63;" on this server.<P>
+Reference&#32;&#35;18&#46;1b1a1202&#46;1784906390&#46;7e5d13fd
+<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;1b1a1202&#46;1784906390&#46;7e5d13fd</P>
+</BODY>
+</HTML>
+
+[2026-07-24 16:35:23] PSNAWPForbiddenError: <HTML><HEAD>
+<TITLE>Access Denied</TITLE>
+</HEAD><BODY>
+<H1>Access Denied</H1>
+ 
+You don't have permission to access "http&#58;&#47;&#47;m&#46;np&#46;playstation&#46;com&#47;api&#47;userProfile&#47;v2&#47;internal&#47;users&#47;basicPresences&#63;" on this server.<P>
+Reference&#32;&#35;18&#46;1b1a1202&#46;1784907323&#46;7eae8d4e
+<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;1b1a1202&#46;1784907323&#46;7eae8d4e</P>
+</BODY>
+</HTML>
+
+[2026-07-24 16:50:56] PSNAWPForbiddenError: <HTML><HEAD>
+<TITLE>Access Denied</TITLE>
+</HEAD><BODY>
+<H1>Access Denied</H1>
+ 
+You don't have permission to access "http&#58;&#47;&#47;m&#46;np&#46;playstation&#46;com&#47;api&#47;userProfile&#47;v2&#47;internal&#47;users&#47;basicPresences&#63;" on this server.<P>
+Reference&#32;&#35;18&#46;6f57dd58&#46;1784908256&#46;2c1884dc
+<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;6f57dd58&#46;1784908256&#46;2c1884dc</P>
+</BODY>
+</HTML>
+
+[2026-07-24 17:06:29] PSNAWPForbiddenError: <HTML><HEAD>
+<TITLE>Access Denied</TITLE>
+</HEAD><BODY>
+<H1>Access Denied</H1>
+ 
+You don't have permission to access "http&#58;&#47;&#47;m&#46;np&#46;playstation&#46;com&#47;api&#47;userProfile&#47;v2&#47;internal&#47;users&#47;basicPresences&#63;" on this server.<P>
+Reference&#32;&#35;18&#46;450f1502&#46;1784909189&#46;46b7278
+<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;450f1502&#46;1784909189&#46;46b7278</P>
+</BODY>
+</HTML>
+
+[2026-07-24 17:22:03] PSNAWPForbiddenError: <HTML><HEAD>
+<TITLE>Access Denied</TITLE>
+</HEAD><BODY>
+<H1>Access Denied</H1>
+ 
+You don't have permission to access "http&#58;&#47;&#47;userprofile&#45;np&#46;tree2&#46;playstation&#46;net&#47;api&#47;userProfile&#47;v2&#47;internal&#47;users&#47;basicPresences&#63;" on this server.<P>
+Reference&#32;&#35;18&#46;a657dd58&#46;1784910123&#46;86dfd9b
+<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;a657dd58&#46;1784910123&#46;86dfd9b</P>
+</BODY>
+</HTML>
+
+[2026-07-24 17:37:44] PSNAWPForbiddenError: <HTML><HEAD>
+<TITLE>Access Denied</TITLE>
+</HEAD><BODY>
+<H1>Access Denied</H1>
+ 
+You don't have permission to access "http&#58;&#47;&#47;m&#46;np&#46;playstation&#46;com&#47;api&#47;userProfile&#47;v2&#47;internal&#47;users&#47;basicPresences&#63;" on this server.<P>
+Reference&#32;&#35;18&#46;5fe41602&#46;1784911063&#46;26dc42b6
+<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;5fe41602&#46;1784911063&#46;26dc42b6</P>
+</BODY>
+</HTML>
+
+[2026-07-24 21:57:57] SSLError: HTTPSConnectionPool(host='m.np.playstation.com', port=443): Max retries exceeded with url: /api/userProfile/v2/internal/users//basicPresences?type=primary&accountIds=<redacted>&platforms=PS4%2CPS5%2CMOBILE_APP%2CPSPC&withOwnGameTitleInfo=true (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1082)')))
+[2026-07-25 12:00:10] SSLError: HTTPSConnectionPool(host='m.np.playstation.com', port=443): Max retries exceeded with url: /api/userProfile/v2/internal/users//basicPresences?type=primary&accountIds=<redacted>&platforms=PS4%2CPS5%2CMOBILE_APP%2CPSPC&withOwnGameTitleInfo=true (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1082)')))
+[2026-07-25 20:53:57] SSLError: HTTPSConnectionPool(host='m.np.playstation.com', port=443): Max retries exceeded with url: /api/userProfile/v2/internal/users//basicPresences?type=primary&accountIds=<redacted>&platforms=PS4%2CPS5%2CMOBILE_APP%2CPSPC&withOwnGameTitleInfo=true (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1082)')))
+[2026-07-25 22:09:56] ConnectionError: HTTPSConnectionPool(host='m.np.playstation.com', port=443): Max retries exceeded with url: /api/userProfile/v2/internal/users//basicPresences?type=primary&accountIds=<redacted>&platforms=PS4%2CPS5%2CMOBILE_APP%2CPSPC&withOwnGameTitleInfo=true (Caused by NameResolutionError("HTTPSConnection(host='m.np.playstation.com', port=443): Failed to resolve 'm.np.playstation.com' ([Errno -3] Temporary failure in name resolution)"))
+[2026-07-28 14:02:58] ConnectionError: ('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer'))
+[2026-07-28 14:13:51] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 14:29:02] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 14:44:13] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 14:59:28] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 15:14:35] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 15:29:44] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 15:44:56] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 16:00:03] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 16:15:39] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 16:31:02] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 16:46:20] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 17:01:51] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 17:17:47] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 17:32:54] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 17:48:02] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 18:03:36] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 18:19:05] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 18:34:07] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 18:49:12] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 19:04:14] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 19:19:21] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 19:35:14] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 19:50:24] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 20:05:31] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 20:21:04] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 20:36:32] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 20:51:54] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 21:07:13] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 21:23:08] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 21:38:20] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 21:53:49] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 22:09:16] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 22:24:24] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 22:39:32] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 22:55:05] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 23:10:38] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 23:26:12] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 23:41:45] AttributeError: 'str' object has no attribute 'get'
+[2026-07-28 23:57:17] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 00:12:47] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 00:27:54] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 00:43:22] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 00:58:26] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 01:13:29] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 01:28:36] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 01:44:10] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 01:59:52] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 02:15:14] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 02:30:49] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 02:46:17] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 03:01:48] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 03:16:59] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 03:32:32] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 03:48:03] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 04:03:38] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 04:19:08] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 04:34:14] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 04:49:47] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 05:05:45] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 05:20:52] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 05:36:27] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 05:52:00] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 06:07:44] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 06:23:07] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 06:38:35] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 06:53:38] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 07:08:41] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 07:23:44] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 07:38:47] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 07:53:50] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 08:08:53] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 08:23:57] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 08:39:00] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 08:54:03] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 09:09:06] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 09:24:09] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 09:39:12] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 09:54:15] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 10:09:18] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 10:24:21] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 10:31:54] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 10:47:01] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 11:02:05] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 11:12:47] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 11:28:07] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 11:43:49] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 11:59:07] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 12:14:42] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 12:30:10] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 12:45:18] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 13:00:46] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 13:15:53] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 13:31:36] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 13:47:00] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 14:02:33] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 14:17:42] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 14:32:54] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 14:48:00] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 15:03:09] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 15:18:21] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 15:33:52] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 15:48:58] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 16:03:02] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 16:18:20] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 16:20:20] test-auth: AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 16:20:25] AttributeError: 'str' object has no attribute 'get'
+[2026-07-29 16:21:16] test-auth: SSLError: HTTPSConnectionPool(host='ca.account.sony.com', port=443): Max retries exceeded with url: /api/authz/v3/oauth/authorize?access_type=offline&cid=00000000-0000-0000-0000-201a065cbb11&client_id=09515159-7237-4370-9b40-3806e67c0891&device_base_font_size=10&device_profile=mobile&elements_visibility=no_aclink&enable_scheme_error_code=true&no_captcha=true&PlatformPrivacyWs1=minimal&redirect_uri=com.scee.psxandroid.scecompcall%3A%2F%2Fredirect&response_type=code&scope=psn%3Amobile.v2.core+psn%3Aclientapp&service_entity=urn%3Aservice-entity%3Apsn&service_logo=ps&smcid=psapp%3Asignin&support_scheme=sneiprls&turnOnTrustedBrowser=true&ui=pr (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1082)')))

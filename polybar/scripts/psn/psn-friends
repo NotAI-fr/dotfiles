@@ -6,6 +6,11 @@ PYTHON="${APP_DIR}/venv/bin/python"
 SCRIPT="${APP_DIR}/psn_friends.py"
 COMMAND="${1:-status}"
 
+if [[ ! -x "${PYTHON}" || ! -f "${SCRIPT}" ]]; then
+    printf 'PSN Polybar runtime is incomplete. Run:\n  %s/setup.sh repair\n' "${APP_DIR}" >&2
+    exit 127
+fi
+
 run_timed() {
     local duration="$1"
     local mode="$2"
@@ -23,17 +28,16 @@ run_timed() {
 
 case "${COMMAND}" in
     presence-worker)
-        run_timed 60s presence "$@"
+        run_timed 90s presence "$@"
         ;;
     full-worker)
-        # Friend-list resolution can take much longer than one presence batch.
-        run_timed 5m full "$@"
+        run_timed 6m full "$@"
         ;;
     refresh|refresh-friends)
-        run_timed 5m full "$@"
+        run_timed 6m full "$@"
         ;;
     refresh-presence|test-auth)
-        run_timed 60s presence "$@"
+        run_timed 90s presence "$@"
         ;;
     *)
         exec "${PYTHON}" -u "${SCRIPT}" "$@"

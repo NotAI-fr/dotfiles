@@ -1,0 +1,11 @@
+{
+  "status": "failed",
+  "mode": "full",
+  "pid": 0,
+  "started_at": 0,
+  "last_attempt_at": 1785929173.0743022,
+  "last_success_at": null,
+  "consecutive_failures": 4,
+  "next_retry_at": 1785929473.074303,
+  "error_type": "RuntimeError"
+}

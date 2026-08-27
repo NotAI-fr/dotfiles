@@ -1,0 +1,10 @@
+{
+  "status": "failed",
+  "mode": "full",
+  "started_at": 0,
+  "last_attempt_at": 1785928399.699888,
+  "last_success_at": 1785879589.4432473,
+  "consecutive_failures": 21,
+  "next_retry_at": 1785928699.69989,
+  "error_type": "AttributeError"
+}

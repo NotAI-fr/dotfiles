@@ -9,7 +9,9 @@
     wrap_navigation: true,
     theme: "colors",
     cache_dir: Some("/tmp/rmpc/cache"),
-    lyrics_dir: "~/Music",
+    lyrics_dir: Some("/home/nobloat/Music/Juice WRLD/lyrics"),
+    enable_lyrics_hot_reload: true,
+    enable_lyrics_index: true,
     status_update_interval_ms: 1000,
     enable_mouse: true,
     enable_config_hot_reload: true,
@@ -162,43 +164,7 @@
             border_type: None,
             pane: Pane(Search),
         ),
-        (
-            name: "Testing",
-            border_type: Single,
-            pane: Split(
-                direction: Horizontal,
-                panes: [
-                    (
-                        size: "40%",
-                        pane: Pane(Queue),
-                    ),
-                    (
-                        size: "60%",
-                        pane: Split(
-                            direction: Vertical,
-                            panes: [
-                                (
-                                    size: "50%",
-                                    pane: Pane(Directories),
-                                ),
-                                (
-                                    size: "50%",
-                                    pane: Split(
-                                        direction: Horizontal,
-                                        panes: [
-                                            (
-                                                size: "60%",
-                                                pane: Split(
-                                                    direction: Vertical,
-                                                    panes: [
-                                                        (
-                                                            size: "50%",
-                                                            pane: Pane(Albums),
-                                                        ),
-                                                        (
-                                                            size: "50%",
-                                                            pane: Pane(Artists),
-                                                        ),
+       
                                                     ],
                                                 ),
                                             ),

@@ -1,0 +1,12 @@
+{
+  "presence_refresh_seconds": 180,
+  "friends_refresh_seconds": 21600,
+  "friend_names_refresh_seconds": 604800,
+  "stale_after_seconds": 600,
+  "resume_gap_seconds": 120,
+  "failure_retry_base_seconds": 60,
+  "failure_retry_max_seconds": 300,
+  "manual_lock_wait_seconds": 15,
+  "batch_size": 100,
+  "show_total_on_bar": false
+}
