@@ -20,7 +20,6 @@ ROFI_GRID_THEME="$HOME/.config/rofi/grid.rasi"
 CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/wallpaper-picker"
 THUMB_DIR="$CACHE_DIR/thumbnails"
 LAST_DIR="$CACHE_DIR/last"
-CURRENT_FILE="$CACHE_DIR/current.path"
 BLS_PENDING="$CACHE_DIR/betterlockscreen.pending"
 BLS_LOCK="$CACHE_DIR/betterlockscreen.lock"
 FAVORITES_DIR="$WALLPAPER_BASE/Favorites"
@@ -172,31 +171,6 @@ theme_swatches() {
     fi
 
     printf '%s\t%s\t%s\n' "$c1" "$c2" "$c3"
-}
-
-current_wallpaper() {
-    local current=""
-
-    if [[ -r "$CURRENT_FILE" ]]; then
-        IFS= read -r current < "$CURRENT_FILE" || true
-    fi
-
-    if [[ -n $current && -f $current ]]; then
-        resolve_path "$current"
-        return
-    fi
-
-    # Best-effort fallback for a wallpaper set directly by feh.
-    if [[ -r "$HOME/.fehbg" ]]; then
-        current=$(grep -oE "'[^']+\.(jpg|jpeg|png|webp|bmp)'" "$HOME/.fehbg" 2>/dev/null |
-            tail -n1 | sed "s/^'//;s/'$//" || true)
-        if [[ -n $current && -f $current ]]; then
-            resolve_path "$current"
-            return
-        fi
-    fi
-
-    printf '\n'
 }
 
 last_file() {
@@ -378,7 +352,7 @@ update_lockscreen_async() {
 }
 
 apply_wallpaper() {
-    local selected=$1 category=$2 wallpaper current actual_category
+    local selected=$1 category=$2 wallpaper actual_category
 
     wallpaper=$(resolve_path "$selected")
     [[ -f $wallpaper ]] || {
@@ -386,18 +360,12 @@ apply_wallpaper() {
         return 1
     }
 
-    current=$(current_wallpaper)
-    if [[ -n $current && $wallpaper == "$current" ]]; then
-        notify "Already active" "$(basename "$wallpaper")"
-        return 0
-    fi
 
     feh --bg-scale "$wallpaper" || {
         notify "Wallpaper failed" "feh could not apply $(basename "$wallpaper")."
         return 1
     }
 
-    printf '%s\n' "$wallpaper" > "$CURRENT_FILE"
     remember_last "$category" "$wallpaper"
 
     actual_category=$(source_category "$wallpaper")
@@ -468,28 +436,21 @@ random_wallpaper() {
     local category=$1
     shift
     local -a files=("$@")
-    local count=${#files[@]} current chosen attempts=0
+    local count=${#files[@]} chosen
 
     (( count > 0 )) || {
         notify "No wallpapers" "This category is empty."
         return 1
     }
 
-    current=$(current_wallpaper)
     chosen=${files[RANDOM % count]}
-
-    while (( count > 1 && attempts < 8 )) &&
-          [[ $(resolve_path "$chosen") == "$current" ]]; do
-        chosen=${files[RANDOM % count]}
-        ((attempts++))
-    done
 
     apply_wallpaper "$chosen" "$category"
 }
 
 browse_category() {
     local category=$1 directory prompt input="$TMP_DIR/wallpapers.input"
-    local current last selected_row index status selected
+    local last selected_row index status selected
     local source resolved filename markers label thumb icon src_theme
     local -a files=() entries=()
     local special_count=1
@@ -510,7 +471,6 @@ browse_category() {
         }
 
         refresh_favorites
-        current=$(current_wallpaper)
         last=$(last_wallpaper "$category")
         selected_row=0
         entries=()
@@ -526,12 +486,8 @@ browse_category() {
             filename=$(basename "$resolved")
             markers=""
 
-            if [[ $resolved == "$current" ]]; then
-                markers+="󰄬 "
-                selected_row=${#entries[@]}
-            fi
             is_favorite "$resolved" && markers+="󰋪 "
-            if [[ -n $last && $resolved == "$last" && $resolved != "$current" ]]; then
+            if [[ -n $last && $resolved == "$last" ]]; then
                 markers+="󰁯 "
                 (( selected_row == 0 )) && selected_row=${#entries[@]}
             fi
