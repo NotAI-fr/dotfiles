@@ -9,23 +9,28 @@
     wrap_navigation: true,
     theme: "colors",
     cache_dir: Some("/tmp/rmpc/cache"),
-    lyrics_dir: Some("/home/nobloat/Music/Juice WRLD/lyrics"),
+    lyrics_dir: Some("/home/nobloat/Music"),
     enable_lyrics_hot_reload: true,
     enable_lyrics_index: true,
     status_update_interval_ms: 1000,
     enable_mouse: true,
     enable_config_hot_reload: true,
+
     album_art: (
         method: Auto,
-        max_size_px: (width: 0, height: 0),
+        max_size_px: (width: 1200, height: 1200),
         vertical_align: Top,
         horizontal_align: Center,
     ),
 
     keybinds: (
+        clear: true,
+
         global: {
             "q":       Quit,
-            "#":       ShowHelp,
+            "?":       ShowHelp,
+            "u":       Update,
+            "C":       ToggleConsume,
             "O":       ShowOutputs,
             "I":       ShowCurrentSongInfo,
             "<C-p>":   ShowDecoders,
@@ -36,28 +41,35 @@
             "s":       Stop,
             ">":       NextTrack,
             "<":       PreviousTrack,
-            "<Right>": NextTab,
+
+            // Tab switching: arrows are intentionally NOT used here.
             "<Tab>":   NextTab,
-            "<Left>":  PreviousTab,
             "<S-Tab>": PreviousTab,
             "1":       SwitchToTab("Queue"),
             "2":       SwitchToTab("Directories"),
-            "3":       SwitchToTab("Artists"),
-            "4":       SwitchToTab("Album Artists"),
-            "5":       SwitchToTab("Albums"),
-            "6":       SwitchToTab("Playlists"),
-            "7":       SwitchToTab("Search"),
+            "3":       SwitchToTab("Album Artists"),
+            "4":       SwitchToTab("Playlists"),
+            "5":       SwitchToTab("Search"),
+
             "z":       ToggleRepeat,
             "x":       ToggleRandom,
             "c":       ToggleSingle,
             "f":       SeekForward,
             "b":       SeekBack,
         },
+
         navigation: {
+            // Normal arrow-key navigation.
+            "<Up>":      Up,
+            "<Down>":    Down,
+            "<Left>":    Left,
+            "<Right>":   Right,
+
             "<S-Up>":    PaneUp,
             "<S-Down>":  PaneDown,
             "<S-Left>":  PaneLeft,
             "<S-Right>": PaneRight,
+
             "<C-u>":     UpHalf,
             "N":         PreviousResult,
             "a":         Add,
@@ -81,16 +93,28 @@
             "D":         Delete,
             "k":         Up,
             "B":         ShowInfo,
+
+            // Playlist saving.
+            // Shift+P: save the song under the cursor to a playlist.
+            // If songs are marked with Space, RMPC applies this action to those marked songs.
+            "P":         Save(kind: Modal(all: false, duplicates_strategy: Ask)),
+
+            // Shift+S: save the entire current queue/directory to a playlist.
+            "S":         Save(kind: Modal(all: true, duplicates_strategy: Ask)),
+
+            // Ctrl+S: save marked/selected songs to a playlist.
+            // If nothing is marked, this falls back to the song under the cursor.
+            "<C-s>":     Save(kind: Modal(all: false, duplicates_strategy: Ask)),
         },
+
         queue: {
             "D":     DeleteAll,
             "<CR>":  Play,
-            "m":     Save,
-            "a":     AddToPlaylist,
             "X":     Shuffle,
             "d":     Delete,
         },
     ),
+
     search: (
         case_sensitive: false,
         mode: Contains,
@@ -102,10 +126,10 @@
             (value: "title",       label: "Title"),
         ],
     ),
+
     tabs: [
         (
             name: "Queue",
-            border_type: None,
             pane: Split(
                 direction: Horizontal,
                 panes: [
@@ -120,7 +144,7 @@
                                     pane: Pane(AlbumArt),
                                 ),
                                 (
-                                    size: "20%",
+                                    size: "30%",
                                     borders: "TOP",
                                     pane: Pane(Lyrics),
                                 ),
@@ -128,54 +152,40 @@
                         ),
                     ),
                     (
-                        size: "100%",
-                        pane: Pane(Queue),
-                    )
-                ],
-            ),
-        ),
-        (
-            name: "Directories",
-            border_type: None,
-            pane: Pane(Directories),
-        ),
-        (
-            name: "Artists",
-            border_type: None,
-            pane: Pane(Artists),
-        ),
-        (
-            name: "Album Artists",
-            border_type: None,
-            pane: Pane(AlbumArtists),
-        ),
-        (
-            name: "Albums",
-            border_type: None,
-            pane: Pane(Albums),
-        ),
-        (
-            name: "Playlists",
-            border_type: None,
-            pane: Pane(Playlists),
-        ),
-        (
-            name: "Search",
-            border_type: None,
-            pane: Pane(Search),
-        ),
-       
-                                                    ],
-                                                ),
-                                            ),
-                                        ],
-                                    ),
+                        size: "70%",
+                        pane: Split(
+                            direction: Vertical,
+                            panes: [
+                                (
+                                    size: "1",
+                                    pane: Pane(QueueHeader()),
+                                ),
+                                (
+                                    size: "100%",
+                                    pane: Pane(Queue),
                                 ),
                             ],
                         ),
                     ),
                 ],
             ),
+        ),
+
+        (
+            name: "Directories",
+            pane: Pane(Directories),
+        ),
+        (
+            name: "Album Artists",
+            pane: Pane(AlbumArtists),
+        ),
+        (
+            name: "Playlists",
+            pane: Pane(Playlists),
+        ),
+        (
+            name: "Search",
+            pane: Pane(Search),
         ),
     ],
 )

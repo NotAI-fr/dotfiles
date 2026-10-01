@@ -15,7 +15,7 @@
     preview_label_style: (fg: "#859289"),
     preview_metadata_group_style: (fg: "#859289", modifiers: "Bold"),
 
-    highlighted_item_style: (fg: "#a7c080", modifiers: "Bold"),
+    highlighted_item_style: (fg: "#a7c080", bg: "#2d353b", modifiers: "Bold"),
     current_item_style: (fg: "#2d353b", bg: "#a7c080", modifiers: "Bold"),
 
     borders_style: (fg: "#859289"),
@@ -70,7 +70,7 @@
     ),
 
     lyrics: (
-        timestamp: false
+        timestamp: false,
     ),
 
     browser_song_format: [
@@ -256,7 +256,7 @@
                     ]))
                 ),
                 (
-                    size: "6",
+                    size: "14",
                     pane: Pane(Property(content: [
                         (kind: Text("["), style: (fg: "#a7c080", modifiers: "Bold")),
                         (kind: Property(Status(RepeatV2(

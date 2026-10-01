@@ -1,93 +1,122 @@
-// Inspired by Catnap (https://github.com/iinsertNameHere/catnap)
 {
     "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
-    "logo": {
-        "type": "small",
-        "padding": {
-            "top": 1
-        }
+
+"logo": {
+    "type": "kitty",
+    "source": "~/.config/fastfetch/bocchi.png",
+    "height": 16,
+    "padding": {
+        "top": 0,
+        "left": 10,
+        "right": 7
     },
+    "printRemaining": false
+},
+
     "display": {
         "separator": " "
     },
+
     "modules": [
         {
             "key": "╭───────────╮",
             "type": "custom"
         },
+
         {
             "key": "│ {#31} user    {#keys}│",
             "type": "title",
             "format": "{user-name}"
         },
+
         {
             "key": "│ {#32}󰇅 host    {#keys}│",
             "type": "title",
             "format": "{host-name}"
         },
+
         {
             "key": "│ {#33}󰅐 uptime  {#keys}│",
             "type": "uptime"
         },
+
         {
             "key": "│ {#34}{icon} distro  {#keys}│",
             "type": "os"
         },
+
         {
             "key": "│ {#35} kernel  {#keys}│",
             "type": "kernel"
         },
+
         {
             "key": "│ {#36}󰏖 pkgs    {#keys}│",
             "type": "packages"
         },
+
         {
             "key": "│ {#31}󰇄 desktop {#keys}│",
             "type": "de"
         },
+
         {
             "key": "│ {#32} wm      {#keys}│",
             "type": "wm"
         },
+
         {
             "key": "│ {#33} term    {#keys}│",
             "type": "terminal"
         },
+
         {
             "key": "│ {#34} shell   {#keys}│",
             "type": "shell"
         },
+
         {
             "key": "│ {#35}󰍛 cpu     {#keys}│",
             "type": "cpu",
             "showPeCoreCount": true
         },
+
         {
             "key": "│ {#36}󰉉 disk    {#keys}│",
             "type": "disk",
             "folders": "/"
         },
+
         {
             "key": "│ {#31} memory  {#keys}│",
             "type": "memory"
         },
+
         {
             "key": "│ {#32}󰩟 network {#keys}│",
             "type": "localip",
             "format": "{ipv4} ({ifname})"
         },
+
         {
             "key": "├───────────┤",
             "type": "custom"
         },
+
         {
-            "key": "│ {#39} colors  {#keys}│",
-            "type": "colors",
-            "symbol": "circle"
-        },
-        {
-            "key": "╰───────────╯",
-            "type": "custom"
-        }
+    "key": "│ {#39} colors  {#keys}│",
+    "type": "colors",
+    "symbol": "circle"
+},
+
+{
+    "key": "│           │",
+    "type": "custom"
+},
+
+{
+    "key": "╰───────────╯",
+    "type": "custom"
+}
     ]
 }

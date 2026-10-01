@@ -24,3 +24,5 @@ for_window [class="Pavucontrol"] floating enable, border pixel 3, resize set 600
 for_window [class="Blueman-manager"] floating enable, border pixel 3, resize set 600 px 400 px
 
 for_window [instance="weather_tui"] floating enable, resize set 850 850, move position center
+
+focus_follows_mouse yes

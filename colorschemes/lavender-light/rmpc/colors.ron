@@ -60,7 +60,7 @@
         inactive_style: (fg: "#b8afc0"),
     ),
     lyrics: (
-        timestamp: false
+        timestamp: false,
     ),
     browser_song_format: [
         (
@@ -232,7 +232,7 @@
                     pane: Pane(Property(content: [(kind: Property(Status(InputBuffer())), style: (fg: "#b8afc0"), align: Left)]))
                 ),
                 (
-                    size: "6",
+                    size: "14",
                     pane: Pane(Property(content: [
                         (kind: Text("["), style: (fg: "#b8afc0", modifiers: "Bold")),
                         (kind: Property(Status(RepeatV2(

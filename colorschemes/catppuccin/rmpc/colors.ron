@@ -12,7 +12,7 @@
     modal_backdrop: false,
     preview_label_style: (fg: "#bac2de"),
     preview_metadata_group_style: (fg: "#bac2de", modifiers: "Bold"),
-    highlighted_item_style: (fg: "#b4befe", modifiers: "Bold"),
+    highlighted_item_style: (fg: "#b4befe", bg: "#1e1e2e", modifiers: "Bold"),
     current_item_style: (fg: "#1e1e2e", bg: "#b4befe", modifiers: "Bold"),
     borders_style: (fg: "#7f849c"),
     highlight_border_style: (fg: "#7f849c"),
@@ -60,7 +60,7 @@
         inactive_style: (),
     ),
     lyrics: (
-        timestamp: false
+        timestamp: false,
     ),
     browser_song_format: [
         (
@@ -232,7 +232,7 @@
                     pane: Pane(Property(content: [(kind: Property(Status(InputBuffer())), style: (fg: "#bac2de"), align: Left)]))
                 ),
                 (
-                    size: "6",
+                    size: "14",
                     pane: Pane(Property(content: [
                         (kind: Text("["), style: (fg: "#bac2de", modifiers: "Bold")),
                         (kind: Property(Status(RepeatV2(
