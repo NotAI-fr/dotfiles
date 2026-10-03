@@ -12,10 +12,10 @@
     modal_backdrop: false,
     preview_label_style: (fg: "#9e9e9e"),
     preview_metadata_group_style: (fg: "#9e9e9e", modifiers: "Bold"),
-    highlighted_item_style: (fg: "#9e9e9e", modifiers: "Bold"),
-    current_item_style: (fg: "black", bg: "#9e9e9e", modifiers: "Bold"),
+    highlighted_item_style: (fg: "#FFFFFF", modifiers: "Bold"),
+    current_item_style: (fg: "#FFFFFF", bg: "#555555", modifiers: "Bold"),
     borders_style: (fg: "#9e9e9e"),
-    highlight_border_style: (fg: "#9e9e9e"),
+    highlight_border_style: (fg: "#FFFFFF"),
     symbols: (
         song: "S",
         dir: "D",

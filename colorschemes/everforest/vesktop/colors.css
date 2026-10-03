@@ -1,0 +1,178 @@
+/**
+ * @name Everforest (dotfiles)
+ * @description Full Everforest palette mapped from the desktop theme.
+ */
+
+:root,
+.theme-dark {
+    color-scheme: dark;
+
+    --background-base-lowest: #232A2E;
+    --background-base-lower: #272E33;
+    --background-base-low: #2D353B;
+    --background-base: #2D353B;
+    --background-base-high: #343F44;
+    --background-surface-high: #343F44;
+    --background-surface-higher: #475258;
+    --background-surface-highest: #5A666B;
+    --background-mod-subtle: #343F44;
+    --background-mod-normal: #475258;
+    --background-mod-strong: #A7C08040;
+    --background-modifier-hover: #47525888;
+    --background-modifier-active: #475258BB;
+    --background-modifier-selected: #A7C08055;
+    --background-modifier-accent: #475258;
+    --background-mentioned: #DBBC7F2E;
+    --background-mentioned-hover: #DBBC7F50;
+    --message-background-hover: #47525855;
+    --background-feedback-critical: #E67E8040;
+    --background-feedback-info: #7FBBB340;
+    --background-feedback-positive: #83C09240;
+    --background-feedback-warning: #DBBC7F40;
+
+    --background-primary: #2D353B;
+    --background-secondary: #343F44;
+    --background-secondary-alt: #272E33;
+    --background-tertiary: #232A2E;
+    --background-floating: #343F44;
+    --channeltextarea-background: #343F44;
+    --input-background-default: #343F44;
+    --input-background: #343F44;
+    --input-border-default: #475258;
+    --card-background-default: #2D353B;
+    --card-secondary-bg: #343F44;
+    --deprecated-card-bg: #343F44;
+    --modal-background: #2D353B;
+    --modal-footer-background: #272E33;
+
+    --text-default: #D3C6AA;
+    --text-strong: #FFF9E8;
+    --text-subtle: #B8B19A;
+    --text-muted: #859289;
+    --text-feedback-critical: #E67E80;
+    --text-link: #7FBBB3;
+    --header-primary: #D3C6AA;
+    --header-secondary: #A7A99B;
+    --text-normal: #D3C6AA;
+    --text-primary: #D3C6AA;
+    --text-secondary: #B8B19A;
+    --channels-default: #A7A99B;
+    --icon-muted: #859289;
+    --icon-feedback-critical: #E67E80;
+    --icon-feedback-info: #7FBBB3;
+    --icon-feedback-positive: #83C092;
+    --icon-feedback-warning: #DBBC7F;
+    --interactive-icon-default: #A7C080;
+    --interactive-icon-hover: #D3C6AA;
+    --interactive-icon-active: #FFF9E8;
+    --interactive-muted: #66736B;
+    --interactive-hover: #D3C6AA;
+    --interactive-normal: #A7C080;
+    --interactive-active: #FFF9E8;
+    --brand-500: #A7C080;
+    --primary-400: #83C092;
+    --brand-experiment: #A7C080;
+    --brand-experiment-560: #83C092;
+    --brand-experiment-600: #7FBBB3;
+    --text-brand: #A7C080;
+    --link: #7FBBB3;
+    --link-hover: #83C092;
+
+    --border-subtle: #3A454A;
+    --border-muted: #475258;
+    --border-normal: #5A666B;
+    --border-strong: #66736B;
+    --border-focus: #A7C080;
+    --scrollbar-thin-thumb: #5A666B;
+    --scrollbar-thin-track: #2D353B;
+    --badge-background-default: #E67E80;
+    --status-danger: #E67E80;
+    --status-positive: #83C092;
+    --status-warning: #DBBC7F;
+    --status-online: #83C092;
+    --button-danger-background: #E67E80;
+    --button-positive-background: #83C092;
+    --button-secondary-background: #475258;
+    --control-primary-background-default: #A7C080;
+    --control-primary-background-hover: #83C092;
+    --control-primary-border-default: #A7C080;
+    --control-primary-border-hover: #83C092;
+    --control-primary-text-default: #2D353B;
+    --control-primary-text-hover: #232A2E;
+    --control-secondary-background-default: #475258;
+    --control-secondary-background-hover: #5A666B;
+    --control-secondary-border-default: #5A666B;
+    --control-secondary-border-hover: #66736B;
+    --control-secondary-text-default: #D3C6AA;
+    --control-secondary-text-hover: #FFF9E8;
+    --control-critical-primary-background-default: #E67E80;
+    --control-critical-primary-background-hover: #F08A8A;
+    --control-critical-primary-border-default: #E67E80;
+    --control-critical-primary-border-hover: #F08A8A;
+    --control-critical-primary-text-default: #2D353B;
+    --control-critical-primary-text-hover: #232A2E;
+    --control-critical-secondary-background-default: #E67E8020;
+    --control-critical-secondary-background-hover: #E67E8040;
+    --control-critical-secondary-border-default: #E67E80;
+    --control-critical-secondary-border-hover: #F08A8A;
+    --control-critical-secondary-text-default: #E67E80;
+    --control-critical-secondary-text-hover: #F08A8A;
+    --control-connected-background-default: #475258;
+    --control-connected-background-hover: #5A666B;
+    --control-icon-only-background-active: #475258;
+    --control-icon-only-background-hover: #343F44;
+    --control-icon-only-border-active: #5A666B;
+    --control-icon-only-border-hover: #475258;
+    --control-icon-only-icon-default: #B8B19A;
+    --control-icon-only-icon-hover: #D3C6AA;
+    --control-overlay-primary-background-default: #272E33CC;
+    --control-overlay-primary-background-hover: #343F44;
+    --control-overlay-primary-border-default: #475258;
+    --control-overlay-primary-border-hover: #5A666B;
+    --control-overlay-primary-text-default: #D3C6AA;
+    --control-overlay-primary-text-hover: #FFF9E8;
+    --custom-folder-color: #A7C080;
+    --user-profile-background-hover: #47525888;
+    --user-profile-border: #475258;
+    --color-online: #83C092;
+    --color-total: #D3C6AA;
+    --color-voice: #7FBBB3;
+    --icon-status-idle: #DBBC7F;
+    --icon-status-offline: #859289;
+    --green-360: #83C092;
+    --green-430: #A7C080;
+    --green-460: #7FBBB3;
+    --yellow-300: #DBBC7F;
+    --white: #FFF9E8;
+    --white-500: #FFF9E8;
+}
+
+#app-mount { color: var(--text-default); background-color: var(--background-base-lower); }
+a[href] { color: var(--text-link); }
+a[href]:hover { color: var(--link-hover); }
+#app-mount form:has([role="textbox"][contenteditable="true"]) {
+    --interactive-background-selected: var(--background-surface-higher);
+    --interactive-text-default: var(--interactive-icon-default);
+    --interactive-text-hover: var(--interactive-icon-hover);
+    --interactive-text-active: var(--interactive-icon-active);
+    --icon-strong: var(--interactive-icon-active);
+}
+#app-mount form:has([role="textbox"][contenteditable="true"]),
+#app-mount [role="textbox"][contenteditable="true"] { background-color: var(--channeltextarea-background) !important; }
+#app-mount form:has([role="textbox"][contenteditable="true"]) [class*="themedBackground"] { background: var(--channeltextarea-background) !important; }
+#app-mount form:has([role="textbox"][contenteditable="true"]) [style*="--custom-promotion-gradient"]:has([role="button"][aria-label="Send a gift"]) { --custom-promotion-gradient: none !important; }
+#app-mount form:has([role="textbox"][contenteditable="true"]) [role="button"][aria-label="Send a gift"] { background: transparent !important; color: var(--interactive-text-default) !important; }
+#app-mount form:has([role="textbox"][contenteditable="true"]) [role="button"][aria-label="Send a gift"]:hover,
+#app-mount form:has([role="textbox"][contenteditable="true"]) [role="button"][aria-label="Send a gift"]:active { background-color: var(--interactive-background-selected) !important; color: var(--interactive-text-active) !important; }
+#app-mount form:has([role="textbox"][contenteditable="true"]) [class*="button__24af7"]:not(.noHover) { background-color: transparent !important; color: var(--interactive-text-default) !important; }
+#app-mount form:has([role="textbox"][contenteditable="true"]) [class*="button__24af7"]:not(.noHover):hover { background-color: var(--background-surface-higher) !important; color: var(--interactive-text-hover) !important; }
+#app-mount form:has([role="textbox"][contenteditable="true"]) [class*="button__24af7"]:active { background-color: var(--background-surface-higher) !important; color: var(--interactive-text-active) !important; }
+#app-mount [role="textbox"][contenteditable="true"] { color: var(--text-default) !important; caret-color: var(--brand-500); }
+input, textarea, [role="textbox"] { color: var(--text-default); caret-color: var(--brand-500); }
+pre { color: var(--text-default); background-color: var(--background-base-lowest); border-inline-start: 3px solid var(--brand-500); }
+code { color: var(--text-strong); background-color: var(--background-mod-subtle); }
+pre code { background-color: transparent; }
+::selection { color: #232A2E; background-color: #A7C080; }
+* { scrollbar-color: var(--scrollbar-thin-thumb) var(--scrollbar-thin-track); }
+*::-webkit-scrollbar-thumb { background-color: var(--scrollbar-thin-thumb); }
+*::-webkit-scrollbar-track { background-color: var(--scrollbar-thin-track); }

@@ -7,7 +7,6 @@ set -Eeuo pipefail
 # Defaults:
 #   - Uses the current directory as the wallpaper folder
 #   - Recursively scans subfolders
-#   - Skips every folder named "lavender-light"
 #   - Remembers successfully uploaded files to prevent duplicates
 #
 # The webhook is never stored in this script.
@@ -18,7 +17,7 @@ dry_run=false
 resend=false
 reset_state=false
 caption_paths=false
-excludes=("lavender-light")
+excludes=()
 
 usage() {
     cat <<'EOF'
@@ -28,7 +27,6 @@ Usage:
 Options:
   -f, --folder PATH       Wallpaper folder to scan recursively
   -x, --exclude NAME      Skip a folder with this exact name; repeatable
-      --include-lavender  Do not exclude the lavender-light folder
       --caption-paths     Add each image's relative path as its caption
       --delay SECONDS     Delay between successful uploads (default: 1.25)
       --resend            Upload files even if previously recorded
@@ -59,7 +57,6 @@ while (($#)); do
             excludes+=("$2")
             shift 2
             ;;
-        --include-lavender)
             excludes=()
             shift
             ;;

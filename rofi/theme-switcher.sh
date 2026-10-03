@@ -12,6 +12,8 @@ ROFI_DIR="$HOME/.config/rofi"
 RMPC_DIR="$HOME/.config/rmpc"
 CAVA_DIR="$HOME/.config/cava/themes"
 DUNST_DIR="$HOME/.config/dunst"
+VESKTOP_THEMES_DIR="$HOME/.config/vesktop/themes"
+ACTIVE_VESKTOP_THEME="$VESKTOP_THEMES_DIR/dotfiles-active.theme.css"
 
 # 2. Query System Themes via Rofi Menu (With Uniform Color Strips)
 OPTIONS=""
@@ -19,7 +21,6 @@ OPTIONS+="<span foreground='#ffffff'>█</span><span foreground='#444444'>█</s
 OPTIONS+="<span foreground='#a7c080'>█</span><span foreground='#dbbc7f'>█</span><span foreground='#2b3339'>█</span>  Everforest     everforest\n"
 OPTIONS+="<span foreground='#fe8019'>█</span><span foreground='#fabd2f'>█</span><span foreground='#282828'>█</span>  Gruvbox        gruvbox\n"
 OPTIONS+="<span foreground='#cba6f7'>█</span><span foreground='#89b4fa'>█</span><span foreground='#585b70'>█</span>  Catppuccin     catppuccin\n"
-OPTIONS+="<span foreground='#eae4d1'>█</span><span foreground='#b5a2cb'>█</span><span foreground='#4b4652'>█</span>  Lavender Light lavender-light"
 
 SELECTION=$(printf '%b' "$OPTIONS" | rofi -dmenu -markup-rows -p "󰏘 Pick a Theme" -i -theme-str 'entry { placeholder: "Choose a theme 󰏘"; }')
 
@@ -38,6 +39,10 @@ cp "$THEME_DIR/$THEME/rofi/colors.rasi" "$ROFI_DIR/colors.rasi"
 cp "$THEME_DIR/$THEME/rmpc/colors.ron" "$RMPC_DIR/colors.ron"
 cp "$THEME_DIR/$THEME/cava/colors" "$CAVA_DIR/colors"
 cp "$THEME_DIR/$THEME/dunst/colors.conf" "$DUNST_DIR/dunstrc.d/colors.conf"
+mkdir -p "$VESKTOP_THEMES_DIR"
+VESKTOP_THEME_TMP="$VESKTOP_THEMES_DIR/.dotfiles-active.theme.css.tmp"
+cp "$THEME_DIR/$THEME/vesktop/colors.css" "$VESKTOP_THEME_TMP"
+mv -f "$VESKTOP_THEME_TMP" "$ACTIVE_VESKTOP_THEME"
 
 # =====================================================================
 # 4. Pick a Random Categorized Wallpaper & Auto-Cache Lock Screen

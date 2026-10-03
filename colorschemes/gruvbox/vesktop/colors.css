@@ -1,0 +1,180 @@
+/**
+ * @name Gruvbox (dotfiles)
+ * @description Full Gruvbox palette mapped from the desktop theme.
+ */
+
+:root,
+.theme-dark {
+    color-scheme: dark;
+
+    --background-base-lowest: #1D2021;
+    --background-base-lower: #282828;
+    --background-base-low: #282828;
+    --background-base: #282828;
+    --background-base-high: #3C3836;
+    --background-surface-high: #3C3836;
+    --background-surface-higher: #504945;
+    --background-surface-highest: #665C54;
+    --background-mod-subtle: #3C3836;
+    --background-mod-normal: #504945;
+    --background-mod-strong: #FABD2F48;
+    --background-modifier-hover: #504945AA;
+    --background-modifier-active: #665C54CC;
+    --background-modifier-selected: #FABD2F55;
+    --background-modifier-accent: #504945;
+    --background-mentioned: #FABD2F30;
+    --background-mentioned-hover: #FABD2F50;
+    --message-background-hover: #50494577;
+    --background-feedback-critical: #FB493440;
+    --background-feedback-info: #83A59840;
+    --background-feedback-positive: #B8BB2640;
+    --background-feedback-warning: #FABD2F40;
+
+    --background-primary: #282828;
+    --background-secondary: #3C3836;
+    --background-secondary-alt: #282828;
+    --background-tertiary: #1D2021;
+    --background-floating: #3C3836;
+    --channeltextarea-background: #3C3836;
+    --input-background-default: #3C3836;
+    --input-background: #3C3836;
+    --input-border-default: #504945;
+    --card-background-default: #282828;
+    --card-secondary-bg: #3C3836;
+    --deprecated-card-bg: #3C3836;
+    --modal-background: #282828;
+    --modal-footer-background: #1D2021;
+
+    --text-default: #EBDBB2;
+    --text-strong: #FBF1C7;
+    --text-subtle: #D5C4A1;
+    --text-muted: #928374;
+    --text-feedback-critical: #FB4934;
+    --text-link: #83A598;
+    --header-primary: #EBDBB2;
+    --header-secondary: #BDAE93;
+    --text-normal: #EBDBB2;
+    --text-primary: #EBDBB2;
+    --text-secondary: #D5C4A1;
+    --channels-default: #BDAE93;
+    --icon-muted: #928374;
+    --icon-feedback-critical: #FB4934;
+    --icon-feedback-info: #83A598;
+    --icon-feedback-positive: #B8BB26;
+    --icon-feedback-warning: #FABD2F;
+    --interactive-icon-default: #FABD2F;
+    --interactive-icon-hover: #FE8019;
+    --interactive-icon-active: #FBF1C7;
+    --interactive-muted: #665C54;
+    --interactive-hover: #FE8019;
+    --interactive-normal: #FABD2F;
+    --interactive-active: #FBF1C7;
+    --brand-500: #FABD2F;
+    --primary-400: #FE8019;
+    --brand-experiment: #FABD2F;
+    --brand-experiment-560: #FE8019;
+    --brand-experiment-600: #D79921;
+    --text-brand: #FABD2F;
+    --link: #83A598;
+    --link-hover: #8EC07C;
+
+    --border-subtle: #3C3836;
+    --border-muted: #504945;
+    --border-normal: #665C54;
+    --border-strong: #928374;
+    --border-focus: #FABD2F;
+    --scrollbar-thin-thumb: #665C54;
+    --scrollbar-thin-track: #282828;
+    --badge-background-default: #CC241D;
+    --status-danger: #FB4934;
+    --status-positive: #B8BB26;
+    --status-warning: #FE8019;
+    --status-online: #B8BB26;
+    --button-danger-background: #CC241D;
+    --button-positive-background: #98971A;
+    --button-secondary-background: #504945;
+    --control-primary-background-default: #FABD2F;
+    --control-primary-background-hover: #FE8019;
+    --control-primary-border-default: #FABD2F;
+    --control-primary-border-hover: #FE8019;
+    --control-primary-text-default: #282828;
+    --control-primary-text-hover: #1D2021;
+    --control-secondary-background-default: #504945;
+    --control-secondary-background-hover: #665C54;
+    --control-secondary-border-default: #665C54;
+    --control-secondary-border-hover: #928374;
+    --control-secondary-text-default: #EBDBB2;
+    --control-secondary-text-hover: #FBF1C7;
+    --control-critical-primary-background-default: #CC241D;
+    --control-critical-primary-background-hover: #FB4934;
+    --control-critical-primary-border-default: #CC241D;
+    --control-critical-primary-border-hover: #FB4934;
+    --control-critical-primary-text-default: #FBF1C7;
+    --control-critical-primary-text-hover: #FBF1C7;
+    --control-critical-secondary-background-default: #FB493420;
+    --control-critical-secondary-background-hover: #FB493440;
+    --control-critical-secondary-border-default: #CC241D;
+    --control-critical-secondary-border-hover: #FB4934;
+    --control-critical-secondary-text-default: #FB4934;
+    --control-critical-secondary-text-hover: #FBF1C7;
+    --control-connected-background-default: #504945;
+    --control-connected-background-hover: #665C54;
+    --control-icon-only-background-active: #665C54;
+    --control-icon-only-background-hover: #504945;
+    --control-icon-only-border-active: #928374;
+    --control-icon-only-border-hover: #665C54;
+    --control-icon-only-icon-default: #D5C4A1;
+    --control-icon-only-icon-hover: #FBF1C7;
+    --control-overlay-primary-background-default: #1D2021CC;
+    --control-overlay-primary-background-hover: #3C3836;
+    --control-overlay-primary-border-default: #665C54;
+    --control-overlay-primary-border-hover: #928374;
+    --control-overlay-primary-text-default: #EBDBB2;
+    --control-overlay-primary-text-hover: #FBF1C7;
+    --custom-folder-color: #FABD2F;
+    --user-profile-background-hover: #504945AA;
+    --user-profile-border: #665C54;
+    --color-online: #B8BB26;
+    --color-total: #EBDBB2;
+    --color-voice: #83A598;
+    --icon-status-idle: #FE8019;
+    --icon-status-offline: #928374;
+    --green-360: #B8BB26;
+    --green-430: #98971A;
+    --green-460: #8EC07C;
+    --yellow-300: #FABD2F;
+    --white: #FBF1C7;
+    --white-500: #FBF1C7;
+}
+
+#app-mount { color: var(--text-default); background-color: var(--background-base-lower); }
+/* Keep the channel list aligned with chat; the separate server rail stays darker. */
+#app-mount .container__2637a { background-color: var(--background-base-lower) !important; }
+a[href] { color: var(--text-link); }
+a[href]:hover { color: var(--link-hover); }
+#app-mount form:has([role="textbox"][contenteditable="true"]) {
+    --interactive-background-selected: var(--background-surface-higher);
+    --interactive-text-default: var(--interactive-icon-default);
+    --interactive-text-hover: var(--interactive-icon-hover);
+    --interactive-text-active: var(--interactive-icon-active);
+    --icon-strong: var(--interactive-icon-active);
+}
+#app-mount form:has([role="textbox"][contenteditable="true"]),
+#app-mount [role="textbox"][contenteditable="true"] { background-color: var(--channeltextarea-background) !important; }
+#app-mount form:has([role="textbox"][contenteditable="true"]) [class*="themedBackground"] { background: var(--channeltextarea-background) !important; }
+#app-mount form:has([role="textbox"][contenteditable="true"]) [style*="--custom-promotion-gradient"]:has([role="button"][aria-label="Send a gift"]) { --custom-promotion-gradient: none !important; }
+#app-mount form:has([role="textbox"][contenteditable="true"]) [role="button"][aria-label="Send a gift"] { background: transparent !important; color: var(--interactive-text-default) !important; }
+#app-mount form:has([role="textbox"][contenteditable="true"]) [role="button"][aria-label="Send a gift"]:hover,
+#app-mount form:has([role="textbox"][contenteditable="true"]) [role="button"][aria-label="Send a gift"]:active { background-color: var(--interactive-background-selected) !important; color: var(--interactive-text-active) !important; }
+#app-mount form:has([role="textbox"][contenteditable="true"]) [class*="button__24af7"]:not(.noHover) { background-color: transparent !important; color: var(--interactive-text-default) !important; }
+#app-mount form:has([role="textbox"][contenteditable="true"]) [class*="button__24af7"]:not(.noHover):hover { background-color: var(--background-surface-higher) !important; color: var(--interactive-text-hover) !important; }
+#app-mount form:has([role="textbox"][contenteditable="true"]) [class*="button__24af7"]:active { background-color: var(--background-surface-higher) !important; color: var(--interactive-text-active) !important; }
+#app-mount [role="textbox"][contenteditable="true"] { color: var(--text-default) !important; caret-color: var(--brand-500); }
+input, textarea, [role="textbox"] { color: var(--text-default); caret-color: var(--brand-500); }
+pre { color: var(--text-default); background-color: var(--background-base-lowest); border-inline-start: 3px solid var(--brand-500); }
+code { color: var(--text-strong); background-color: var(--background-mod-subtle); }
+pre code { background-color: transparent; }
+::selection { color: #282828; background-color: #FABD2F; }
+* { scrollbar-color: var(--scrollbar-thin-thumb) var(--scrollbar-thin-track); }
+*::-webkit-scrollbar-thumb { background-color: var(--scrollbar-thin-thumb); }
+*::-webkit-scrollbar-track { background-color: var(--scrollbar-thin-track); }

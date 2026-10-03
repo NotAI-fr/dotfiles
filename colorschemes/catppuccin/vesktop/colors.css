@@ -1,0 +1,178 @@
+/**
+ * @name Catppuccin Mocha (dotfiles)
+ * @description Full Catppuccin Mocha palette mapped from the desktop theme.
+ */
+
+:root,
+.theme-dark {
+    color-scheme: dark;
+
+    --background-base-lowest: #11111B;
+    --background-base-lower: #181825;
+    --background-base-low: #1E1E2E;
+    --background-base: #1E1E2E;
+    --background-base-high: #313244;
+    --background-surface-high: #313244;
+    --background-surface-higher: #45475A;
+    --background-surface-highest: #585B70;
+    --background-mod-subtle: #313244;
+    --background-mod-normal: #45475A;
+    --background-mod-strong: #B4BEFE40;
+    --background-modifier-hover: #585B7088;
+    --background-modifier-active: #585B70BB;
+    --background-modifier-selected: #89B4FA55;
+    --background-modifier-accent: #45475A;
+    --background-mentioned: #F9E2AF2E;
+    --background-mentioned-hover: #F9E2AF4A;
+    --message-background-hover: #585B7055;
+    --background-feedback-critical: #F38BA840;
+    --background-feedback-info: #89B4FA40;
+    --background-feedback-positive: #A6E3A140;
+    --background-feedback-warning: #F9E2AF40;
+
+    --background-primary: #1E1E2E;
+    --background-secondary: #313244;
+    --background-secondary-alt: #181825;
+    --background-tertiary: #11111B;
+    --background-floating: #313244;
+    --channeltextarea-background: #313244;
+    --input-background-default: #313244;
+    --input-background: #313244;
+    --input-border-default: #45475A;
+    --card-background-default: #1E1E2E;
+    --card-secondary-bg: #313244;
+    --deprecated-card-bg: #313244;
+    --modal-background: #1E1E2E;
+    --modal-footer-background: #181825;
+
+    --text-default: #CDD6F4;
+    --text-strong: #F5E0DC;
+    --text-subtle: #BAC2DE;
+    --text-muted: #7F849C;
+    --text-feedback-critical: #F38BA8;
+    --text-link: #89B4FA;
+    --header-primary: #CDD6F4;
+    --header-secondary: #BAC2DE;
+    --text-normal: #CDD6F4;
+    --text-primary: #CDD6F4;
+    --text-secondary: #BAC2DE;
+    --channels-default: #A6ADC8;
+    --icon-muted: #7F849C;
+    --icon-feedback-critical: #F38BA8;
+    --icon-feedback-info: #89B4FA;
+    --icon-feedback-positive: #A6E3A1;
+    --icon-feedback-warning: #F9E2AF;
+    --interactive-icon-default: #B4BEFE;
+    --interactive-icon-hover: #89B4FA;
+    --interactive-icon-active: #F5E0DC;
+    --interactive-muted: #585B70;
+    --interactive-hover: #89B4FA;
+    --interactive-normal: #B4BEFE;
+    --interactive-active: #F5E0DC;
+    --brand-500: #B4BEFE;
+    --primary-400: #89B4FA;
+    --brand-experiment: #B4BEFE;
+    --brand-experiment-560: #89B4FA;
+    --brand-experiment-600: #CBA6F7;
+    --text-brand: #B4BEFE;
+    --link: #89B4FA;
+    --link-hover: #CBA6F7;
+
+    --border-subtle: #313244;
+    --border-muted: #45475A;
+    --border-normal: #585B70;
+    --border-strong: #6C7086;
+    --border-focus: #B4BEFE;
+    --scrollbar-thin-thumb: #585B70;
+    --scrollbar-thin-track: #1E1E2E;
+    --badge-background-default: #F38BA8;
+    --status-danger: #F38BA8;
+    --status-positive: #A6E3A1;
+    --status-warning: #F9E2AF;
+    --status-online: #A6E3A1;
+    --button-danger-background: #F38BA8;
+    --button-positive-background: #A6E3A1;
+    --button-secondary-background: #45475A;
+    --control-primary-background-default: #B4BEFE;
+    --control-primary-background-hover: #89B4FA;
+    --control-primary-border-default: #B4BEFE;
+    --control-primary-border-hover: #89B4FA;
+    --control-primary-text-default: #1E1E2E;
+    --control-primary-text-hover: #11111B;
+    --control-secondary-background-default: #45475A;
+    --control-secondary-background-hover: #585B70;
+    --control-secondary-border-default: #585B70;
+    --control-secondary-border-hover: #6C7086;
+    --control-secondary-text-default: #CDD6F4;
+    --control-secondary-text-hover: #F5E0DC;
+    --control-critical-primary-background-default: #F38BA8;
+    --control-critical-primary-background-hover: #EBA0AC;
+    --control-critical-primary-border-default: #F38BA8;
+    --control-critical-primary-border-hover: #EBA0AC;
+    --control-critical-primary-text-default: #1E1E2E;
+    --control-critical-primary-text-hover: #11111B;
+    --control-critical-secondary-background-default: #F38BA820;
+    --control-critical-secondary-background-hover: #F38BA840;
+    --control-critical-secondary-border-default: #F38BA8;
+    --control-critical-secondary-border-hover: #EBA0AC;
+    --control-critical-secondary-text-default: #F38BA8;
+    --control-critical-secondary-text-hover: #F5E0DC;
+    --control-connected-background-default: #45475A;
+    --control-connected-background-hover: #585B70;
+    --control-icon-only-background-active: #585B70;
+    --control-icon-only-background-hover: #45475A;
+    --control-icon-only-border-active: #6C7086;
+    --control-icon-only-border-hover: #585B70;
+    --control-icon-only-icon-default: #BAC2DE;
+    --control-icon-only-icon-hover: #F5E0DC;
+    --control-overlay-primary-background-default: #181825CC;
+    --control-overlay-primary-background-hover: #313244;
+    --control-overlay-primary-border-default: #585B70;
+    --control-overlay-primary-border-hover: #6C7086;
+    --control-overlay-primary-text-default: #CDD6F4;
+    --control-overlay-primary-text-hover: #F5E0DC;
+    --custom-folder-color: #CBA6F7;
+    --user-profile-background-hover: #585B7088;
+    --user-profile-border: #45475A;
+    --color-online: #A6E3A1;
+    --color-total: #CDD6F4;
+    --color-voice: #94E2D5;
+    --icon-status-idle: #F9E2AF;
+    --icon-status-offline: #7F849C;
+    --green-360: #A6E3A1;
+    --green-430: #94E2D5;
+    --green-460: #A6ADC8;
+    --yellow-300: #F9E2AF;
+    --white: #F5E0DC;
+    --white-500: #F5E0DC;
+}
+
+#app-mount { color: var(--text-default); background-color: var(--background-base-lower); }
+a[href] { color: var(--text-link); }
+a[href]:hover { color: var(--link-hover); }
+#app-mount form:has([role="textbox"][contenteditable="true"]) {
+    --interactive-background-selected: var(--background-surface-higher);
+    --interactive-text-default: var(--interactive-icon-default);
+    --interactive-text-hover: var(--interactive-icon-hover);
+    --interactive-text-active: var(--interactive-icon-active);
+    --icon-strong: var(--interactive-icon-active);
+}
+#app-mount form:has([role="textbox"][contenteditable="true"]),
+#app-mount [role="textbox"][contenteditable="true"] { background-color: var(--channeltextarea-background) !important; }
+#app-mount form:has([role="textbox"][contenteditable="true"]) [class*="themedBackground"] { background: var(--channeltextarea-background) !important; }
+#app-mount form:has([role="textbox"][contenteditable="true"]) [style*="--custom-promotion-gradient"]:has([role="button"][aria-label="Send a gift"]) { --custom-promotion-gradient: none !important; }
+#app-mount form:has([role="textbox"][contenteditable="true"]) [role="button"][aria-label="Send a gift"] { background: transparent !important; color: var(--interactive-text-default) !important; }
+#app-mount form:has([role="textbox"][contenteditable="true"]) [role="button"][aria-label="Send a gift"]:hover,
+#app-mount form:has([role="textbox"][contenteditable="true"]) [role="button"][aria-label="Send a gift"]:active { background-color: var(--interactive-background-selected) !important; color: var(--interactive-text-active) !important; }
+#app-mount form:has([role="textbox"][contenteditable="true"]) [class*="button__24af7"]:not(.noHover) { background-color: transparent !important; color: var(--interactive-text-default) !important; }
+#app-mount form:has([role="textbox"][contenteditable="true"]) [class*="button__24af7"]:not(.noHover):hover { background-color: var(--background-surface-higher) !important; color: var(--interactive-text-hover) !important; }
+#app-mount form:has([role="textbox"][contenteditable="true"]) [class*="button__24af7"]:active { background-color: var(--background-surface-higher) !important; color: var(--interactive-text-active) !important; }
+#app-mount [role="textbox"][contenteditable="true"] { color: var(--text-default) !important; caret-color: var(--brand-500); }
+input, textarea, [role="textbox"] { color: var(--text-default); caret-color: var(--brand-500); }
+pre { color: var(--text-default); background-color: var(--background-base-lowest); border-inline-start: 3px solid var(--brand-500); }
+code { color: var(--text-strong); background-color: var(--background-mod-subtle); }
+pre code { background-color: transparent; }
+::selection { color: #1E1E2E; background-color: #B4BEFE; }
+* { scrollbar-color: var(--scrollbar-thin-thumb) var(--scrollbar-thin-track); }
+*::-webkit-scrollbar-thumb { background-color: var(--scrollbar-thin-thumb); }
+*::-webkit-scrollbar-track { background-color: var(--scrollbar-thin-track); }
