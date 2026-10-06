@@ -12,7 +12,7 @@
     modal_backdrop: false,
     preview_label_style: (fg: "#bac2de"),
     preview_metadata_group_style: (fg: "#bac2de", modifiers: "Bold"),
-    highlighted_item_style: (fg: "#b4befe", bg: "#1e1e2e", modifiers: "Bold"),
+    highlighted_item_style: (fg: "#FFFFFF", bg: "#1e1e2e", modifiers: "Bold"),
     current_item_style: (fg: "#1e1e2e", bg: "#b4befe", modifiers: "Bold"),
     borders_style: (fg: "#7f849c"),
     highlight_border_style: (fg: "#7f849c"),
