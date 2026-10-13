@@ -1,0 +1,14 @@
+
+#!/usr/bin/env bash
+
+choice=$(printf 'English (US)\nGerman' |
+    rofi -dmenu -i -p "Keyboard layout")
+
+case "$choice" in
+    "English (US)")
+        xkb-switch -s us
+        ;;
+    "German")
+        xkb-switch -s de
+        ;;
+esac
