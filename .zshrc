@@ -42,6 +42,7 @@ eval "$(zoxide init zsh)"
 
 alias s='paru -S'
 alias f='fastfetch'
+alias fw='fastfetch -c /home/nobloat/.config/fastfetch/config-wf.jsonc'
 alias r='paru -R'
 alias ss='paru -Ss'
 alias c='clear'
