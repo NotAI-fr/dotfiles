@@ -1,0 +1,177 @@
+#!/usr/bin/env bash
+set -u
+
+readonly CLIPBOARD_MENU="/home/nobloat/.config/rofi/clipboard-menu.sh"
+readonly QUOTE_COMMAND="/home/nobloat/.local/bin/999-of-the-day"
+
+notify_error() {
+    printf 'extras-picker: %s\n' "$1" >&2
+    notify-send "Extras" "$1" 2>/dev/null || true
+}
+
+switch_keyboard() {
+    local target=$1 output active status
+    if output=$(xkb-switch -s "$target" 2>&1); then
+        :
+    else
+        status=$?
+        notify_error "xkb-switch -s $target failed (exit $status): $output"
+        return 1
+    fi
+
+    if active=$(xkb-switch -p 2>&1); then
+        :
+    else
+        status=$?
+        notify_error "Layout switch command returned success, but xkb-switch -p failed (exit $status): $active"
+        return 1
+    fi
+    if [[ "$active" != "$target" ]]; then
+        notify_error "Requested layout $target, but the active group is reported as $active."
+        return 1
+    fi
+}
+
+runtime_dir=${XDG_RUNTIME_DIR:-}
+if [[ -z "$runtime_dir" || ! -d "$runtime_dir" || ! -O "$runtime_dir" || ! -w "$runtime_dir" ]]; then
+    notify_error "The user runtime directory is unavailable; Extras cannot safely open."
+    exit 1
+fi
+
+# Keep a rapid second bar click from opening a duplicate picker.
+exec 9>"$runtime_dir/extras-picker.lock"
+if ! flock -n 9; then
+    exit 0
+fi
+
+groups=$(xkb-switch -l 2>&1) || {
+    notify_error "Could not list active keyboard layouts: $groups"
+    exit 1
+}
+if ! grep -Fxq us <<< "$groups" || ! grep -Fxq de <<< "$groups"; then
+    setup_output=$(setxkbmap -layout us,de 2>&1) || {
+        notify_error "Could not enable the configured US/German layout pair: $setup_output"
+        exit 1
+    }
+    groups=$(xkb-switch -l 2>&1) || {
+        notify_error "Could not verify the US/German layout pair: $groups"
+        exit 1
+    }
+fi
+if ! grep -Fxq us <<< "$groups" || ! grep -Fxq de <<< "$groups"; then
+    notify_error "The active X keyboard does not expose both US and German groups: $groups"
+    exit 1
+fi
+
+layout=$(xkb-switch -p 2>&1) || {
+    notify_error "Could not read the active keyboard layout: $layout"
+    exit 1
+}
+case "$layout" in
+    de) keyboard_label=DE ;;
+    us) keyboard_label=US ;;
+    *)
+        notify_error "Unsupported active keyboard layout: $layout"
+        exit 1
+        ;;
+esac
+
+# The picker intentionally has no search/input bar. As in the power menu,
+# dmenu returns the selected row index so the visible text stays presentation-only.
+readonly ROFI_THEME='window {
+    width: 430px;
+    location: center;
+    anchor: center;
+    border-radius: 12px;
+    padding: 10px;
+}
+inputbar {
+    enabled: false;
+}
+listview {
+    columns: 4;
+    lines: 1;
+    spacing: 12px;
+    cycle: true;
+    scrollbar: false;
+    fixed-columns: true;
+}
+element {
+    orientation: vertical;
+    children: [ "element-text" ];
+    padding: 18px;
+    border-radius: 8px;
+}
+element-text {
+    font: "FiraMono Nerd Font 18";
+    expand: true;
+    horizontal-align: 0.5;
+    vertical-align: 0.5;
+    margin: 0px;
+    padding: 0px;
+}
+'
+
+selection=$(printf '%s\n' '󰖔' '' "$keyboard_label" '' |
+    rofi -dmenu -i -no-custom -format i -theme-str "$ROFI_THEME")
+rofi_status=$?
+if (( rofi_status != 0 )) || [[ -z "$selection" ]]; then
+    exit 0
+fi
+
+case "$selection" in
+    0)
+        state_file="$runtime_dir/extras-nightlight.state"
+        state=unknown
+        if [[ -r "$state_file" ]]; then
+            IFS= read -r state < "$state_file" || state=unknown
+        fi
+
+        if [[ "$state" == on ]]; then
+            if redshift -x; then
+                rm -f -- "$state_file"
+            else
+                notify_error "Redshift could not reset the night-light adjustment."
+                exit 1
+            fi
+        else
+            if redshift -O 3500k; then
+                marker=$(mktemp "$runtime_dir/.extras-nightlight.XXXXXX") || {
+                    notify_error "Night light was applied, but its runtime state could not be recorded."
+                    exit 1
+                }
+                if ! printf 'on\n' > "$marker" || ! mv -f -- "$marker" "$state_file"; then
+                    rm -f -- "$marker"
+                    notify_error "Night light was applied, but its runtime state could not be recorded."
+                    exit 1
+                fi
+            else
+                notify_error "Redshift could not apply the 3500K night-light adjustment."
+                exit 1
+            fi
+        fi
+        ;;
+    1)
+        "$CLIPBOARD_MENU" &
+        ;;
+    2)
+        if [[ "$keyboard_label" == DE ]]; then
+            switch_keyboard us || exit 1
+        else
+            switch_keyboard de || exit 1
+        fi
+        ;;
+    3)
+        if ! quote=$("$QUOTE_COMMAND" --today); then
+            notify_error "Could not retrieve today's Juice WRLD quote."
+            exit 1
+        fi
+        if ! notify-send "999 OF THE DAY" "$quote"; then
+            notify_error "The quote was retrieved, but the notification could not be shown."
+            exit 1
+        fi
+        ;;
+    *)
+        exit 0
+        ;;
+esac

@@ -32,6 +32,59 @@ switch_keyboard() {
     fi
 }
 
+toggle_notifications() {
+    local current target expected output status verified
+
+    if ! command -v dunstctl >/dev/null 2>&1; then
+        notify_error "Notification mute needs Dunst and its dunstctl command. No notification state was changed."
+        return 1
+    fi
+
+    if current=$(dunstctl is-paused 2>&1); then
+        :
+    else
+        status=$?
+        notify_error "Could not read Dunst's notification state (exit $status): $current"
+        return 1
+    fi
+
+    case "$current" in
+        true)
+            target=false
+            expected=false
+            ;;
+        false)
+            target=true
+            expected=true
+            ;;
+        *)
+            notify_error "Unexpected dunstctl is-paused output: $current"
+            return 1
+            ;;
+    esac
+
+    if output=$(dunstctl set-paused "$target" 2>&1); then
+        :
+    else
+        status=$?
+        notify_error "Could not set Dunst notification pause to $target (exit $status): $output"
+        return 1
+    fi
+
+    if verified=$(dunstctl is-paused 2>&1); then
+        :
+    else
+        status=$?
+        notify_error "Dunst pause command ran, but its state could not be verified (exit $status): $verified"
+        return 1
+    fi
+
+    if [[ "$verified" != "$expected" ]]; then
+        notify_error "Dunst did not enter the expected notification state (wanted $expected, got $verified)."
+        return 1
+    fi
+}
+
 runtime_dir=${XDG_RUNTIME_DIR:-}
 if [[ -z "$runtime_dir" || ! -d "$runtime_dir" || ! -O "$runtime_dir" || ! -w "$runtime_dir" ]]; then
     notify_error "The user runtime directory is unavailable; Extras cannot safely open."
@@ -76,10 +129,23 @@ case "$layout" in
         ;;
 esac
 
+# Reflect Dunst's actual pause state each time the picker opens.
+# If Dunst is unavailable or unreachable, keep the rest of the picker usable;
+# selecting the bell tile will report the specific problem instead of guessing.
+notification_icon='󰂚'
+if command -v dunstctl >/dev/null 2>&1; then
+    if notification_state=$(dunstctl is-paused 2>/dev/null); then
+        case "$notification_state" in
+            true) notification_icon='󰂛' ;;
+            false) notification_icon='󰂚' ;;
+        esac
+    fi
+fi
+
 # The picker intentionally has no search/input bar. As in the power menu,
 # dmenu returns the selected row index so the visible text stays presentation-only.
 readonly ROFI_THEME='window {
-    width: 430px;
+    width: 520px;
     location: center;
     anchor: center;
     border-radius: 12px;
@@ -89,7 +155,7 @@ inputbar {
     enabled: false;
 }
 listview {
-    columns: 4;
+    columns: 5;
     lines: 1;
     spacing: 12px;
     cycle: true;
@@ -112,7 +178,7 @@ element-text {
 }
 '
 
-selection=$(printf '%s\n' '󰖔' '' "$keyboard_label" '' |
+selection=$(printf '%s\n' '󰖔' '' "$keyboard_label" '' "$notification_icon" |
     rofi -dmenu -i -no-custom -format i -theme-str "$ROFI_THEME")
 rofi_status=$?
 if (( rofi_status != 0 )) || [[ -z "$selection" ]]; then
@@ -170,6 +236,9 @@ case "$selection" in
             notify_error "The quote was retrieved, but the notification could not be shown."
             exit 1
         fi
+        ;;
+    4)
+        toggle_notifications || exit 1
         ;;
     *)
         exit 0
