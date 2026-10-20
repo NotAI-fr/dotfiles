@@ -169,7 +169,7 @@ event_mapping = {
     ["ctrl_s"] = function()
         editor:save()
     end,
-    ["ctrl_shift_s"] = function()
+    ["alt_s"] = function()
         editor:save_as()
     end,
     ["ctrl_w"] = function()

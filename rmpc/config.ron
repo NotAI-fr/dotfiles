@@ -52,8 +52,7 @@
             "5":       SwitchToTab("Search"),
 
             "z":       ToggleRepeat,
-            "x":       ToggleRandom,
-            "c":       ToggleSingle,
+            "X":       ToggleRandom,
             "f":       SeekForward,
             "b":       SeekBack,
         },
@@ -94,14 +93,6 @@
             "k":         Up,
             "B":         ShowInfo,
 
-            // Playlist saving.
-            // Shift+P: save the song under the cursor to a playlist.
-            // If songs are marked with Space, RMPC applies this action to those marked songs.
-            "P":         Save(kind: Modal(all: false, duplicates_strategy: Ask)),
-
-            // Shift+S: save the entire current queue/directory to a playlist.
-            "S":         Save(kind: Modal(all: true, duplicates_strategy: Ask)),
-
             // Ctrl+S: save marked/selected songs to a playlist.
             // If nothing is marked, this falls back to the song under the cursor.
             "<C-s>":     Save(kind: Modal(all: false, duplicates_strategy: Ask)),
@@ -110,7 +101,7 @@
         queue: {
             "D":     DeleteAll,
             "<CR>":  Play,
-            "X":     Shuffle,
+            "x":     Shuffle,
             "d":     Delete,
         },
     ),
