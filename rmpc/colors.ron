@@ -255,6 +255,14 @@
                             off_style: (fg: "#9e9e9e", modifiers: "Dim"),
                             oneshot_style: (fg: "red", modifiers: "Dim"),
                         )))),
+                        (kind: Property(Status(SingleV2(
+                            on_label: "󰑘 ",
+                            off_label: "󰑘 ",
+                            oneshot_label: "󰑘 ",
+                            on_style: (fg: "#9e9e9e", modifiers: "Bold"),
+                            off_style: (fg: "#9e9e9e", modifiers: "Dim"),
+                            oneshot_style: (fg: "red", modifiers: "Bold"),
+                        )))),
                         (kind: Text("]"), style: (fg: "#9e9e9e", modifiers: "Bold")),
                         ],
                         align: Right

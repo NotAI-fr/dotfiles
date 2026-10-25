@@ -48,6 +48,8 @@ alias fwg='fastfetch --kitty /home/nobloat/.config/fastfetch/reze.gif --logo-ani
 alias r='paru -R'
 alias ss='paru -Ss'
 alias c='clear'
+alias cs='rm -f ~/.zsh_history
+fc -p'
 alias syu='sudo pacman -Syu'
 alias backup='~/dotfiles/backup.sh'
 export PATH="$HOME/.local/bin:$PATH"
