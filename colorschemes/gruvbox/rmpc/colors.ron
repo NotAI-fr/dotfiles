@@ -136,7 +136,7 @@
     70: "#E5C96F",
     84: "#EBD481",
    100: "#F0DE9A",
-              }),
+                }),
     ),
     layout: Split(
         direction: Vertical,
