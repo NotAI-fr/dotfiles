@@ -109,6 +109,22 @@
             alignment: Right,
         ),
     ],
+    cava: (
+        bar_symbols: ['▁', '▂', '▃', '▄', '▅', '▆', '▇', '█'],
+        bar_width: 4,
+        bar_spacing: 2,
+        orientation: Bottom,
+        bar_color: Rows([
+            "#555555",
+            "#555555",
+            "#9E9E9E",
+            "#9E9E9E",
+            "#D0D0D0",
+            "#D0D0D0",
+            "#FFFFFF",
+            "#FFFFFF",
+        ]),
+    ),
     layout: Split(
         direction: Vertical,
         panes: [

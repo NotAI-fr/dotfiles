@@ -122,6 +122,22 @@
         ),
     ],
 
+    cava: (
+        bar_symbols: ['▁', '▂', '▃', '▄', '▅', '▆', '▇', '█'],
+        bar_width: 4,
+        bar_spacing: 2,
+        orientation: Bottom,
+       bar_color: Gradient({
+     0: "#B89A55",
+    14: "#C49E4B",
+    28: "#CFA94D",
+    42: "#D8B451",
+    56: "#DFBF5F",
+    70: "#E5C96F",
+    84: "#EBD481",
+   100: "#F0DE9A",
+              }),
+    ),
     layout: Split(
         direction: Vertical,
         panes: [

@@ -36,8 +36,18 @@ cp "$THEME_DIR/$THEME/i3/colors.conf" "$I3_DIR/colors.conf"
 cp "$THEME_DIR/$THEME/polybar/colors.ini" "$POLYBAR_DIR/colors.ini"
 cp "$THEME_DIR/$THEME/kitty/colors.conf" "$KITTY_DIR/colors.conf"
 cp "$THEME_DIR/$THEME/rofi/colors.rasi" "$ROFI_DIR/colors.rasi"
-cp "$THEME_DIR/$THEME/rmpc/colors.ron" "$RMPC_DIR/colors.ron"
-cp "$THEME_DIR/$THEME/cava/colors" "$CAVA_DIR/colors"
+if cp "$THEME_DIR/$THEME/rmpc/colors.ron" "$RMPC_DIR/colors.ron"; then
+    RMPC_ACTIVE_TAB=$(rmpc remote query activetab 2>/dev/null || true)
+    rmpc remote set theme "$RMPC_DIR/colors.ron" >/dev/null 2>&1 || true
+    if [[ "$RMPC_ACTIVE_TAB" == *'"Queue"'* ]]; then
+        rmpc remote switchtab Directories >/dev/null 2>&1 || true
+        sleep 1
+        rmpc remote switchtab Queue >/dev/null 2>&1 || true
+    fi
+fi
+if cp "$THEME_DIR/$THEME/cava/colors" "$CAVA_DIR/colors"; then
+    pkill -USR2 -x cava 2>/dev/null || true
+fi
 cp "$THEME_DIR/$THEME/dunst/colors.conf" "$DUNST_DIR/dunstrc.d/colors.conf"
 mkdir -p "$VESKTOP_THEMES_DIR"
 VESKTOP_THEME_TMP="$VESKTOP_THEMES_DIR/.dotfiles-active.theme.css.tmp"

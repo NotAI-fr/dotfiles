@@ -1,4 +1,11 @@
 [color]
-background_opacity = 0.70
-background_color = '#1A1A1A'
-foreground_color = '#FFFFFF'
+foreground = '#FFFFFF'
+gradient = 1
+gradient_color_1 = '#FFFFFF'
+gradient_color_2 = '#E0E0E0'
+gradient_color_3 = '#C0C0C0'
+gradient_color_4 = '#A4A4A4'
+gradient_color_5 = '#8D8D8D'
+gradient_color_6 = '#7B7B7B'
+gradient_color_7 = '#686868'
+gradient_color_8 = '#555555'
