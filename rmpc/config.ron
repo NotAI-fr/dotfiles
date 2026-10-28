@@ -31,9 +31,7 @@
             "?":       ShowHelp,
             "u":       Update,
             "C":       ToggleConsume,
-            "O":       ShowOutputs,
             "I":       ShowCurrentSongInfo,
-            "<C-p>":   ShowDecoders,
             ":":       CommandMode,
             ".":       VolumeUp,
             ",":       VolumeDown,
@@ -53,8 +51,6 @@
 
             "z":       ToggleRepeat,
             "X":       ToggleRandom,
-            "f":       SeekForward,
-            "b":       SeekBack,
         },
 
         navigation: {
@@ -68,30 +64,14 @@
             "<S-Down>":  PaneDown,
             "<S-Left>":  PaneLeft,
             "<S-Right>": PaneRight,
-
-            "<C-u>":     UpHalf,
-            "N":         PreviousResult,
+            
             "a":         Add,
             "A":         AddAll,
             "r":         Rename,
-            "n":         NextResult,
-            "g":         Top,
             "<Space>":   Select,
-            "G":         Bottom,
-            "h":         Left,
-            "<CR>":      Confirm,
-            "i":         FocusInput,
-            "J":         MoveDown,
-            "j":         Down,
-            "<C-d>":     DownHalf,
             "/":         EnterSearch,
-            "<C-c>":     Close,
             "<Esc>":     Close,
-            "K":         MoveUp,
-            "l":         Right,
-            "D":         Delete,
-            "k":         Up,
-            "B":         ShowInfo,
+            "d":         Delete,
 
             // Ctrl+S: save marked/selected songs to a playlist.
             // If nothing is marked, this falls back to the song under the cursor.
@@ -125,7 +105,7 @@
                 direction: Horizontal,
                 panes: [
                     (
-                        size: "30%",
+                        size: "35%",
                         borders: "RIGHT",
                         pane: Split(
                             direction: Vertical,
@@ -152,7 +132,7 @@
                                     pane: Pane(QueueHeader()),
                                 ),
                                 (
-                                    size: "100%",
+                                    size: "70%",
                                     pane: Pane(Queue),
                                 ),
                             ],
