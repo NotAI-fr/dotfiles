@@ -1,0 +1,193 @@
+#![enable(implicit_some)]
+#![enable(unwrap_newtypes)]
+#![enable(unwrap_variant_newtypes)]
+(
+    address: "127.0.0.1:6600",
+    volume_step: 5,
+    scrolloff: 2,
+    max_fps: 60,
+    wrap_navigation: true,
+    theme: "colors",
+    cache_dir: Some("/tmp/rmpc/cache"),
+    lyrics_dir: Some("/home/nobloat/Music"),
+    enable_lyrics_hot_reload: true,
+    enable_lyrics_index: true,
+    status_update_interval_ms: 1000,
+    enable_mouse: true,
+    enable_config_hot_reload: true,
+    
+    
+    
+    cava: (
+    framerate: 60, // default 60
+    autosens: true, // default true
+    sensitivity: 100, // default 100
+    lower_cutoff_freq: 50, // not passed to cava if not provided
+    higher_cutoff_freq: 10000, // not passed to cava if not provided
+    input: (
+        method: Fifo,
+        source: "/tmp/mpd.fifo",
+        sample_rate: 44100,
+        channels: 2,
+        sample_bits: 16,
+    ),
+    smoothing: (
+        noise_reduction: 77, // default 77
+        monstercat: false, // default false
+        waves: false, // default false
+    ),
+    // this is a list of floating point numbers thats directly passed to cava
+    // they are passed in order that they are defined
+    eq: []
+),
+
+    album_art: (
+        method: Auto,
+        max_size_px: (width: 1200, height: 1200),
+        vertical_align: Top,
+        horizontal_align: Center,
+    ),
+
+    keybinds: (
+        clear: true,
+
+        global: {
+            "q":       Quit,
+            "?":       ShowHelp,
+            "u":       Update,
+            "C":       ToggleConsume,
+            "I":       ShowCurrentSongInfo,
+            ":":       CommandMode,
+            ".":       VolumeUp,
+            ",":       VolumeDown,
+            "p":       TogglePause,
+            "s":       Stop,
+            ">":       NextTrack,
+            "<":       PreviousTrack,
+
+            // Tab switching: arrows are intentionally NOT used here.
+            "<Tab>":   NextTab,
+            "<S-Tab>": PreviousTab,
+            "1":       SwitchToTab("Queue"),
+            "2":       SwitchToTab("Directories"),
+            "3":       SwitchToTab("Album Artists"),
+            "4":       SwitchToTab("Playlists"),
+            "5":       SwitchToTab("Search"),
+
+            "z":       ToggleRepeat,
+            "X":       ToggleRandom,
+        },
+
+        navigation: {
+            // Normal arrow-key navigation.
+            "<Up>":      Up,
+            "<Down>":    Down,
+            "<Left>":    Left,
+            "<Right>":   Right,
+
+            "<S-Up>":    PaneUp,
+            "<S-Down>":  PaneDown,
+            "<S-Left>":  PaneLeft,
+            "<S-Right>": PaneRight,
+            
+            "a":         Add,
+            "A":         AddAll,
+            "r":         Rename,
+            "<Space>":   Select,
+            "/":         EnterSearch,
+            "<Esc>":     Close,
+            "d":         Delete,
+            "<Enter>":   Confirm,
+
+            // Ctrl+S: save marked/selected songs to a playlist.
+            // If nothing is marked, this falls back to the song under the cursor.
+            "<C-s>":     Save(kind: Modal(all: false, duplicates_strategy: Ask)),
+        },
+
+        queue: {
+            "D":     DeleteAll,
+            "<CR>":  Play,
+            "x":     Shuffle,
+            "d":     Delete,
+        },
+    ),
+
+    search: (
+        case_sensitive: false,
+        mode: Contains,
+        tags: [
+            (value: "any",         label: "Any Tag"),
+            (value: "artist",      label: "Artist"),
+            (value: "album",       label: "Album"),
+            (value: "albumartist", label: "Album Artist"),
+            (value: "title",       label: "Title"),
+        ],
+    ),
+
+    tabs: [
+        (
+            name: "Queue",
+            pane: Split(
+                direction: Horizontal,
+                panes: [
+                    (
+                        size: "35%",
+                        borders: "RIGHT",
+                        pane: Split(
+                            direction: Vertical,
+                            panes: [
+                                (
+                                    size: "70%",
+                                    pane: Pane(AlbumArt),
+                                ),
+                                (
+                                    size: "30%",
+                                    borders: "TOP",
+                                    pane: Pane(Lyrics),
+                                ),
+                            ],
+                        ),
+                    ),
+                    (
+                        size: "70%",
+                        pane: Split(
+                            direction: Vertical,
+                            panes: [
+                                (
+                                    size: "1",
+                                    pane: Pane(QueueHeader()),
+                                ),
+                                (
+                                    size: "70%",
+                                    pane: Pane(Queue),
+                                ),
+                                (
+                                    size: "30%",
+                                    borders: "TOP",
+                                    pane: Pane(Cava),
+                                ),
+                            ],
+                        ),
+                    ),
+                ],
+            ),
+        ),
+
+        (
+            name: "Directories",
+            pane: Pane(Directories),
+        ),
+        (
+            name: "Album Artists",
+            pane: Pane(AlbumArtists),
+        ),
+        (
+            name: "Playlists",
+            pane: Pane(Playlists),
+        ),
+        (
+            name: "Search",
+            pane: Pane(Search),
+        ),
+    ],
+)
