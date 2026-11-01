@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+RUNTIME_HOME="${XDG_RUNTIME_DIR:-}"
+if [[ -z "$RUNTIME_HOME" || ! -d "$RUNTIME_HOME" || ! -O "$RUNTIME_HOME" ]]; then
+    printf 'playing-notify-dunst: XDG_RUNTIME_DIR is unavailable.\n' >&2
+    exit 1
+fi
+
+RUNTIME_DIR="$RUNTIME_HOME/playing-notify"
+BUS_FILE="$RUNTIME_DIR/dbus-address"
+LOCK_FILE="$RUNTIME_DIR/dunst.lock"
+PRIVATE_CONFIG_HOME="$CONFIG_HOME/playing-notify-dunst"
+CONFIG_FILE="$PRIVATE_CONFIG_HOME/dunst/dunstrc"
+THEME_LINK="$PRIVATE_CONFIG_HOME/dunst/dunstrc.d/99-shared-colors.conf"
+THEME_SOURCE="$CONFIG_HOME/dunst/dunstrc.d/colors.conf"
+
+for command in dbus-run-session dunst flock; do
+    if ! command -v "$command" >/dev/null 2>&1; then
+        printf 'playing-notify-dunst: required command not found: %s\n' "$command" >&2
+        exit 1
+    fi
+done
+
+if [[ ! -r "$CONFIG_FILE" ]]; then
+    printf 'playing-notify-dunst: missing private config: %s\n' "$CONFIG_FILE" >&2
+    exit 1
+fi
+if [[ ! -r "$THEME_SOURCE" ]]; then
+    printf 'playing-notify-dunst: shared Dunst theme file is missing or unreadable: %s\n' "$THEME_SOURCE" >&2
+    exit 1
+fi
+if [[ ! -e "$THEME_LINK" && ! -L "$THEME_LINK" ]]; then
+    printf 'playing-notify-dunst: shared theme link is missing: %s\n' "$THEME_LINK" >&2
+    exit 1
+fi
+
+umask 077
+mkdir -p -- "$RUNTIME_DIR"
+chmod 700 "$RUNTIME_DIR"
+exec 9>"$LOCK_FILE"
+if ! flock -n 9; then
+    # Another private media Dunst instance already owns this runtime slot.
+    exit 0
+fi
+
+rm -f -- "$BUS_FILE"
+cleanup() {
+    rm -f -- "$BUS_FILE"
+}
+trap cleanup EXIT
+trap 'exit 0' INT TERM HUP
+
+# dbus-run-session creates a separate session bus for this Dunst only. The
+# address file lets playing-notify/dunstify reach it without changing the
+# DBus address used by MPD, playerctl, or the rest of the desktop.
+dbus-run-session -- bash -c '
+    set -euo pipefail
+    address_file=$1
+    private_config_home=$2
+    temporary=$(mktemp "${address_file}.XXXXXX")
+    printf "%s\n" "$DBUS_SESSION_BUS_ADDRESS" > "$temporary"
+    chmod 600 "$temporary"
+    mv -f -- "$temporary" "$address_file"
+    export XDG_CONFIG_HOME="$private_config_home"
+    exec dunst
+' _ "$BUS_FILE" "$PRIVATE_CONFIG_HOME"

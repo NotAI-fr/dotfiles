@@ -1,27 +1,54 @@
 #!/usr/bin/env bash
+set -u
 
 PLAYER="${1:-}"
 [[ -n "$PLAYER" ]] || exit 0
 
 CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/playing-notify"
+RUNTIME_HOME="${XDG_RUNTIME_DIR:-}"
+BUS_FILE="${RUNTIME_HOME:+$RUNTIME_HOME/playing-notify/dbus-address}"
 ID_FILE="$CACHE_DIR/notification.id"
+LOCK_FILE="$CACHE_DIR/notifications.lock"
 FALLBACK_ICON="audio-x-generic"
 
-mkdir -p "$CACHE_DIR"
+mkdir -p -- "$CACHE_DIR" || exit 1
 
-# Read everything from the exact player passed by the watcher.
+# Serialize with the Extras toggle so turning the feature off cannot race a send.
+exec 8>"$LOCK_FILE" || exit 1
+flock -s 8 || exit 1
+
+notifications_enabled() {
+    local config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/polybar"
+    local state_file="$config_dir/playing-notify.state"
+    local state=off
+    [[ -e "$state_file" ]] || return 0
+    [[ -r "$state_file" ]] || return 1
+    IFS= read -r state < "$state_file" || true
+    [[ "$state" == on ]]
+}
+
+notifications_enabled || exit 0
+
+if [[ -z "$RUNTIME_HOME" || ! -r "$BUS_FILE" ]]; then
+    printf 'playing-notify: private Dunst bus is not ready.\n' >&2
+    exit 1
+fi
+IFS= read -r MEDIA_DBUS_ADDRESS < "$BUS_FILE" || true
+if [[ -z "${MEDIA_DBUS_ADDRESS:-}" ]]; then
+    printf 'playing-notify: private Dunst bus address is empty.\n' >&2
+    exit 1
+fi
+
 status=$(playerctl --player="$PLAYER" status 2>/dev/null || true)
 [[ "$status" == "Playing" ]] || exit 0
 
 title=$(playerctl --player="$PLAYER" metadata xesam:title 2>/dev/null || true)
 artist=$(playerctl --player="$PLAYER" metadata xesam:artist 2>/dev/null || true)
 art_url=$(playerctl --player="$PLAYER" metadata mpris:artUrl 2>/dev/null || true)
-
 [[ -n "$title" ]] || exit 0
 [[ -n "$artist" ]] || artist="Unknown artist"
 
 icon=""
-
 case "$art_url" in
     file://*)
         icon=$(python -c '
@@ -30,54 +57,58 @@ from urllib.parse import unquote
 print(unquote(sys.argv[1][7:]))
 ' "$art_url")
         ;;
-
     http://*|https://*)
         hash=$(printf '%s' "$art_url" | sha256sum | cut -c1-16)
         cover="$CACHE_DIR/cover-$hash"
-
         if [[ ! -s "$cover" ]]; then
-            temporary="$cover.tmp"
-
+            temporary=$(mktemp "$CACHE_DIR/.cover.XXXXXX") || exit 1
             if curl -LfsS --max-time 8 "$art_url" -o "$temporary"; then
-                mv "$temporary" "$cover"
+                mv -f -- "$temporary" "$cover"
             else
-                rm -f "$temporary"
+                rm -f -- "$temporary"
             fi
         fi
-
         [[ -s "$cover" ]] && icon="$cover"
         ;;
 esac
 
-# Close the previous music notification completely.
-# This prevents Dunst from retaining its old cover image.
+# Recheck after metadata/artwork work while still holding the shared state lock.
+notifications_enabled || exit 0
+
+# Close the previous media toast through the private bus, never the normal one.
 if [[ -s "$ID_FILE" ]]; then
     old_id=$(cat "$ID_FILE")
-    [[ "$old_id" =~ ^[0-9]+$ ]] &&
-        dunstify -C "$old_id" >/dev/null 2>&1 || true
+    [[ "$old_id" =~ ^[0-9]+$ ]] && \
+        DBUS_SESSION_BUS_ADDRESS="$MEDIA_DBUS_ADDRESS" dunstify -C "$old_id" >/dev/null 2>&1 || true
 fi
 
 if [[ -n "$icon" && -f "$icon" ]]; then
-    new_id=$(
-        dunstify \
-            -p \
-            -a "Now Playing" \
-            -t 5000 \
-            -I "$icon" \
-            "$title" \
-            "$artist"
-    )
+    if new_id=$(DBUS_SESSION_BUS_ADDRESS="$MEDIA_DBUS_ADDRESS" dunstify \
+        -p -a "Now Playing" -t 5000 -I "$icon" "$title" "$artist"); then
+        :
+    else
+        status=$?
+        printf 'playing-notify: dunstify failed on the private media bus (exit %s).\n' "$status" >&2
+        exit 1
+    fi
 else
-    new_id=$(
-        dunstify \
-            -p \
-            -a "Now Playing" \
-            -t 5000 \
-            -i "$FALLBACK_ICON" \
-            "$title" \
-            "$artist"
-    )
+    if new_id=$(DBUS_SESSION_BUS_ADDRESS="$MEDIA_DBUS_ADDRESS" dunstify \
+        -p -a "Now Playing" -t 5000 -i "$FALLBACK_ICON" "$title" "$artist"); then
+        :
+    else
+        status=$?
+        printf 'playing-notify: dunstify failed on the private media bus (exit %s).\n' "$status" >&2
+        exit 1
+    fi
 fi
 
-[[ "$new_id" =~ ^[0-9]+$ ]] &&
-    printf '%s\n' "$new_id" > "$ID_FILE"
+if [[ "$new_id" =~ ^[0-9]+$ ]]; then
+    temporary=$(mktemp "$CACHE_DIR/.notification-id.XXXXXX") || exit 1
+    if ! printf '%s\n' "$new_id" > "$temporary" || ! mv -f -- "$temporary" "$ID_FILE"; then
+        rm -f -- "$temporary"
+        exit 1
+    fi
+else
+    printf 'playing-notify: dunstify returned an invalid notification ID: %s\n' "$new_id" >&2
+    exit 1
+fi

@@ -1,45 +1,181 @@
 #!/usr/bin/env bash
+set -u
 
-NOTIFIER="$HOME/.config/polybar/playing-notify"
+CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/polybar"
+NOTIFIER="$CONFIG_DIR/playing-notify"
+DUNST_LAUNCHER="$CONFIG_DIR/playing-notify-dunst"
+STATE_FILE="$CONFIG_DIR/playing-notify.state"
+RUNTIME_HOME="${XDG_RUNTIME_DIR:-}"
+CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/playing-notify"
+THEME_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/dunst/dunstrc.d/colors.conf"
 
-declare -A LAST_TRACK
+if [[ -z "$RUNTIME_HOME" || ! -d "$RUNTIME_HOME" || ! -O "$RUNTIME_HOME" || ! -w "$RUNTIME_HOME" ]]; then
+    printf 'playing-notify-watch: XDG_RUNTIME_DIR is unavailable.\n' >&2
+    exit 1
+fi
+if [[ ! -x "$NOTIFIER" || ! -x "$DUNST_LAUNCHER" ]]; then
+    printf 'playing-notify-watch: notifier or private Dunst launcher is missing/not executable.\n' >&2
+    exit 1
+fi
+
+RUNTIME_DIR="$RUNTIME_HOME/playing-notify"
+BUS_FILE="$RUNTIME_DIR/dbus-address"
+WATCH_LOCK="$RUNTIME_DIR/watcher.lock"
+mkdir -p -- "$RUNTIME_DIR" "$CACHE_DIR"
+chmod 700 "$RUNTIME_DIR"
+
+# Avoid multiple watchers and multiple private Dunst instances.
+exec 7>"$WATCH_LOCK"
+flock -n 7 || exit 0
+
+# Start private Dunst in its own process group so shutdown can cleanly stop
+# the Dunst process and its isolated D-Bus session together.
+start_private_dunst() {
+    setsid "$DUNST_LAUNCHER" >>"$CACHE_DIR/dunst.log" 2>&1 7>&- &
+    DUNST_PID=$!
+    LAST_DUNST_START=$SECONDS
+}
+
+start_private_dunst
+
+cleanup() {
+    if [[ -n "${DUNST_PID:-}" ]]; then
+        kill -TERM -- "-$DUNST_PID" 2>/dev/null || true
+        wait "$DUNST_PID" 2>/dev/null || true
+    fi
+}
+trap cleanup EXIT
+trap 'exit 0' INT TERM HUP
+
+private_dunst_process_alive() {
+    local process_state
+    process_state=$(ps -o stat= -p "$DUNST_PID" 2>/dev/null) || return 1
+    [[ "$process_state" != Z* && "$process_state" != X* ]]
+}
+
+private_dunst_ready() {
+    local address names
+    [[ -r "$BUS_FILE" ]] || return 1
+    IFS= read -r address < "$BUS_FILE" || return 1
+    [[ -n "$address" ]] || return 1
+    names=$(DBUS_SESSION_BUS_ADDRESS="$address" dbus-send --session \
+        --dest=org.freedesktop.DBus --type=method_call --print-reply \
+        /org/freedesktop/DBus org.freedesktop.DBus.ListNames 2>/dev/null) || return 1
+    grep -Fq 'org.freedesktop.Notifications' <<< "$names"
+}
+
+sync_private_dnd() {
+    local address main_state media_state
+    command -v dunstctl >/dev/null 2>&1 || return 0
+    IFS= read -r address < "$BUS_FILE" || return 0
+    [[ -n "$address" ]] || return 0
+    main_state=$(dunstctl is-paused 2>/dev/null) || return 0
+    [[ "$main_state" == true || "$main_state" == false ]] || return 0
+    media_state=$(DBUS_SESSION_BUS_ADDRESS="$address" dunstctl is-paused 2>/dev/null) || return 0
+    if [[ "$media_state" != "$main_state" ]]; then
+        DBUS_SESSION_BUS_ADDRESS="$address" dunstctl set-paused "$main_state" >/dev/null 2>&1 || true
+    fi
+}
+
+notifications_enabled() {
+    local state=off
+    # No saved preference means enabled, preserving the previous always-on behaviour.
+    [[ -e "$STATE_FILE" ]] || return 0
+    [[ -r "$STATE_FILE" ]] || return 1
+    IFS= read -r state < "$STATE_FILE" || true
+    [[ "$state" == on ]]
+}
+
+reload_private_theme_if_changed() {
+    local current_hash address
+    [[ -r "$THEME_FILE" ]] || return 0
+    current_hash=$(sha256sum -- "$THEME_FILE" 2>/dev/null) || return 0
+    current_hash=${current_hash%% *}
+    [[ -n "$current_hash" ]] || return 0
+
+    # On first observation the daemon has already read this theme on startup.
+    if [[ -z "${LAST_THEME_HASH:-}" ]]; then
+        LAST_THEME_HASH=$current_hash
+        return 0
+    fi
+    [[ "$current_hash" != "$LAST_THEME_HASH" ]] || return 0
+
+    IFS= read -r address < "$BUS_FILE" || return 0
+    [[ -n "$address" ]] || return 0
+    if DBUS_SESSION_BUS_ADDRESS="$address" dunstctl reload >/dev/null 2>&1; then
+        LAST_THEME_HASH=$current_hash
+        printf 'playing-notify-watch: reloaded private Dunst after shared theme change.\n' >&2
+    else
+        printf 'playing-notify-watch: shared Dunst theme changed, but private Dunst reload failed; will retry.\n' >&2
+    fi
+}
+
+LAST_THEME_HASH=''
+declare -A LAST_TRACK=()
 
 while true; do
+    # If the private daemon exits, reap it and retry with a short backoff.
+    if ! private_dunst_process_alive; then
+        wait "$DUNST_PID" 2>/dev/null || true
+        if (( SECONDS - LAST_DUNST_START >= 5 )); then
+            start_private_dunst
+        fi
+    fi
+
+    # Do not poll/notify until the isolated notification service is ready.
+    if ! private_dunst_ready; then
+        sleep 1
+        continue
+    fi
+    # Reload the private daemon when the theme switcher replaces colors.conf.
+    # The symlink in its isolated config tree always points at this shared file.
+    reload_private_theme_if_changed
+
+    # Keep global DND consistent if the main daemon was paused outside Extras
+    # or if the private Dunst instance has just started/restarted.
+    sync_private_dnd
+
+    # When disabled, forget prior tracks. Re-enabling while a track is playing
+    # therefore triggers a fresh notification on the next polling pass.
+    if ! notifications_enabled; then
+        LAST_TRACK=()
+        sleep 1
+        continue
+    fi
+
     declare -A ACTIVE_PLAYERS=()
 
     while IFS= read -r player; do
         [[ -n "$player" ]] || continue
-
-        # Ignore playerctld's virtual player if it is running.
         [[ "$player" == "playerctld" ]] && continue
+
+        if ! notifications_enabled; then
+            LAST_TRACK=()
+            break
+        fi
 
         status=$(playerctl --player="$player" status 2>/dev/null || true)
         [[ "$status" == "Playing" ]] || continue
-
         ACTIVE_PLAYERS["$player"]=1
 
-        track_id=$(
-            playerctl --player="$player" \
-                metadata mpris:trackid 2>/dev/null || true
-        )
-
-        title=$(
-            playerctl --player="$player" \
-                metadata xesam:title 2>/dev/null || true
-        )
-
+        track_id=$(playerctl --player="$player" metadata mpris:trackid 2>/dev/null || true)
+        title=$(playerctl --player="$player" metadata xesam:title 2>/dev/null || true)
         [[ -n "$title" ]] || continue
 
         current_track="$track_id|$title"
-
         if [[ "${LAST_TRACK[$player]:-}" != "$current_track" ]]; then
             sleep 0.3
-            "$NOTIFIER" "$player"
-            LAST_TRACK["$player"]="$current_track"
+            if notifications_enabled; then
+                if "$NOTIFIER" "$player"; then
+                    LAST_TRACK["$player"]="$current_track"
+                fi
+            else
+                LAST_TRACK=()
+                break
+            fi
         fi
     done < <(playerctl --list-all 2>/dev/null)
 
-    # Forget players that are no longer playing.
     for player in "${!LAST_TRACK[@]}"; do
         if [[ -z "${ACTIVE_PLAYERS[$player]+yes}" ]]; then
             unset 'LAST_TRACK[$player]'

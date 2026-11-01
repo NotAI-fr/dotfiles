@@ -1,8 +1,14 @@
 #!/usr/bin/env bash
 set -u
 
-readonly CLIPBOARD_MENU="/home/nobloat/.config/rofi/clipboard-menu.sh"
-readonly QUOTE_COMMAND="/home/nobloat/.local/bin/999-of-the-day"
+readonly CLIPBOARD_MENU="${HOME}/.config/rofi/clipboard-menu.sh"
+readonly QUOTE_COMMAND="${HOME}/.local/bin/999-of-the-day"
+readonly POLYBAR_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/polybar"
+readonly PLAYING_NOTIFY_STATE="$POLYBAR_CONFIG_DIR/playing-notify.state"
+readonly PLAYING_NOTIFY_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/playing-notify"
+readonly PLAYING_NOTIFY_ID="$PLAYING_NOTIFY_CACHE/notification.id"
+readonly PLAYING_NOTIFY_LOCK="$PLAYING_NOTIFY_CACHE/notifications.lock"
+readonly PLAYING_NOTIFY_BUS_FILE="${XDG_RUNTIME_DIR:-}/playing-notify/dbus-address"
 
 notify_error() {
     printf 'extras-picker: %s\n' "$1" >&2
@@ -33,56 +39,146 @@ switch_keyboard() {
 }
 
 toggle_notifications() {
-    local current target expected output status verified
+    local main_current media_current='' target output status verified bus_address=''
 
     if ! command -v dunstctl >/dev/null 2>&1; then
-        notify_error "Notification mute needs Dunst and its dunstctl command. No notification state was changed."
+        notify_error "Notification mute needs Dunst and dunstctl. No notification state was changed."
         return 1
     fi
 
-    if current=$(dunstctl is-paused 2>&1); then
+    if main_current=$(dunstctl is-paused 2>&1); then
         :
     else
         status=$?
-        notify_error "Could not read Dunst's notification state (exit $status): $current"
+        notify_error "Could not read the main Dunst pause state (exit $status): $main_current"
         return 1
     fi
-
-    case "$current" in
-        true)
-            target=false
-            expected=false
-            ;;
-        false)
-            target=true
-            expected=true
-            ;;
-        *)
-            notify_error "Unexpected dunstctl is-paused output: $current"
-            return 1
-            ;;
+    case "$main_current" in
+        true|false) ;;
+        *) notify_error "Unexpected main Dunst pause state: $main_current"; return 1 ;;
     esac
+
+    # The media Dunst has its own private bus. Treat DND as active if either
+    # daemon is paused, then normalise both to the same target state.
+    if [[ -r "$PLAYING_NOTIFY_BUS_FILE" ]]; then
+        IFS= read -r bus_address < "$PLAYING_NOTIFY_BUS_FILE" || true
+        if [[ -n "$bus_address" ]]; then
+            if media_current=$(DBUS_SESSION_BUS_ADDRESS="$bus_address" dunstctl is-paused 2>&1); then
+                case "$media_current" in
+                    true|false) ;;
+                    *) notify_error "Unexpected media Dunst pause state: $media_current"; return 1 ;;
+                esac
+            else
+                status=$?
+                notify_error "Could not read the media Dunst pause state (exit $status): $media_current"
+                return 1
+            fi
+        fi
+    fi
+
+    if [[ "$main_current" == true || "$media_current" == true ]]; then
+        target=false
+    else
+        target=true
+    fi
 
     if output=$(dunstctl set-paused "$target" 2>&1); then
         :
     else
         status=$?
-        notify_error "Could not set Dunst notification pause to $target (exit $status): $output"
+        notify_error "Could not set main Dunst pause to $target (exit $status): $output"
         return 1
     fi
 
-    if verified=$(dunstctl is-paused 2>&1); then
+    if verified=$(dunstctl is-paused 2>&1) && [[ "$verified" == "$target" ]]; then
         :
     else
-        status=$?
-        notify_error "Dunst pause command ran, but its state could not be verified (exit $status): $verified"
+        notify_error "Main Dunst did not enter the expected pause state (wanted $target, got ${verified:-unknown})."
         return 1
     fi
 
-    if [[ "$verified" != "$expected" ]]; then
-        notify_error "Dunst did not enter the expected notification state (wanted $expected, got $verified)."
+    if [[ -n "$bus_address" ]]; then
+        if output=$(DBUS_SESSION_BUS_ADDRESS="$bus_address" dunstctl set-paused "$target" 2>&1); then
+            :
+        else
+            status=$?
+            notify_error "Main Dunst changed, but media Dunst could not be set to $target (exit $status): $output"
+            return 1
+        fi
+        if ! verified=$(DBUS_SESSION_BUS_ADDRESS="$bus_address" dunstctl is-paused 2>&1) || [[ "$verified" != "$target" ]]; then
+            notify_error "Main Dunst changed, but media Dunst did not verify the expected state (wanted $target, got ${verified:-unknown})."
+            return 1
+        fi
+    fi
+}
+
+read_playing_notify_state() {
+    local state=off
+    # Missing preference keeps the previous always-on behaviour.
+    if [[ ! -e "$PLAYING_NOTIFY_STATE" ]]; then
+        printf 'on'
+        return 0
+    fi
+    if [[ ! -r "$PLAYING_NOTIFY_STATE" ]]; then
+        printf 'off'
+        return 0
+    fi
+    IFS= read -r state < "$PLAYING_NOTIFY_STATE" || true
+    case "$state" in
+        on|off) printf '%s' "$state" ;;
+        *) printf 'off' ;;
+    esac
+}
+
+toggle_playing_notifications() {
+    local current target state_dir temporary notification_id='' bus_address=''
+
+    state_dir=$(dirname -- "$PLAYING_NOTIFY_STATE")
+    if ! mkdir -p -- "$state_dir" "$PLAYING_NOTIFY_CACHE"; then
+        notify_error "Could not create the Now Playing configuration/cache directories."
         return 1
     fi
+
+    # Coordinate with the notifier so disabling cannot race with a new toast.
+    exec 8>"$PLAYING_NOTIFY_LOCK" || {
+        notify_error "Could not open the Now Playing notification lock."
+        return 1
+    }
+    if ! flock -x 8; then
+        notify_error "Could not lock the Now Playing notification state."
+        return 1
+    fi
+
+    current=$(read_playing_notify_state)
+    if [[ "$current" == on ]]; then target=off; else target=on; fi
+
+    temporary=$(mktemp "$state_dir/.playing-notify.state.XXXXXX") || {
+        notify_error "Could not create a temporary Now Playing preference file."
+        return 1
+    }
+    if ! printf '%s\n' "$target" > "$temporary" ||
+       ! chmod 600 "$temporary" ||
+       ! mv -f -- "$temporary" "$PLAYING_NOTIFY_STATE"; then
+        rm -f -- "$temporary"
+        notify_error "Could not save the Now Playing notification preference."
+        return 1
+    fi
+
+    if [[ "$target" == off ]]; then
+        # The media toast belongs to the private D-Bus instance, not normal Dunst.
+        if [[ -r "$PLAYING_NOTIFY_ID" ]]; then
+            IFS= read -r notification_id < "$PLAYING_NOTIFY_ID" || true
+            if [[ "$notification_id" =~ ^[0-9]+$ && -r "$PLAYING_NOTIFY_BUS_FILE" ]]; then
+                IFS= read -r bus_address < "$PLAYING_NOTIFY_BUS_FILE" || true
+                if [[ -n "$bus_address" ]] && command -v dunstify >/dev/null 2>&1; then
+                    DBUS_SESSION_BUS_ADDRESS="$bus_address" dunstify -C "$notification_id" >/dev/null 2>&1 || true
+                fi
+            fi
+        fi
+        rm -f -- "$PLAYING_NOTIFY_ID"
+    fi
+
+    printf 'extras-picker: Now Playing notifications %s\n' "$target" >&2
 }
 
 runtime_dir=${XDG_RUNTIME_DIR:-}
@@ -132,20 +228,36 @@ esac
 # Reflect Dunst's actual pause state each time the picker opens.
 # If Dunst is unavailable or unreachable, keep the rest of the picker usable;
 # selecting the bell tile will report the specific problem instead of guessing.
-notification_icon='󰂚'
+notification_muted=false
 if command -v dunstctl >/dev/null 2>&1; then
-    if notification_state=$(dunstctl is-paused 2>/dev/null); then
-        case "$notification_state" in
-            true) notification_icon='󰂛' ;;
-            false) notification_icon='󰂚' ;;
-        esac
+    if notification_state=$(dunstctl is-paused 2>/dev/null) && [[ "$notification_state" == true ]]; then
+        notification_muted=true
     fi
+    if [[ -r "$PLAYING_NOTIFY_BUS_FILE" ]]; then
+        if IFS= read -r media_bus_address < "$PLAYING_NOTIFY_BUS_FILE" && [[ -n "$media_bus_address" ]]; then
+            if media_state=$(DBUS_SESSION_BUS_ADDRESS="$media_bus_address" dunstctl is-paused 2>/dev/null) && [[ "$media_state" == true ]]; then
+                notification_muted=true
+            fi
+        fi
+    fi
+fi
+if [[ "$notification_muted" == true ]]; then
+    # A trailing thin space optically nudges this wider asymmetric glyph left.
+    notification_icon='󰂛 '
+else
+    notification_icon='󰂚'
+fi
+
+if [[ "$(read_playing_notify_state)" == on ]]; then
+    playing_notify_icon='󰎇'
+else
+    playing_notify_icon='󰎊'
 fi
 
 # The picker intentionally has no search/input bar. As in the power menu,
 # dmenu returns the selected row index so the visible text stays presentation-only.
 readonly ROFI_THEME='window {
-    width: 520px;
+    width: 620px;
     location: center;
     anchor: center;
     border-radius: 12px;
@@ -155,7 +267,7 @@ inputbar {
     enabled: false;
 }
 listview {
-    columns: 5;
+    columns: 6;
     lines: 1;
     spacing: 12px;
     cycle: true;
@@ -178,7 +290,7 @@ element-text {
 }
 '
 
-selection=$(printf '%s\n' '󰖔' '' "$keyboard_label" '' "$notification_icon" |
+selection=$(printf '%s\n' '󰖔' '' "$keyboard_label" '' "$notification_icon" "$playing_notify_icon" |
     rofi -dmenu -i -no-custom -format i -theme-str "$ROFI_THEME")
 rofi_status=$?
 if (( rofi_status != 0 )) || [[ -z "$selection" ]]; then
@@ -239,6 +351,9 @@ case "$selection" in
         ;;
     4)
         toggle_notifications || exit 1
+        ;;
+    5)
+        toggle_playing_notifications || exit 1
         ;;
     *)
         exit 0
