@@ -199,7 +199,8 @@ class Player:
         self._playerRaise     = self._media_interface.get_dbus_method('Raise', dbus_interface=None)
         self._signals = {}
 
-        self.refreshPosition()
+        if NEEDS_POSITION:
+            self.refreshPosition()
         self.refreshStatus()
         self.refreshMetadata()
 
@@ -335,7 +336,8 @@ class Player:
                 self.refreshPosition()
 
         if updated:
-            self.refreshPosition()
+            if NEEDS_POSITION:
+                self.refreshPosition()
             self.printStatus()
 
     def checkPositionTimer(self):
@@ -344,8 +346,9 @@ class Player:
             GLib.timeout_add_seconds(1, self._positionTimer)
 
     def onSeeked(self, position):
-        self.refreshPosition()
-        self.printStatus()
+        if NEEDS_POSITION:
+            self.refreshPosition()
+            self.printStatus()
 
     def _positionTimer(self):
         self.printStatus()

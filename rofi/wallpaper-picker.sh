@@ -361,7 +361,7 @@ apply_wallpaper() {
     }
 
 
-    feh --bg-scale "$wallpaper" || {
+    feh --bg-fill "$wallpaper" || {
         notify "Wallpaper failed" "feh could not apply $(basename "$wallpaper")."
         return 1
     }
