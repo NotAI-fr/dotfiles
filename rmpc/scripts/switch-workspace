@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+target="${1:?Missing target partition}"
+
+case "$target" in
+    default)
+        other="juice"
+        tab="Albums"
+        partition_key="g1"
+        ;;
+    juice)
+        other="default"
+        tab="Juice"
+        partition_key="g2"
+        ;;
+    *)
+        echo "Unknown workspace: $target" >&2
+        exit 1
+        ;;
+esac
+
+# Pause the other workspace
+rmpc --partition "$other" pause || true
+
+# Move PipeWire output 0 to the selected partition
+rmpc --partition "$target" enableoutput 0
+
+# Switch the running rmpc instance
+remote=(rmpc remote)
+if [[ -n "${PID:-}" ]]; then
+    remote+=(--pid "$PID")
+fi
+
+"${remote[@]}" keybind "$partition_key"
+"${remote[@]}" switchtab "$tab"
